@@ -54,7 +54,7 @@
 
         {{-- Large Pots --}}
         <div x-show="activeSize === 'large'" x-transition>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-4">
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                 @foreach($products['large'] as $item)
                     <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" />
                 @endforeach
