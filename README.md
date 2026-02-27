@@ -30,71 +30,113 @@ built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
 
 ---
 
-## ⚡ Pull the Latest Code in VS Code Terminal
+## ⚡ Get & Run the Latest Code (Terminal Commands)
 
-Open VS Code, press **Ctrl + `** to open the integrated terminal, then run these commands one by one:
-
-### If you have already cloned the repo before
-
-```bash
-# 1. Go into the project folder (adjust path to where you cloned it)
-cd Flower-Pot
-
-# 2. Switch to the main branch
-git checkout main
-
-# 3. Pull the latest changes from GitHub
-git pull origin main
-
-# 4. Install/update PHP packages (run if composer.json changed)
-composer install
-
-# 5. Install/update Node packages (run if package.json changed)
-npm install
-
-# 6. Build the front-end assets
-npm run build
-
-# 7. Run any new database migrations
-php artisan migrate
-
-# 8. Start the development server
-php artisan serve
-```
-
-Your app will be live at **http://127.0.0.1:8000** 🎉
+Open VS Code, press **Ctrl + `** to open the integrated terminal, then run **all of these commands one by one**:
 
 ---
 
-### If you are cloning for the first time
+### ✅ Step 1 — Switch to the PR branch (where all new code lives)
 
 ```bash
-# 1. Clone the repository
-git clone https://github.com/Unique-Khanal/Flower-Pot.git
+git fetch origin
+git checkout copilot/build-ecommerce-frontend
+git pull origin copilot/build-ecommerce-frontend
+```
 
-# 2. Move into the project folder
-cd Flower-Pot
+---
 
-# 3. Install PHP packages
+### ✅ Step 2 — Install PHP packages
+
+```bash
 composer install
+```
 
-# 4. Install Node packages
-npm install
+---
 
-# 5. Copy the environment file
+### ✅ Step 3 — Set up your environment file
+
+```bash
 cp .env.example .env
-
-# 6. Generate the application key
 php artisan key:generate
+```
 
-# 7. Open .env in VS Code and set your DB credentials, then run:
-php artisan migrate
+Then open `.env` and update these lines:
 
-# 8. Build the front-end assets
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=flower_pot
+DB_USERNAME=root
+DB_PASSWORD=your_password_here
+
+SESSION_DRIVER=file
+CACHE_STORE=file
+```
+
+> 💡 Setting `SESSION_DRIVER=file` and `CACHE_STORE=file` means no database is needed to browse the frontend.
+
+---
+
+### ✅ Step 4 — Install Node packages & build assets
+
+```bash
+npm install
 npm run build
+```
 
-# 9. Start the development server
+---
+
+### ✅ Step 5 — Start the development server
+
+```bash
 php artisan serve
+```
+
+Your app will be live at 👉 **http://127.0.0.1:8000**
+
+---
+
+## 🔄 What Changed in This Branch
+
+| File | What was updated |
+|---|---|
+| `resources/js/app.js` | Added Alpine.js **cart store** with localStorage — cart persists across pages |
+| `resources/views/components/product-card.blade.php` | "🛒 Cart" → **"Add to Cart"** with live feedback ("✓ Added!") |
+| `resources/views/components/product-card.blade.php` | **"Buy Now"** now adds item to cart AND opens the cart drawer |
+| `resources/views/layouts/app.blade.php` | Cart icon badge now shows **live item count** |
+| `resources/views/layouts/app.blade.php` | New **cart slide-out drawer** — view items, see total, clear cart |
+
+---
+
+## 🛠️ Editing the Blade Files
+
+All page templates are in `resources/views/`. Open any of these in VS Code to edit:
+
+```
+resources/views/
+├── layouts/app.blade.php          ← Navbar, cart drawer, footer (edit here for global changes)
+├── components/product-card.blade.php  ← Product card (image, name, price, Add to Cart, Buy Now)
+├── home/index.blade.php           ← Home page
+├── products/index.blade.php       ← Products page
+├── products/plants.blade.php      ← Plants listing
+├── products/pots/index.blade.php  ← Pots category page
+├── products/pots/ceramics.blade.php
+├── products/pots/cement.blade.php
+├── products/pots/mud.blade.php
+├── products/pots/plastic.blade.php
+├── about.blade.php
+├── services.blade.php
+└── contact.blade.php
+```
+
+After editing any blade file, just **refresh your browser** — no rebuild needed.
+
+After editing `resources/js/app.js` or `resources/css/app.css`, run:
+
+```bash
+npm run build
 ```
 
 ---
@@ -106,46 +148,7 @@ php artisan serve
 | PHP | 8.2 or higher | https://www.php.net/downloads |
 | Composer | any | https://getcomposer.org |
 | Node.js & npm | 18 or higher | https://nodejs.org |
-| MySQL | any | https://dev.mysql.com/downloads |
 | Git | any | https://git-scm.com |
-
----
-
-## .env — Database Setup
-
-After copying `.env.example` to `.env`, update these lines with your local MySQL details:
-
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=flower_pot
-DB_USERNAME=root
-DB_PASSWORD=your_password
-```
-
-Create a database named `flower_pot` (or any name you prefer) before running `php artisan migrate`.
-
----
-
-## Project Structure
-
-```
-Flower-Pot/
-├── app/Http/Controllers/   ← Route controllers
-├── database/migrations/    ← Database schema
-├── public/images/          ← Product photos
-├── resources/views/        ← Blade templates (all pages)
-│   ├── layouts/            ← Shared navbar & footer
-│   ├── home/               ← Homepage
-│   ├── products/           ← Product listing pages
-│   ├── about.blade.php
-│   ├── services.blade.php
-│   └── contact.blade.php
-├── routes/web.php          ← All web routes
-├── .env.example            ← Environment template
-└── vite.config.js          ← Vite / Tailwind config
-```
 
 ---
 
@@ -154,12 +157,10 @@ Flower-Pot/
 | What it does | Command |
 |---|---|
 | Start dev server | `php artisan serve` |
-| Start Vite hot-reload | `npm run dev` |
+| Hot-reload assets while editing JS/CSS | `npm run dev` |
 | Build assets for production | `npm run build` |
-| Run migrations | `php artisan migrate` |
 | Clear config cache | `php artisan config:clear` |
 | Clear view cache | `php artisan view:clear` |
-| Run tests | `php artisan test` |
 
 ---
 

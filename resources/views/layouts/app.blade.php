@@ -81,22 +81,21 @@
                 <!-- Right side: Login + Cart -->
                 <div class="hidden md:flex items-center space-x-3">
                     <!-- Cart -->
-                    <button class="relative text-green-100 hover:text-white transition">
+                    <button x-data @click="$dispatch('open-cart')" class="relative text-green-100 hover:text-white transition">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z"/>
                         </svg>
-                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+                        <span x-data x-text="$store.cart.count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
                     </button>
                     <a href="{{ route('login') }}" class="bg-white text-green-800 hover:bg-green-100 px-4 py-2 rounded-md text-sm font-semibold transition">Login</a>
                 </div>
 
-                <!-- Mobile menu button -->
                 <div class="md:hidden flex items-center space-x-2">
-                    <button class="relative text-green-100">
+                    <button x-data @click="$dispatch('open-cart')" class="relative text-green-100">
                         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z"/>
                         </svg>
-                        <span class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
+                        <span x-data x-text="$store.cart.count" class="absolute -top-2 -right-2 bg-red-500 text-white text-xs rounded-full h-5 w-5 flex items-center justify-center font-bold">0</span>
                     </button>
                     <button @click="mobileOpen = !mobileOpen" class="text-green-100 hover:text-white p-2">
                         <svg x-show="!mobileOpen" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -222,6 +221,76 @@
             </div>
         </div>
     </footer>
+
+    {{-- Cart Slide-out Drawer --}}
+    <div x-data="{ open: false }" @open-cart.window="open = true">
+        {{-- Backdrop --}}
+        <div x-show="open" x-cloak x-transition:enter="transition ease-out duration-200"
+             x-transition:enter-start="opacity-0" x-transition:enter-end="opacity-100"
+             x-transition:leave="transition ease-in duration-150"
+             x-transition:leave-start="opacity-100" x-transition:leave-end="opacity-0"
+             @click="open = false"
+             class="fixed inset-0 bg-black/50 z-40"></div>
+
+        {{-- Drawer --}}
+        <div x-show="open" x-cloak
+             x-transition:enter="transition ease-out duration-300"
+             x-transition:enter-start="translate-x-full" x-transition:enter-end="translate-x-0"
+             x-transition:leave="transition ease-in duration-200"
+             x-transition:leave-start="translate-x-0" x-transition:leave-end="translate-x-full"
+             class="fixed right-0 top-0 h-full w-80 bg-white shadow-2xl z-50 flex flex-col">
+
+            {{-- Header --}}
+            <div class="flex items-center justify-between p-4 border-b bg-green-700 text-white">
+                <h2 class="text-lg font-bold flex items-center gap-2">
+                    <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z"/>
+                    </svg>
+                    Shopping Cart
+                    <span x-text="'(' + $store.cart.count + ')'" class="text-green-200 font-normal text-sm"></span>
+                </h2>
+                <button @click="open = false" class="text-white hover:text-green-200 text-2xl leading-none">&times;</button>
+            </div>
+
+            {{-- Items --}}
+            <div class="flex-1 overflow-y-auto p-4">
+                <template x-if="$store.cart.items.length === 0">
+                    <div class="text-center py-16">
+                        <svg class="w-16 h-16 mx-auto text-gray-200 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13l-1.5 6h13M7 13L5.4 5M10 21a1 1 0 100-2 1 1 0 000 2zm7 0a1 1 0 100-2 1 1 0 000 2z"/>
+                        </svg>
+                        <p class="text-gray-400 font-medium">Your cart is empty</p>
+                        <p class="text-gray-300 text-sm mt-1">Add some plants or pots!</p>
+                    </div>
+                </template>
+                <template x-for="item in $store.cart.items" :key="item.name">
+                    <div class="flex items-center gap-3 mb-3 p-3 bg-gray-50 rounded-xl">
+                        <img :src="item.image" :alt="item.name" class="w-16 h-16 object-cover rounded-lg flex-shrink-0">
+                        <div class="flex-1 min-w-0">
+                            <p class="text-sm font-semibold text-gray-800 truncate" x-text="item.name"></p>
+                            <p class="text-xs text-gray-400 mt-0.5">Qty: <span x-text="item.qty"></span></p>
+                            <p class="text-green-700 font-bold text-sm">Rs. <span x-text="(item.price * item.qty).toLocaleString()"></span></p>
+                        </div>
+                        <button @click="$store.cart.remove(item.name)" class="text-gray-300 hover:text-red-500 transition text-xl leading-none flex-shrink-0">&times;</button>
+                    </div>
+                </template>
+            </div>
+
+            {{-- Footer --}}
+            <div x-show="$store.cart.items.length > 0" class="border-t p-4 bg-white">
+                <div class="flex justify-between items-center mb-4">
+                    <span class="font-semibold text-gray-700">Total:</span>
+                    <span class="font-extrabold text-green-700 text-lg">Rs. <span x-text="$store.cart.total.toLocaleString()"></span></span>
+                </div>
+                <button class="w-full bg-green-700 hover:bg-green-800 text-white py-3 rounded-xl font-semibold transition shadow mb-2">
+                    Proceed to Checkout
+                </button>
+                <button @click="$store.cart.clear()" class="w-full text-red-400 hover:text-red-600 text-sm py-1 transition">
+                    Clear Cart
+                </button>
+            </div>
+        </div>
+    </div>
 
 </body>
 </html>
