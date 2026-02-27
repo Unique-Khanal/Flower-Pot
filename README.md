@@ -5,6 +5,31 @@ built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
 
 ---
 
+## 📸 Screenshots
+
+### 🏠 Home Page
+![Home](public/screenshots/home.png)
+
+### 🛍 Products
+![Products](public/screenshots/products.png)
+
+### 🪴 Plants Collection
+![Plants](public/screenshots/plants.png)
+
+### 🏺 Pots
+![Pots](public/screenshots/pots.png)
+
+### 🎨 Ceramics
+![Ceramics](public/screenshots/ceramics.png)
+
+### ℹ️ About
+![About](public/screenshots/about.png)
+
+### 📬 Contact
+![Contact](public/screenshots/contact.png)
+
+---
+
 ## ⚡ Pull the Latest Code in VS Code Terminal
 
 Open VS Code, press **Ctrl + `** to open the integrated terminal, then run these commands one by one:
