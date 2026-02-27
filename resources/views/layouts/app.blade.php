@@ -60,18 +60,18 @@
                         <div x-show="productsOpen" x-cloak class="absolute left-0 mt-0 w-48 bg-white rounded-md shadow-lg z-50 py-1">
                             <!-- Pots sub-menu -->
                             <div class="relative" x-data="{ potsOpen: false }" @mouseenter="potsOpen = true" @mouseleave="potsOpen = false">
-                                <a href="{{ route('products.pots') }}" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">
-                                    🏺 Pots
+                                <a href="{{ route('products.pots') }}" class="flex items-center justify-between px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 font-medium">
+                                    Pots
                                     <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"/></svg>
                                 </a>
                                 <div x-show="potsOpen" x-cloak class="absolute left-full top-0 w-40 bg-white rounded-md shadow-lg z-50 py-1">
-                                    <a href="{{ route('products.ceramics') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">🪴 Ceramics</a>
-                                    <a href="{{ route('products.cement') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">🪨 Cement</a>
-                                    <a href="{{ route('products.mud') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">🌿 Mud</a>
-                                    <a href="{{ route('products.plastic') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">♻️ Plastic</a>
+                                    <a href="{{ route('products.ceramics') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Ceramics</a>
+                                    <a href="{{ route('products.cement') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Cement</a>
+                                    <a href="{{ route('products.mud') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Mud</a>
+                                    <a href="{{ route('products.plastic') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">Plastic</a>
                                 </div>
                             </div>
-                            <a href="{{ route('products.plants') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700">🌱 Plants</a>
+                            <a href="{{ route('products.plants') }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-green-50 hover:text-green-700 font-medium">Plants</a>
                         </div>
                     </div>
 
@@ -121,12 +121,12 @@
                     <svg class="w-4 h-4 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/></svg>
                 </button>
                 <div x-show="open" x-cloak class="pl-4 space-y-1">
-                    <a href="{{ route('products.pots') }}" class="block text-green-200 hover:text-white px-3 py-1.5 text-sm">🏺 Pots</a>
-                    <a href="{{ route('products.ceramics') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">- Ceramics</a>
-                    <a href="{{ route('products.cement') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">- Cement</a>
-                    <a href="{{ route('products.mud') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">- Mud</a>
-                    <a href="{{ route('products.plastic') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">- Plastic</a>
-                    <a href="{{ route('products.plants') }}" class="block text-green-200 hover:text-white px-3 py-1.5 text-sm">🌱 Plants</a>
+                    <a href="{{ route('products.pots') }}" class="block text-green-200 hover:text-white px-3 py-1.5 text-sm font-medium">Pots</a>
+                    <a href="{{ route('products.ceramics') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">Ceramics</a>
+                    <a href="{{ route('products.cement') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">Cement</a>
+                    <a href="{{ route('products.mud') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">Mud</a>
+                    <a href="{{ route('products.plastic') }}" class="block text-green-200 hover:text-white px-6 py-1 text-sm">Plastic</a>
+                    <a href="{{ route('products.plants') }}" class="block text-green-200 hover:text-white px-3 py-1.5 text-sm font-medium">Plants</a>
                 </div>
             </div>
             <a href="{{ route('contact') }}" class="block text-green-100 hover:text-white px-3 py-2 rounded-md text-sm font-medium">Contact Us</a>

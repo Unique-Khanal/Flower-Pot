@@ -5,9 +5,17 @@
 @section('content')
 
 {{-- Hero --}}
-<section class="bg-gradient-to-r from-green-800 to-green-600 text-white py-16 px-4 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Contact Us</h1>
-    <p class="text-green-200 text-lg max-w-2xl mx-auto">We'd love to hear from you. Reach out and we'll get back to you within 24 hours.</p>
+<section class="relative text-white py-20 px-4 text-center overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{{ asset('images/Plants/money_plant.webp') }}"
+             class="w-full h-full object-cover" alt="Contact Us">
+        <div class="absolute inset-0 bg-green-900/75"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+        <p class="text-green-300 uppercase tracking-widest text-xs mb-3 font-semibold">Get In Touch</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Contact Us</h1>
+        <p class="text-green-100 text-lg max-w-2xl mx-auto">We'd love to hear from you. Reach out and we'll get back to you within 24 hours.</p>
+    </div>
 </section>
 
 {{-- Contact Content --}}

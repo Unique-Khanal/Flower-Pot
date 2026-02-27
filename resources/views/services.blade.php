@@ -5,9 +5,17 @@
 @section('content')
 
 {{-- Hero --}}
-<section class="bg-gradient-to-r from-green-800 to-green-600 text-white py-16 px-4 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Our Services</h1>
-    <p class="text-green-200 text-lg max-w-2xl mx-auto">From delivery to custom designs, we go the extra mile for your green lifestyle.</p>
+<section class="relative text-white py-20 px-4 text-center overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{{ asset('images/Plants/spider_plant2.webp') }}"
+             class="w-full h-full object-cover" alt="Our Services">
+        <div class="absolute inset-0 bg-green-900/75"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+        <p class="text-green-300 uppercase tracking-widest text-xs mb-3 font-semibold">What We Offer</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Our Services</h1>
+        <p class="text-green-100 text-lg max-w-2xl mx-auto">From delivery to custom designs, we go the extra mile for your green lifestyle.</p>
+    </div>
 </section>
 
 {{-- Services Grid --}}
@@ -48,7 +56,7 @@
                         <span class="bg-amber-100 text-amber-700 text-xs font-bold px-3 py-1 rounded-full uppercase tracking-wide">Custom</span>
                     </div>
                     <h3 class="text-xl font-bold text-gray-800 mb-2">Custom Pots</h3>
-                    <p class="text-gray-600 text-sm leading-relaxed mb-4">Want something unique? We craft custom pots in any size, shape, or color. Perfect for special occasions, corporate gifts, or personalised décor.</p>
+                    <p class="text-gray-600 text-sm leading-relaxed mb-4">Want something unique? We craft custom pots in any size, shape, or color. Perfect for special occasions, corporate gifts, or personalized décor.</p>
                     <ul class="space-y-1 text-sm text-gray-500">
                         <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✓</span> Any size & shape</li>
                         <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✓</span> Custom colors & engravings</li>
@@ -72,7 +80,7 @@
                     <p class="text-gray-600 text-sm leading-relaxed mb-4">Not sure which plant suits your space? Our expert horticulturists provide free consultations to help you pick the right plants based on light, humidity, and space.</p>
                     <ul class="space-y-1 text-sm text-gray-500">
                         <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✓</span> Free 30-minute consultation</li>
-                        <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✓</span> Personalised recommendations</li>
+                        <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✓</span> Personalized recommendations</li>
                         <li class="flex items-center gap-2"><span class="text-green-500 font-bold">✓</span> Care guides included</li>
                     </ul>
                 </div>

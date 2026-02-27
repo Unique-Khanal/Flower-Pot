@@ -7,7 +7,21 @@
 <section class="min-h-screen bg-green-50 flex items-center justify-center py-12 px-4">
     <div class="max-w-md w-full">
         <div class="text-center mb-8">
-            <div class="text-6xl mb-3">🌸</div>
+            <div class="flex justify-center mb-4">
+                <svg width="56" height="56" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="21" cy="7" r="3.5" fill="#fcd34d"/>
+                    <circle cx="27" cy="9" r="3" fill="#86efac"/>
+                    <circle cx="15" cy="9" r="3" fill="#86efac"/>
+                    <circle cx="27" cy="5" r="2.5" fill="#4ade80"/>
+                    <circle cx="15" cy="5" r="2.5" fill="#4ade80"/>
+                    <circle cx="21" cy="7" r="2" fill="#f59e0b"/>
+                    <rect x="19.5" y="10" width="3" height="8" rx="1.5" fill="#22c55e"/>
+                    <ellipse cx="21" cy="18.5" rx="8.5" ry="2" fill="#92400e"/>
+                    <rect x="10" y="18" width="22" height="4" rx="2" fill="#b45309"/>
+                    <path d="M12 22 L14.5 38 H27.5 L30 22 Z" fill="#d97706"/>
+                    <path d="M14 24 L15 34" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                </svg>
+            </div>
             <h2 class="text-3xl font-extrabold text-gray-800">Admin Login</h2>
             <p class="text-gray-500 mt-2 text-sm">Sign in to manage your FlowerPot store</p>
         </div>

@@ -4,9 +4,17 @@
 
 @section('content')
 
-<section class="bg-gradient-to-r from-green-800 to-green-600 text-white py-16 px-4 text-center">
-    <h1 class="text-4xl md:text-5xl font-extrabold mb-4">♻️ Plastic Pots</h1>
-    <p class="text-green-200 text-lg max-w-2xl mx-auto">Lightweight, durable, and affordable plastic pots in Small, Medium, and Large sizes.</p>
+<section class="relative text-white py-20 px-4 text-center overflow-hidden">
+    <div class="absolute inset-0">
+        <img src="{{ asset('images/plastic/plastic-large-pot2.jpg') }}"
+             class="w-full h-full object-cover" alt="Plastic Pots">
+        <div class="absolute inset-0 bg-green-900/75"></div>
+    </div>
+    <div class="relative z-10 max-w-3xl mx-auto">
+        <p class="text-green-300 uppercase tracking-widest text-xs mb-3 font-semibold">Our Products / Pots</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Plastic Pots</h1>
+        <p class="text-green-100 text-lg max-w-2xl mx-auto">Lightweight, durable, and affordable plastic pots in Small, Medium, and Large sizes.</p>
+    </div>
 </section>
 
 <section class="py-12 px-4 bg-white" x-data="{ activeSize: 'large' }">
