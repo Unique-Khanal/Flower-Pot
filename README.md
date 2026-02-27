@@ -5,22 +5,58 @@ built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
 
 ---
 
-## ⚠️ START HERE — Get All Blade Files Into Your Folder
+## ⚡ Quick Start — Run ONE command in VS Code terminal
 
-> All the blade files (`home`, `about`, `products`, `contact`, etc.) are on a **separate branch**.
-> Your `main` folder does NOT have them yet. Run these 3 commands in your terminal first:
+Open your `Flower-Pot` folder in VS Code, open the terminal (**Ctrl + `**), and run:
 
-```bash
-git fetch origin
-git checkout copilot/build-ecommerce-frontend
-git pull origin copilot/build-ecommerce-frontend
+### Windows (PowerShell)
+```powershell
+.\setup.ps1
 ```
 
-After this, open your `Flower-Pot` folder and you will see all these files ready to edit:
+### Mac / Linux / Git Bash
+```bash
+bash setup.sh
+```
+
+That's it. The script will automatically:
+1. Switch to the correct branch (`copilot/build-ecommerce-frontend`)
+2. Pull all the latest code
+3. Install all PHP & Node packages
+4. Build the frontend assets
+5. Create your `.env` file and prompt you to fill in database details
+6. Run all database migrations
+7. Seed all product data (prices, images, categories)
+
+After setup is done, start the server:
+```bash
+php artisan serve
+```
+Then open **http://127.0.0.1:8000** ✅
+
+---
+
+## 🔄 Already set up? Pull future updates with:
+
+### Windows
+```powershell
+.\update.ps1
+```
+
+### Mac / Linux
+```bash
+bash update.sh
+```
+
+---
+
+## ✏️ Editing the blade files
+
+After running `setup.ps1` (or `setup.sh`) your `resources/views/` folder will contain:
 
 ```
 resources/views/
-├── layouts/app.blade.php          ← navbar, footer, cart drawer
+├── layouts/app.blade.php            ← navbar, cart drawer, footer
 ├── components/product-card.blade.php
 ├── home/index.blade.php
 ├── about.blade.php
@@ -38,30 +74,7 @@ resources/views/
         └── plastic.blade.php
 ```
 
-Then install dependencies and start the server:
-
-```bash
-composer install
-npm install
-npm run build
-cp .env.example .env
-php artisan key:generate
-```
-
-Open `.env` and set:
-```env
-SESSION_DRIVER=file
-CACHE_STORE=file
-```
-
-Then:
-```bash
-php artisan serve
-```
-
-Open **http://127.0.0.1:8000** in your browser. ✅
-
-> 💡 After editing any `.blade.php` file, just **refresh your browser** — no rebuild needed.
+> 💡 After editing any `.blade.php` file just **refresh your browser** — no rebuild needed.
 > Only run `npm run build` again if you edit `resources/js/app.js` or `resources/css/app.css`.
 
 ---
