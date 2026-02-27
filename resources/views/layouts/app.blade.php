@@ -18,8 +18,31 @@
             <div class="flex items-center justify-between h-16">
                 <!-- Logo -->
                 <div class="flex-shrink-0">
-                    <a href="{{ route('home') }}" class="text-white text-2xl font-bold tracking-wide">
-                        🌸 FlowerPot
+                    <a href="{{ route('home') }}" class="flex items-center gap-2 group">
+                        {{-- SVG Flower Pot Logo --}}
+                        <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 drop-shadow-sm group-hover:scale-105 transition-transform">
+                            {{-- Flower petals --}}
+                            <circle cx="21" cy="7" r="3.5" fill="#fcd34d"/>
+                            <circle cx="27" cy="9" r="3" fill="#86efac"/>
+                            <circle cx="15" cy="9" r="3" fill="#86efac"/>
+                            <circle cx="27" cy="5" r="2.5" fill="#4ade80"/>
+                            <circle cx="15" cy="5" r="2.5" fill="#4ade80"/>
+                            {{-- Flower centre --}}
+                            <circle cx="21" cy="7" r="2" fill="#f59e0b"/>
+                            {{-- Stem --}}
+                            <rect x="19.5" y="10" width="3" height="8" rx="1.5" fill="#22c55e"/>
+                            {{-- Soil line --}}
+                            <ellipse cx="21" cy="18.5" rx="8.5" ry="2" fill="#92400e"/>
+                            {{-- Pot rim --}}
+                            <rect x="10" y="18" width="22" height="4" rx="2" fill="#b45309"/>
+                            {{-- Pot body --}}
+                            <path d="M12 22 L14.5 38 H27.5 L30 22 Z" fill="#d97706"/>
+                            {{-- Pot shine --}}
+                            <path d="M14 24 L15 34" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                        </svg>
+                        <span class="text-white text-xl font-extrabold tracking-wide leading-none">
+                            Flower<span class="text-yellow-300">Pot</span>
+                        </span>
                     </a>
                 </div>
 
@@ -123,7 +146,21 @@
             <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
                 <!-- Brand -->
                 <div>
-                    <h3 class="text-white text-xl font-bold mb-3">🌸 FlowerPot</h3>
+                    <div class="flex items-center gap-2 mb-3">
+                        <svg width="32" height="32" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="21" cy="7" r="3.5" fill="#fcd34d"/>
+                            <circle cx="27" cy="9" r="3" fill="#86efac"/>
+                            <circle cx="15" cy="9" r="3" fill="#86efac"/>
+                            <circle cx="27" cy="5" r="2.5" fill="#4ade80"/>
+                            <circle cx="15" cy="5" r="2.5" fill="#4ade80"/>
+                            <circle cx="21" cy="7" r="2" fill="#f59e0b"/>
+                            <rect x="19.5" y="10" width="3" height="8" rx="1.5" fill="#22c55e"/>
+                            <ellipse cx="21" cy="18.5" rx="8.5" ry="2" fill="#92400e"/>
+                            <rect x="10" y="18" width="22" height="4" rx="2" fill="#b45309"/>
+                            <path d="M12 22 L14.5 38 H27.5 L30 22 Z" fill="#d97706"/>
+                        </svg>
+                        <h3 class="text-white text-xl font-bold">Flower<span class="text-yellow-300">Pot</span></h3>
+                    </div>
                     <p class="text-green-300 text-sm leading-relaxed">Bringing nature's beauty to your doorstep. Quality pots and plants for every home.</p>
                     <div class="flex space-x-3 mt-4">
                         <a href="#" class="text-green-300 hover:text-white transition">

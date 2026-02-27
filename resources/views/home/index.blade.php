@@ -57,28 +57,40 @@
         </div>
         <div class="grid grid-cols-2 md:grid-cols-4 gap-6">
             <a href="{{ route('products.pots') }}" class="group bg-white rounded-2xl shadow hover:shadow-lg overflow-hidden transition">
-                <div class="bg-amber-100 h-36 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">🏺</div>
+                <div class="h-36 overflow-hidden">
+                    <img src="{{ asset('images/ceramics/ceramics-large-pot5.webp') }}" alt="Pots"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-bold text-gray-800">Pots</h3>
                     <p class="text-gray-500 text-xs mt-1">Ceramic, Cement, Mud & More</p>
                 </div>
             </a>
             <a href="{{ route('products.plants') }}" class="group bg-white rounded-2xl shadow hover:shadow-lg overflow-hidden transition">
-                <div class="bg-green-100 h-36 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">🌿</div>
+                <div class="h-36 overflow-hidden">
+                    <img src="{{ asset('images/Plants/snake_plant.webp') }}" alt="Plants"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-bold text-gray-800">Plants</h3>
                     <p class="text-gray-500 text-xs mt-1">Indoor & Outdoor Plants</p>
                 </div>
             </a>
             <a href="{{ route('products.ceramics') }}" class="group bg-white rounded-2xl shadow hover:shadow-lg overflow-hidden transition">
-                <div class="bg-blue-100 h-36 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">🪴</div>
+                <div class="h-36 overflow-hidden">
+                    <img src="{{ asset('images/ceramics/ceramics-medium-pot1.webp') }}" alt="Ceramics"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-bold text-gray-800">Ceramics</h3>
                     <p class="text-gray-500 text-xs mt-1">Elegant Glazed Pots</p>
                 </div>
             </a>
             <a href="{{ route('products.cement') }}" class="group bg-white rounded-2xl shadow hover:shadow-lg overflow-hidden transition">
-                <div class="bg-gray-100 h-36 flex items-center justify-center text-6xl group-hover:scale-110 transition-transform">🪨</div>
+                <div class="h-36 overflow-hidden">
+                    <img src="{{ asset('images/cement/cement-large-pot2.webp') }}" alt="Cement"
+                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
+                </div>
                 <div class="p-4 text-center">
                     <h3 class="font-bold text-gray-800">Cement</h3>
                     <p class="text-gray-500 text-xs mt-1">Durable & Stylish</p>
@@ -96,20 +108,35 @@
             <p class="text-gray-500 mt-2">We're committed to bringing the best to your garden</p>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div class="text-center p-6 bg-green-50 rounded-2xl">
-                <div class="text-5xl mb-4">🚚</div>
-                <h3 class="font-bold text-gray-800 text-lg mb-2">Free Delivery</h3>
-                <p class="text-gray-500 text-sm">Free home delivery on all orders above Rs. 1500. We deliver across Pakistan.</p>
+            <div class="bg-green-50 rounded-2xl overflow-hidden shadow hover:shadow-md transition">
+                <div class="h-40 overflow-hidden">
+                    <img src="{{ asset('images/cement/cement-large-pot3.webp') }}" alt="Free Delivery"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">Free Delivery</h3>
+                    <p class="text-gray-500 text-sm">Free home delivery on all orders above Rs. 1500. We deliver across Pakistan.</p>
+                </div>
             </div>
-            <div class="text-center p-6 bg-green-50 rounded-2xl">
-                <div class="text-5xl mb-4">🌱</div>
-                <h3 class="font-bold text-gray-800 text-lg mb-2">100% Natural</h3>
-                <p class="text-gray-500 text-sm">All our plants are naturally grown. Healthy, vibrant, and ready for your home.</p>
+            <div class="bg-green-50 rounded-2xl overflow-hidden shadow hover:shadow-md transition">
+                <div class="h-40 overflow-hidden">
+                    <img src="{{ asset('images/Plants/money_plant1.webp') }}" alt="100% Natural"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">100% Natural</h3>
+                    <p class="text-gray-500 text-sm">All our plants are naturally grown. Healthy, vibrant, and ready for your home.</p>
+                </div>
             </div>
-            <div class="text-center p-6 bg-green-50 rounded-2xl">
-                <div class="text-5xl mb-4">🎁</div>
-                <h3 class="font-bold text-gray-800 text-lg mb-2">Gift Wrapping</h3>
-                <p class="text-gray-500 text-sm">Special gift packaging available. Perfect for birthdays, anniversaries, and more.</p>
+            <div class="bg-green-50 rounded-2xl overflow-hidden shadow hover:shadow-md transition">
+                <div class="h-40 overflow-hidden">
+                    <img src="{{ asset('images/Plants/Boston_Fern2.webp') }}" alt="Gift Wrapping"
+                         class="w-full h-full object-cover">
+                </div>
+                <div class="p-5 text-center">
+                    <h3 class="font-bold text-gray-800 text-lg mb-2">Gift Wrapping</h3>
+                    <p class="text-gray-500 text-sm">Special gift packaging available. Perfect for birthdays, anniversaries, and more.</p>
+                </div>
             </div>
         </div>
     </div>

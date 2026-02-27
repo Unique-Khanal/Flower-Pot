@@ -15,8 +15,9 @@
 
             {{-- Pots Card --}}
             <a href="{{ route('products.pots') }}" class="group block bg-gradient-to-br from-amber-50 to-amber-100 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                <div class="flex items-center justify-center h-56 bg-amber-100 text-8xl group-hover:scale-110 transition-transform duration-300">
-                    🏺
+                <div class="h-56 overflow-hidden">
+                    <img src="{{ asset('images/ceramics/ceramics-large-pot2.webp') }}" alt="Pots"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="p-8">
                     <h2 class="text-2xl font-extrabold text-gray-800 mb-3">Pots</h2>
@@ -35,8 +36,9 @@
 
             {{-- Plants Card --}}
             <a href="{{ route('products.plants') }}" class="group block bg-gradient-to-br from-green-50 to-green-100 rounded-3xl overflow-hidden shadow-lg hover:shadow-2xl transition-all duration-300 hover:-translate-y-1">
-                <div class="flex items-center justify-center h-56 bg-green-100 text-8xl group-hover:scale-110 transition-transform duration-300">
-                    🌿
+                <div class="h-56 overflow-hidden">
+                    <img src="{{ asset('images/Plants/money_plant.webp') }}" alt="Plants"
+                         class="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500">
                 </div>
                 <div class="p-8">
                     <h2 class="text-2xl font-extrabold text-gray-800 mb-3">Plants</h2>

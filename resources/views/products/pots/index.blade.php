@@ -19,7 +19,6 @@
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
                 <div class="p-5 text-center">
-                    <div class="text-3xl mb-2">🪴</div>
                     <h3 class="text-lg font-bold text-gray-800">Ceramics</h3>
                     <p class="text-gray-500 text-xs mt-1 mb-4">Elegant glazed pottery in various sizes</p>
                     <span class="inline-block bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full group-hover:bg-green-800 transition">
@@ -34,7 +33,6 @@
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
                 <div class="p-5 text-center">
-                    <div class="text-3xl mb-2">🪨</div>
                     <h3 class="text-lg font-bold text-gray-800">Cement</h3>
                     <p class="text-gray-500 text-xs mt-1 mb-4">Sturdy, modern pots for indoors & outdoors</p>
                     <span class="inline-block bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full group-hover:bg-green-800 transition">
@@ -49,7 +47,6 @@
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
                 <div class="p-5 text-center">
-                    <div class="text-3xl mb-2">🌿</div>
                     <h3 class="text-lg font-bold text-gray-800">Mud</h3>
                     <p class="text-gray-500 text-xs mt-1 mb-4">Traditional clay pots, naturally breathable</p>
                     <span class="inline-block bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full group-hover:bg-green-800 transition">
@@ -64,7 +61,6 @@
                         class="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300">
                 </div>
                 <div class="p-5 text-center">
-                    <div class="text-3xl mb-2">♻️</div>
                     <h3 class="text-lg font-bold text-gray-800">Plastic</h3>
                     <p class="text-gray-500 text-xs mt-1 mb-4">Lightweight, durable, and affordable pots</p>
                     <span class="inline-block bg-green-700 text-white text-xs font-semibold px-4 py-2 rounded-full group-hover:bg-green-800 transition">
