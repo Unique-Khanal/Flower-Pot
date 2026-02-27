@@ -18,26 +18,41 @@
                 <!-- Logo -->
                 <div class="flex-shrink-0">
                     <a href="{{ route('home') }}" class="flex items-center gap-2 group">
-                        {{-- SVG Flower Pot Logo --}}
-                        <svg width="42" height="42" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 drop-shadow-sm group-hover:scale-105 transition-transform">
+                        {{-- Beautiful Flower Pot Logo --}}
+                        <svg width="46" height="46" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg" class="flex-shrink-0 drop-shadow-md group-hover:scale-110 transition-transform duration-300">
                             {{-- Flower petals --}}
-                            <circle cx="21" cy="7" r="3.5" fill="#fcd34d"/>
-                            <circle cx="27" cy="9" r="3" fill="#86efac"/>
-                            <circle cx="15" cy="9" r="3" fill="#86efac"/>
-                            <circle cx="27" cy="5" r="2.5" fill="#4ade80"/>
-                            <circle cx="15" cy="5" r="2.5" fill="#4ade80"/>
+                            <circle cx="23" cy="5.5" r="3.5" fill="#fde68a"/>
+                            <circle cx="29.5" cy="7.5" r="3.5" fill="#fde68a"/>
+                            <circle cx="32"   cy="14"  r="3.5" fill="#fde68a"/>
+                            <circle cx="16.5" cy="7.5" r="3.5" fill="#fde68a"/>
+                            <circle cx="14"   cy="14"  r="3.5" fill="#fde68a"/>
+                            {{-- Petal highlights --}}
+                            <circle cx="23"   cy="5.5" r="1.5" fill="#fef3c7"/>
+                            <circle cx="29.5" cy="7.5" r="1.5" fill="#fef3c7"/>
                             {{-- Flower centre --}}
-                            <circle cx="21" cy="7" r="2" fill="#f59e0b"/>
+                            <circle cx="23" cy="11.5" r="4.5" fill="#f59e0b"/>
+                            <circle cx="23" cy="11.5" r="2.5" fill="#fbbf24"/>
+                            <circle cx="23" cy="11.5" r="1"   fill="#f59e0b"/>
+                            {{-- Left leaf --}}
+                            <path d="M21.5 21 C18 16 11 17 12 22 C15 21 19 21 21.5 21Z" fill="#4ade80"/>
+                            <path d="M21.5 21 C19.5 19.5 16 19 14.5 21" stroke="#22c55e" stroke-width="0.8" fill="none" opacity="0.7"/>
+                            {{-- Right leaf --}}
+                            <path d="M24.5 21 C28 16 35 17 34 22 C31 21 27 21 24.5 21Z" fill="#22c55e"/>
+                            <path d="M24.5 21 C26.5 19.5 30 19 31.5 21" stroke="#16a34a" stroke-width="0.8" fill="none" opacity="0.7"/>
                             {{-- Stem --}}
-                            <rect x="19.5" y="10" width="3" height="8" rx="1.5" fill="#22c55e"/>
-                            {{-- Soil line --}}
-                            <ellipse cx="21" cy="18.5" rx="8.5" ry="2" fill="#92400e"/>
+                            <rect x="21.5" y="15.5" width="3" height="7" rx="1.5" fill="#16a34a"/>
+                            {{-- Soil --}}
+                            <ellipse cx="23" cy="23.5" rx="10" ry="2.2" fill="#92400e"/>
                             {{-- Pot rim --}}
-                            <rect x="10" y="18" width="22" height="4" rx="2" fill="#b45309"/>
+                            <rect x="11.5" y="22" width="23" height="4.5" rx="2.25" fill="#b45309"/>
                             {{-- Pot body --}}
-                            <path d="M12 22 L14.5 38 H27.5 L30 22 Z" fill="#d97706"/>
+                            <path d="M14 26.5 L16.8 43 H29.2 L32 26.5 Z" fill="#d97706"/>
+                            {{-- Pot body shade --}}
+                            <path d="M29 26.5 L31.5 43 H29.2 L27 26.5 Z" fill="#b45309" opacity="0.3"/>
                             {{-- Pot shine --}}
-                            <path d="M14 24 L15 34" stroke="#fbbf24" stroke-width="1.5" stroke-linecap="round" opacity="0.5"/>
+                            <path d="M17 29 L18 40" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
+                            {{-- Pot decorative band --}}
+                            <path d="M14.5 31 Q23 29 31.5 31" stroke="#b45309" stroke-width="1" opacity="0.4" fill="none"/>
                         </svg>
                         <span class="text-white text-xl font-extrabold tracking-wide leading-none">
                             Flower<span class="text-yellow-300">Pot</span>
@@ -145,17 +160,21 @@
                 <!-- Brand -->
                 <div>
                     <div class="flex items-center gap-2 mb-3">
-                        <svg width="32" height="32" viewBox="0 0 42 42" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <circle cx="21" cy="7" r="3.5" fill="#fcd34d"/>
-                            <circle cx="27" cy="9" r="3" fill="#86efac"/>
-                            <circle cx="15" cy="9" r="3" fill="#86efac"/>
-                            <circle cx="27" cy="5" r="2.5" fill="#4ade80"/>
-                            <circle cx="15" cy="5" r="2.5" fill="#4ade80"/>
-                            <circle cx="21" cy="7" r="2" fill="#f59e0b"/>
-                            <rect x="19.5" y="10" width="3" height="8" rx="1.5" fill="#22c55e"/>
-                            <ellipse cx="21" cy="18.5" rx="8.5" ry="2" fill="#92400e"/>
-                            <rect x="10" y="18" width="22" height="4" rx="2" fill="#b45309"/>
-                            <path d="M12 22 L14.5 38 H27.5 L30 22 Z" fill="#d97706"/>
+                        <svg width="36" height="36" viewBox="0 0 46 46" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="23" cy="5.5"  r="3.5" fill="#fde68a"/>
+                            <circle cx="29.5" cy="7.5" r="3.5" fill="#fde68a"/>
+                            <circle cx="32"   cy="14"  r="3.5" fill="#fde68a"/>
+                            <circle cx="16.5" cy="7.5" r="3.5" fill="#fde68a"/>
+                            <circle cx="14"   cy="14"  r="3.5" fill="#fde68a"/>
+                            <circle cx="23" cy="11.5" r="4.5" fill="#f59e0b"/>
+                            <circle cx="23" cy="11.5" r="2.5" fill="#fbbf24"/>
+                            <path d="M21.5 21 C18 16 11 17 12 22 C15 21 19 21 21.5 21Z" fill="#4ade80"/>
+                            <path d="M24.5 21 C28 16 35 17 34 22 C31 21 27 21 24.5 21Z" fill="#22c55e"/>
+                            <rect x="21.5" y="15.5" width="3" height="7" rx="1.5" fill="#16a34a"/>
+                            <ellipse cx="23" cy="23.5" rx="10" ry="2.2" fill="#92400e"/>
+                            <rect x="11.5" y="22" width="23" height="4.5" rx="2.25" fill="#b45309"/>
+                            <path d="M14 26.5 L16.8 43 H29.2 L32 26.5 Z" fill="#d97706"/>
+                            <path d="M17 29 L18 40" stroke="#fbbf24" stroke-width="2" stroke-linecap="round" opacity="0.5"/>
                         </svg>
                         <h3 class="text-white text-xl font-bold">Flower<span class="text-yellow-300">Pot</span></h3>
                     </div>
