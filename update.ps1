@@ -34,6 +34,11 @@ php artisan migrate --force
 if ($LASTEXITCODE -ne 0) { Write-Fail "migrate failed" }
 Write-Success "Migrations done"
 
+Write-Step "Refreshing product data (badge labels and new entries)..."
+php artisan db:seed --class=ProductSeeder --force
+if ($LASTEXITCODE -ne 0) { Write-Fail "db:seed failed" }
+Write-Success "Products refreshed"
+
 Write-Host ""
 Write-Host "============================================" -ForegroundColor Green
 Write-Host "  All updated! Run:  php artisan serve" -ForegroundColor Green

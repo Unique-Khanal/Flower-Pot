@@ -29,6 +29,10 @@ step "Running any new database migrations..."
 php artisan migrate --force
 success "Migrations done"
 
+step "Refreshing product data (badge labels and new entries)..."
+php artisan db:seed --class=ProductSeeder --force
+success "Products refreshed"
+
 echo ""
 echo -e "${GREEN}============================================${NC}"
 echo -e "${GREEN}  ✔  All updated! Run: php artisan serve${NC}"

@@ -2,8 +2,8 @@
 
 namespace Database\Seeders;
 
-use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class ProductSeeder extends Seeder
 {
@@ -91,7 +91,8 @@ class ProductSeeder extends Seeder
         ];
 
         foreach ($products as $product) {
-            Product::create($product);
+            $updateColumns = array_values(array_diff(array_keys($product), ['name']));
+            DB::table('products')->upsert($product, ['name'], $updateColumns);
         }
     }
 }
