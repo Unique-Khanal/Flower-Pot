@@ -79,6 +79,80 @@ resources/views/
 
 ---
 
+## 📝 How to Edit Page Text & Paragraphs
+
+Open the file in VS Code, find the text shown below, and change it to whatever you want.
+**Save the file, then refresh your browser — the change appears instantly.**
+
+---
+
+### 🏠 Home Page — `resources/views/home/index.blade.php`
+
+| What you see on screen | What to look for in the file |
+|---|---|
+| Hero badge | `🌿 Welcome to FlowerPot` |
+| Hero heading | `Bring <span class="text-amber-400">Nature</span><br>Into Your Home` |
+| Hero paragraph | `Discover our handpicked collection of beautiful pots and vibrant plants.` |
+| Stats strip numbers | `200+`, `5+`, `Free`, `100%` and their labels (`Products`, `Categories`, …) |
+| "Shop by Category" sub-heading | `Find the perfect pot or plant to breathe life into every corner of your home` |
+| "Why Choose Us?" heading | `We're committed to bringing the best nature has to offer, right to your door` |
+| Free Delivery card text | `Free home delivery on all orders above Rs. 1500. We deliver across Pakistan.` |
+| 100% Natural card text | `All our plants are naturally grown. Healthy, vibrant, and ready for your home.` |
+| Gift Wrapping card text | `Special gift packaging available. Perfect for birthdays, anniversaries, and more.` |
+| CTA banner heading | `Ready to Go Green?` |
+| CTA banner paragraph | `Browse our full collection of pots and plants to find your perfect match.` |
+
+---
+
+### ℹ️ About Page — `resources/views/about.blade.php`
+
+| What you see on screen | What to look for in the file |
+|---|---|
+| Hero paragraph | `We believe every home deserves a touch of green. FlowerPot was born out of…` |
+| "Our Story" paragraph 1 | `FlowerPot started with a simple idea — that bringing nature indoors should be easy…` |
+| "Our Story" paragraph 2 | `From hand-crafted ceramic and mud pots to sturdy cement and plastic planters…` |
+| "Our Story" paragraph 3 | `Whether you are a seasoned plant parent or just starting your green journey…` |
+| "What We Stand For" sub-heading | `Everything we do is guided by our love for nature…` |
+| Value card labels & sub-titles | Edit the `'name'` and `'sub'` values inside the `@foreach` array |
+| Feature card descriptions | Edit the `'desc'` values inside the second `@foreach` array |
+
+---
+
+### 🛠️ Services Page — `resources/views/services.blade.php`
+
+| What you see on screen | What to look for in the file |
+|---|---|
+| Hero paragraph | `From doorstep delivery to custom pot design — we take care of everything…` |
+| Home Delivery paragraph | `We deliver your plants and pots directly to your doorstep, anywhere in Pakistan…` |
+| Home Delivery bullet points | The three `<li>` items under "Home Delivery" |
+| Custom Pots paragraph | `Want something unique? We craft custom pots in any size, shape, or color…` |
+| Plant Consultation paragraph | `Not sure which plant suits your space? Our expert horticulturists provide…` |
+| Gift Wrapping paragraph | `Make your gift extra special with our eco-friendly gift wrapping service…` |
+| Landscaping paragraph | `Transform your outdoor spaces with our professional landscaping service…` |
+| Bulk Orders paragraph | `Need pots or plants in large quantities for events, offices, or hotels?…` |
+| CTA paragraph | `Contact us today and let's create something beautiful together.` |
+
+---
+
+### 📬 Contact Page — `resources/views/contact.blade.php`
+
+| What you see on screen | What to look for in the file |
+|---|---|
+| Hero paragraph | `We'd love to hear from you. Reach out and we'll get back to you within 24 hours.` |
+| Address | `123 Garden Street, Green City, Lahore, Pakistan` |
+| Phone numbers | `+92 300 1234567` / `+92 42 1234567` |
+| Email addresses | `info@flowerpot.pk` / `support@flowerpot.pk` |
+| Business hours | `Mon – Sat: 9:00 AM – 8:00 PM` / `Sunday: 10:00 AM – 5:00 PM` |
+
+---
+
+### 🧭 Navbar & Footer — `resources/views/layouts/app.blade.php`
+
+All navigation links, the site name, and the footer text live in this single file.
+Search for the text you want to change and edit it directly.
+
+---
+
 ## 📤 How to Share Screenshots
 
 There are two ways to send a screenshot (ss) to this project:
