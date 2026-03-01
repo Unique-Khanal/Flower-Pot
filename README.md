@@ -36,17 +36,44 @@ Then open **http://127.0.0.1:8000** ✅
 
 ---
 
-## 🔄 Already set up? Pull future updates with:
+## 🔄 Pull the Latest Code
 
-### Windows
+Use this every time new changes are pushed to the project.
+
+### Option A — One command (recommended)
+
+#### Windows (PowerShell)
 ```powershell
 .\update.ps1
 ```
 
-### Mac / Linux
+#### Mac / Linux / Git Bash
 ```bash
 bash update.sh
 ```
+
+The script pulls the code, installs any new packages, rebuilds assets, and runs new migrations automatically.
+
+---
+
+### Option B — Manual git commands (copy-paste these one by one)
+
+```bash
+git pull origin copilot/build-ecommerce-frontend
+composer install --no-interaction --prefer-dist
+npm install
+npm run build
+php artisan migrate --force
+```
+
+Then start the server (run this separately):
+```bash
+php artisan serve
+```
+
+Then open **http://127.0.0.1:8000** ✅
+
+> 💡 After pulling, always run `php artisan serve` to start the server if it is not already running.
 
 ---
 
