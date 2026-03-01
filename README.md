@@ -7,28 +7,80 @@ built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
 
 ## 🆘 Lost your folder? Re-clone from scratch
 
-If your `Flower-Pot` folder was deleted or lost, run these commands in your terminal to get everything back:
+If your `Flower-Pot` folder was deleted or lost, run **all of the following commands** in PowerShell or Git Bash:
 
-```bash
+```powershell
 git clone https://github.com/Unique-Khanal/Flower-Pot.git
 cd Flower-Pot
+git checkout copilot/build-ecommerce-frontend
 ```
 
-Then follow the **Quick Start** section below to finish setup with one command.
+> ⚠️ **The `git checkout` line is required.** The setup script (`setup.ps1`) only exists on this branch.
+> Skipping it causes the *"setup.ps1 is not recognized"* error.
 
-> 💡 **Windows users:** open **Git Bash** or **PowerShell** and paste the commands above.
-> After cloning, open the `Flower-Pot` folder in VS Code and continue from Quick Start.
+Then open the `Flower-Pot` folder in **VS Code** (`code .`) and continue with Quick Start below.
+
+---
+
+### 🚨 PowerShell says "setup.ps1 is not recognized" or "cannot be loaded"?
+
+Run this **once** to allow local scripts, then run `.\setup.ps1` again:
+
+```powershell
+Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+```
+
+Or bypass the policy for this one run only:
+
+```powershell
+powershell -ExecutionPolicy Bypass -File .\setup.ps1
+```
+
+---
+
+### 🆘 If `setup.ps1` still fails — run these manual commands instead
+
+Paste them one by one in the VS Code terminal:
+
+```powershell
+composer install --no-interaction --prefer-dist
+npm install
+npm run build
+copy .env.example .env
+php artisan key:generate
+php artisan migrate --force
+php artisan db:seed --class=ProductSeeder --force
+php artisan storage:link
+php artisan serve
+```
+
+Then open **http://127.0.0.1:8000** ✅
+
+> 💡 Before running the commands above, open `.env` and set your database details:
+> `DB_DATABASE=flower_pot`, `DB_USERNAME=root`, `DB_PASSWORD=` ← use your actual MySQL password (never leave this blank in production).
 
 ---
 
 ## ⚡ Quick Start — Run ONE command in VS Code terminal
 
-Open your `Flower-Pot` folder in VS Code, open the terminal (**Ctrl + `**), and run:
+Open your `Flower-Pot` folder in VS Code, open the terminal (**Ctrl + `**).
+
+**First — make sure you are on the correct branch** (do this once after cloning):
+```powershell
+git checkout copilot/build-ecommerce-frontend
+```
+
+Then run the setup script:
 
 ### Windows (PowerShell)
 ```powershell
 .\setup.ps1
 ```
+
+> If you get a *"cannot be loaded"* error, run first:
+> ```powershell
+> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+> ```
 
 ### Mac / Linux / Git Bash
 ```bash
