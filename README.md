@@ -79,6 +79,43 @@ resources/views/
 
 ---
 
+## 📤 How to Share Screenshots
+
+There are two ways to send a screenshot (ss) to this project:
+
+### Option 1 — Attach to a GitHub Issue or PR comment (easiest)
+
+1. Open the issue or pull request on GitHub.
+2. Scroll to the comment box at the bottom.
+3. **Drag and drop** your screenshot image file directly into the comment box, **or** click the 📎 paperclip icon to browse for it.
+4. GitHub will upload it automatically and insert a link like `![screenshot](https://...)` into your comment.
+5. Click **"Comment"** to post it.
+
+> 💡 See [GitHub's supported file types and size limits](https://docs.github.com/en/get-started/writing-on-github/working-with-advanced-formatting/attaching-files) for the full list.
+
+---
+
+### Option 2 — Add a screenshot to the repo docs
+
+If you want a screenshot to appear permanently in the README:
+
+1. Save your image as a `.png` file into the `public/screenshots/` folder:
+   ```
+   public/screenshots/your-screenshot-name.png
+   ```
+2. Reference it in `README.md`:
+   ```markdown
+   ![Description](public/screenshots/your-screenshot-name.png)
+   ```
+3. Commit and push:
+   ```bash
+   git add public/screenshots/your-screenshot-name.png README.md
+   git commit -m "docs: add screenshot for <feature>"
+   git push
+   ```
+
+---
+
 ## 📸 Screenshots
 
 ### 🏠 Home Page
