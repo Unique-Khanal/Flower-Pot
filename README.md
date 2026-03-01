@@ -5,6 +5,22 @@ built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
 
 ---
 
+## 🆘 Lost your folder? Re-clone from scratch
+
+If your `Flower-Pot` folder was deleted or lost, run these commands in your terminal to get everything back:
+
+```bash
+git clone https://github.com/Unique-Khanal/Flower-Pot.git
+cd Flower-Pot
+```
+
+Then follow the **Quick Start** section below to finish setup with one command.
+
+> 💡 **Windows users:** open **Git Bash** or **PowerShell** and paste the commands above.
+> After cloning, open the `Flower-Pot` folder in VS Code and continue from Quick Start.
+
+---
+
 ## ⚡ Quick Start — Run ONE command in VS Code terminal
 
 Open your `Flower-Pot` folder in VS Code, open the terminal (**Ctrl + `**), and run:
