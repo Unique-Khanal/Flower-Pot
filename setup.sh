@@ -43,40 +43,33 @@ success "Frontend assets built"
 step "Setting up .env..."
 if [ ! -f ".env" ]; then
     cp .env.example .env
-    warn "Created .env from .env.example"
-    echo ""
-    warn "ACTION REQUIRED: Open .env and set your database details:"
-    echo "    DB_CONNECTION=mysql"
-    echo "    DB_DATABASE=flower_pot"
-    echo "    DB_USERNAME=root"
-    echo "    DB_PASSWORD=yourpassword"
-    echo ""
-    warn "Also set:"
-    echo "    APP_URL=http://127.0.0.1:8000"
-    echo "    SESSION_DRIVER=file"
-    echo "    CACHE_STORE=file"
-    echo ""
-    read -p "  Press ENTER after you have updated .env to continue..."
+    success "Created .env from .env.example (SQLite — no MySQL needed)"
 else
     success ".env already exists"
 fi
 
-# ── 6. App key ───────────────────────────────────────────────
+# ── 6. Ensure SQLite database file exists ────────────────────
+step "Ensuring SQLite database file exists..."
+mkdir -p database
+touch database/database.sqlite
+success "database/database.sqlite ready"
+
+# ── 7. App key ───────────────────────────────────────────────
 step "Generating application key..."
 php artisan key:generate                           || fail "key:generate failed"
 success "App key generated"
 
-# ── 7. Database migrations ───────────────────────────────────
+# ── 8. Database migrations ───────────────────────────────────
 step "Running database migrations..."
 php artisan migrate --force                        || fail "migrate failed"
 success "Migrations complete"
 
-# ── 8. Seed product data ─────────────────────────────────────
+# ── 9. Seed product data ─────────────────────────────────────
 step "Seeding product data (prices)..."
 php artisan db:seed --class=ProductSeeder --force  || fail "db:seed failed"
 success "Products seeded into database"
 
-# ── 9. Storage link ──────────────────────────────────────────
+# ── 10. Storage link ──────────────────────────────────────────
 step "Creating storage symlink..."
 php artisan storage:link 2>/dev/null || true
 success "Storage linked"

@@ -54,43 +54,36 @@ Write-Success "Frontend assets built"
 Write-Step "Setting up .env..."
 if (-Not (Test-Path ".env")) {
     Copy-Item ".env.example" ".env"
-    Write-Host "  Created .env from .env.example" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "  !! ACTION REQUIRED: Open .env and set your database details:" -ForegroundColor Yellow
-    Write-Host "       DB_CONNECTION=mysql" -ForegroundColor Yellow
-    Write-Host "       DB_DATABASE=flower_pot" -ForegroundColor Yellow
-    Write-Host "       DB_USERNAME=root" -ForegroundColor Yellow
-    Write-Host "       DB_PASSWORD=yourpassword" -ForegroundColor Yellow
-    Write-Host ""
-    Write-Host "  Also set:" -ForegroundColor Yellow
-    Write-Host "       APP_URL=http://127.0.0.1:8000" -ForegroundColor Yellow
-    Write-Host "       SESSION_DRIVER=file" -ForegroundColor Yellow
-    Write-Host "       CACHE_STORE=file" -ForegroundColor Yellow
-    Write-Host ""
-    Read-Host "  Press ENTER after you have updated .env to continue..."
+    Write-Success "Created .env from .env.example (SQLite — no MySQL needed)"
 } else {
     Write-Success ".env already exists"
 }
 
-# ── 6. App key ───────────────────────────────────────────────
+# ── 6. Ensure SQLite database file exists ────────────────────
+Write-Step "Ensuring SQLite database file exists..."
+if (-Not (Test-Path "database")) { New-Item -ItemType Directory -Path "database" | Out-Null }
+if (-Not (Test-Path "database\database.sqlite")) { New-Item -ItemType File -Path "database\database.sqlite" | Out-Null }
+Write-Success "database\database.sqlite ready"
+
+# ── 7. App key ───────────────────────────────────────────────
 Write-Step "Generating application key..."
 php artisan key:generate
 if ($LASTEXITCODE -ne 0) { Write-Fail "key:generate failed" }
 Write-Success "App key generated"
 
-# ── 7. Database migrations ───────────────────────────────────
+# ── 8. Database migrations ───────────────────────────────────
 Write-Step "Running database migrations..."
 php artisan migrate --force
 if ($LASTEXITCODE -ne 0) { Write-Fail "migrate failed" }
 Write-Success "Migrations complete"
 
-# ── 8. Seed product data ─────────────────────────────────────
+# ── 9. Seed product data ─────────────────────────────────────
 Write-Step "Seeding product data (prices)..."
 php artisan db:seed --class=ProductSeeder --force
 if ($LASTEXITCODE -ne 0) { Write-Fail "db:seed failed" }
 Write-Success "Products seeded"
 
-# ── 9. Storage link ──────────────────────────────────────────
+# ── 10. Storage link ──────────────────────────────────────────
 Write-Step "Creating storage symlink..."
 php artisan storage:link 2>$null
 Write-Success "Storage linked"

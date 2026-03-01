@@ -5,9 +5,11 @@ built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
 
 ---
 
-## 🆘 Lost your folder? Re-clone from scratch
+## 🆘 Fresh Start — Nothing Is Working? Do This.
 
-If your `Flower-Pot` folder was deleted or lost, run **all of the following commands** in PowerShell or Git Bash:
+> **No MySQL needed.** The app now uses SQLite by default — just run the commands below and everything works automatically.
+
+### Step 1 — Clone (or re-clone) the repository
 
 ```powershell
 git clone https://github.com/Unique-Khanal/Flower-Pot.git
@@ -15,22 +17,41 @@ cd Flower-Pot
 git checkout copilot/build-ecommerce-frontend
 ```
 
-> ⚠️ **The `git checkout` line is required.** The setup script (`setup.ps1`) only exists on this branch.
-> Skipping it causes the *"setup.ps1 is not recognized"* error.
+> ⚠️ The `git checkout` line is **required** — the setup scripts only exist on this branch.
 
-Then open the `Flower-Pot` folder in **VS Code** (`code .`) and continue with Quick Start below.
+### Step 2 — Run the one-click setup
+
+**Windows (PowerShell):**
+```powershell
+.\setup.ps1
+```
+
+**Mac / Linux / Git Bash:**
+```bash
+bash setup.sh
+```
+
+The script will automatically install everything and seed the database. **No manual configuration needed.**
+
+### Step 3 — Start the server
+
+```bash
+php artisan serve
+```
+
+Open **http://127.0.0.1:8000** ✅  All photos should now be visible.
 
 ---
 
-### 🚨 PowerShell says "setup.ps1 is not recognized" or "cannot be loaded"?
+### 🚨 PowerShell says "cannot be loaded" or "not recognized"?
 
-Run this **once** to allow local scripts, then run `.\setup.ps1` again:
+Run this **once**, then re-run `.\setup.ps1`:
 
 ```powershell
 Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
 ```
 
-Or bypass the policy for this one run only:
+Or bypass for this one run:
 
 ```powershell
 powershell -ExecutionPolicy Bypass -File .\setup.ps1
@@ -38,9 +59,7 @@ powershell -ExecutionPolicy Bypass -File .\setup.ps1
 
 ---
 
-### 🆘 If `setup.ps1` still fails — run these manual commands instead
-
-Paste them one by one in the VS Code terminal:
+### 🆘 If the setup script still fails — run these commands one by one
 
 ```powershell
 composer install --no-interaction --prefer-dist
@@ -55,9 +74,6 @@ php artisan serve
 ```
 
 Then open **http://127.0.0.1:8000** ✅
-
-> 💡 Before running the commands above, open `.env` and set your database details:
-> `DB_DATABASE=flower_pot`, `DB_USERNAME=root`, `DB_PASSWORD=` ← use your actual MySQL password (never leave this blank in production).
 
 ---
 
@@ -87,12 +103,12 @@ Then run the setup script:
 bash setup.sh
 ```
 
-That's it. The script will automatically:
+That's it — **no database configuration needed.** The script will automatically:
 1. Switch to the correct branch (`copilot/build-ecommerce-frontend`)
 2. Pull all the latest code
 3. Install all PHP & Node packages
 4. Build the frontend assets
-5. Create your `.env` file and prompt you to fill in database details
+5. Create your `.env` file (SQLite, zero config)
 6. Run all database migrations
 7. Seed all product data (prices, images, categories)
 
@@ -341,21 +357,18 @@ cp .env.example .env
 php artisan key:generate
 ```
 
-Then open `.env` and update these lines:
+That's it — the default `.env` uses **SQLite**, so no database configuration is needed.
 
-```env
-DB_CONNECTION=mysql
-DB_HOST=127.0.0.1
-DB_PORT=3306
-DB_DATABASE=flower_pot
-DB_USERNAME=root
-DB_PASSWORD=your_password_here
-
-SESSION_DRIVER=file
-CACHE_STORE=file
-```
-
-> 💡 Setting `SESSION_DRIVER=file` and `CACHE_STORE=file` means no database is needed to browse the frontend.
+> 💡 If you want to use MySQL instead, open `.env` and change these lines:
+> ```env
+> DB_CONNECTION=mysql
+> DB_HOST=127.0.0.1
+> DB_PORT=3306
+> DB_DATABASE=flower_pot
+> DB_USERNAME=root
+> DB_PASSWORD=your_password_here
+> ```
+> Make sure you create the `flower_pot` database in MySQL first (`CREATE DATABASE flower_pot;`).
 
 ---
 
