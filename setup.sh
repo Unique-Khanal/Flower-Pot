@@ -52,6 +52,7 @@ if [ ! -f ".env" ]; then
     echo "    DB_PASSWORD=yourpassword"
     echo ""
     warn "Also set:"
+    echo "    APP_URL=http://127.0.0.1:8000"
     echo "    SESSION_DRIVER=file"
     echo "    CACHE_STORE=file"
     echo ""

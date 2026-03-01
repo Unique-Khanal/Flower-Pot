@@ -63,6 +63,7 @@ if (-Not (Test-Path ".env")) {
     Write-Host "       DB_PASSWORD=yourpassword" -ForegroundColor Yellow
     Write-Host ""
     Write-Host "  Also set:" -ForegroundColor Yellow
+    Write-Host "       APP_URL=http://127.0.0.1:8000" -ForegroundColor Yellow
     Write-Host "       SESSION_DRIVER=file" -ForegroundColor Yellow
     Write-Host "       CACHE_STORE=file" -ForegroundColor Yellow
     Write-Host ""
