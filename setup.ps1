@@ -54,7 +54,7 @@ Write-Success "Frontend assets built"
 Write-Step "Setting up .env..."
 if (-Not (Test-Path ".env")) {
     Copy-Item ".env.example" ".env"
-    Write-Success "Created .env from .env.example (SQLite — no MySQL needed)"
+    Write-Success "Created .env from .env.example (SQLite - no MySQL needed)"
 } else {
     Write-Success ".env already exists"
 }
