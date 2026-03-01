@@ -44,29 +44,41 @@
 
         {{-- Small Pots --}}
         <div x-show="activeSize === 'small'" x-transition>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
-                @foreach($products['small'] as $item)
-                    <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" />
-                @endforeach
-            </div>
+            @if($products['small']->isNotEmpty())
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+                    @foreach($products['small'] as $item)
+                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                    @endforeach
+                </div>
+            @else
+                <p class="text-center text-stone-400 py-16">No small plastic pots available yet.</p>
+            @endif
         </div>
 
         {{-- Medium Pots --}}
         <div x-show="activeSize === 'medium'" x-transition>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                @foreach($products['medium'] as $item)
-                    <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" />
-                @endforeach
-            </div>
+            @if($products['medium']->isNotEmpty())
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    @foreach($products['medium'] as $item)
+                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                    @endforeach
+                </div>
+            @else
+                <p class="text-center text-stone-400 py-16">No medium plastic pots available yet.</p>
+            @endif
         </div>
 
         {{-- Large Pots --}}
         <div x-show="activeSize === 'large'" x-transition>
-            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
-                @foreach($products['large'] as $item)
-                    <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" />
-                @endforeach
-            </div>
+            @if($products['large']->isNotEmpty())
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
+                    @foreach($products['large'] as $item)
+                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                    @endforeach
+                </div>
+            @else
+                <p class="text-center text-stone-400 py-16">No large plastic pots available yet.</p>
+            @endif
         </div>
 
     </div>

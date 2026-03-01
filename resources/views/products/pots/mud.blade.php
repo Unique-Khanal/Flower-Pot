@@ -19,11 +19,15 @@
 
 <section class="py-12 px-4 bg-white">
     <div class="max-w-7xl mx-auto">
-        <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
-            @foreach($products as $item)
-                <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" />
-            @endforeach
-        </div>
+        @if($products->isNotEmpty())
+            <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
+                @foreach($products as $item)
+                    <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                @endforeach
+            </div>
+        @else
+            <p class="text-center text-stone-400 py-16">No mud pots available yet.</p>
+        @endif
     </div>
 </section>
 
