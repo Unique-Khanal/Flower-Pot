@@ -1,19 +1,19 @@
 @extends('layouts.app')
 
-@section('title', 'Plastic Pots')
+@section('title', 'Cement Pots')
 
 @section('content')
 
 <section class="relative text-white py-20 px-4 text-center overflow-hidden">
     <div class="absolute inset-0">
-        <img src="{{ asset('images/plastic/plastic-large-pot2.jpg') }}"
-             class="w-full h-full object-cover" alt="Plastic Pots">
+        <img src="{{ asset('images/cement/cement-large-pot2.webp') }}"
+             class="w-full h-full object-cover" alt="Cement Pots">
         <div class="absolute inset-0 bg-green-900/75"></div>
     </div>
     <div class="relative z-10 max-w-3xl mx-auto">
         <p class="text-green-300 uppercase tracking-widest text-xs mb-3 font-semibold">Our Products / Pots</p>
-        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Plastic Pots</h1>
-        <p class="text-green-100 text-lg max-w-2xl mx-auto">Lightweight, durable, and affordable plastic pots in Small, Medium, and Large sizes.</p>
+        <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Cement Pots</h1>
+        <p class="text-green-100 text-lg max-w-2xl mx-auto">Durable and stylish cement pots available in Small, Medium, and Large sizes.</p>
     </div>
 </section>
 
@@ -44,10 +44,10 @@
 
         {{-- Small Pots --}}
         <div x-show="activeSize === 'small'" x-transition>
-            @if($products['small']->isNotEmpty())
-                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
+            @if(count($products['small']) > 0)
+                <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     @foreach($products['small'] as $item)
-                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                        <x-product-card :image="$item['image']" :name="$item['name']" />
                     @endforeach
                 </div>
             @else
@@ -57,27 +57,27 @@
 
         {{-- Medium Pots --}}
         <div x-show="activeSize === 'medium'" x-transition>
-            @if($products['medium']->isNotEmpty())
+            @if(count($products['medium']) > 0)
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     @foreach($products['medium'] as $item)
-                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                        <x-product-card :image="$item['image']" :name="$item['name']" />
                     @endforeach
                 </div>
             @else
-                <p class="text-center text-stone-400 py-16">No medium plastic pots available yet.</p>
+                <p class="text-center text-stone-400 py-16">No medium cement pots available yet.</p>
             @endif
         </div>
 
         {{-- Large Pots --}}
         <div x-show="activeSize === 'large'" x-transition>
-            @if($products['large']->isNotEmpty())
+            @if(count($products['large']) > 0)
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     @foreach($products['large'] as $item)
-                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                        <x-product-card :image="$item['image']" :name="$item['name']" />
                     @endforeach
                 </div>
             @else
-                <p class="text-center text-stone-400 py-16">No large plastic pots available yet.</p>
+                <p class="text-center text-stone-400 py-16">No large cement pots available yet.</p>
             @endif
         </div>
 

@@ -65,7 +65,7 @@
             <p class="text-green-200 text-xs mt-0.5 uppercase tracking-wider font-medium">Categories</p>
         </div>
         <div>
-            <p class="text-2xl font-extrabold text-amber-400">Free</p>
+            <p class="text-2xl font-extrabold text-amber-400">Fast</p>
             <p class="text-green-200 text-xs mt-0.5 uppercase tracking-wider font-medium">Delivery</p>
         </div>
         <div>
@@ -150,6 +150,9 @@
 {{-- ============================================================
      FEATURED PRODUCTS — image-only cards, no price displayed
 ============================================================ --}}
+{{-- ============================================================
+     FEATURED PRODUCTS — image-only cards, no price displayed
+============================================================ --}}
 <section class="py-20 px-4 bg-white">
     <div class="max-w-7xl mx-auto">
         <div class="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-10">
@@ -165,13 +168,13 @@
                 </svg>
             </a>
         </div>
-        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            <x-product-card image="images/ceramics/ceramics-large-pot2.webp"  name="Ceramic Large Pot"  price="2500" badge="Popular" />
-            <x-product-card image="images/ceramics/ceramics-medium-pot1.webp" name="Ceramic Medium Pot" price="1800" />
-            <x-product-card image="images/cement/cement-large-pot1.jpg"       name="Cement Large Pot"   price="1800" badge="New" />
-            <x-product-card image="images/plastic/plastic-large-pot1.jpg"     name="Plastic Large Pot"  price="800" />
-            <x-product-card image="images/Plants/snake_plant.webp"            name="Snake Plant"        price="600"  badge="Trending" />
-            <x-product-card image="images/Plants/money_plant.webp"            name="Money Plant"        price="300" />
+        <div class="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4 justify-items-center">
+            <x-product-card image="images/ceramics/ceramics-large-pot2.webp"  name="Ceramic Large Pot"  badge="Popular" />
+            <x-product-card image="images/ceramics/ceramics-medium-pot1.webp" name="Ceramic Medium Pot" />
+            <x-product-card image="images/cement/cement-large-pot1.jpg"       name="Cement Large Pot"   badge="New" />
+            <x-product-card image="images/plastic/plastic-large-pot1.jpg"     name="Plastic Large Pot" />
+            <x-product-card image="images/Plants/snake_plant.webp"            name="Snake Plant"        badge="Trending" />
+            <x-product-card image="images/Plants/money_plant.webp"            name="Money Plant" />
         </div>
     </div>
 </section>
@@ -201,9 +204,9 @@
                                   d="M5 8h14M5 8a2 2 0 110-4h14a2 2 0 110 4M5 8l1.5 10.5A2 2 0 008.5 20h7a2 2 0 002-1.5L19 8"/>
                         </svg>
                     </div>
-                    <h3 class="font-bold text-stone-800 text-base mb-2">Free Delivery</h3>
+                    <h3 class="font-bold text-stone-800 text-base mb-2"> Delivery</h3>
                     <p class="text-stone-500 text-sm leading-relaxed">
-                        Free home delivery on all orders above Rs. 1500. We deliver across Pakistan.
+                         home delivery on all orders. We deliver across Kathmandu Valley.
                     </p>
                 </div>
             </div>

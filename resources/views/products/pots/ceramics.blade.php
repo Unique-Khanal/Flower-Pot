@@ -44,10 +44,10 @@
 
         {{-- Small Pots --}}
         <div x-show="activeSize === 'small'" x-transition>
-            @if($products['small']->isNotEmpty())
+            @if(count($products['small']) > 0)
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6 gap-4">
                     @foreach($products['small'] as $item)
-                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                        <x-product-card :image="$item['image']" :name="$item['name']" />
                     @endforeach
                 </div>
             @else
@@ -57,10 +57,10 @@
 
         {{-- Medium Pots --}}
         <div x-show="activeSize === 'medium'" x-transition>
-            @if($products['medium']->isNotEmpty())
+            @if(count($products['medium']) > 0)
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-4">
                     @foreach($products['medium'] as $item)
-                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                        <x-product-card :image="$item['image']" :name="$item['name']" />
                     @endforeach
                 </div>
             @else
@@ -70,10 +70,10 @@
 
         {{-- Large Pots --}}
         <div x-show="activeSize === 'large'" x-transition>
-            @if($products['large']->isNotEmpty())
+            @if(count($products['large']) > 0)
                 <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-4">
                     @foreach($products['large'] as $item)
-                        <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                        <x-product-card :image="$item['image']" :name="$item['name']" />
                     @endforeach
                 </div>
             @else

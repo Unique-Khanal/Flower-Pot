@@ -41,17 +41,17 @@
                 <div class="p-6">
                     <h3 class="text-xl font-bold text-stone-800 mb-3">Home Delivery</h3>
                     <p class="text-stone-500 text-sm leading-relaxed mb-4">
-                        We deliver your plants and pots directly to your doorstep, anywhere in Pakistan.
-                        Free delivery on orders above Rs. 1500.
+                        We deliver your plants and pots directly to your doorstep, anywhere in Kathmandu.
+                         delivery on orders.
                     </p>
                     <ul class="space-y-2 text-sm text-stone-500">
                         <li class="flex items-center gap-2">
                             <span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>
-                            Free delivery on Rs. 1500+
+                            Delivery within 24-48 hours.
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>
-                            Same-day delivery in major cities
+                            Same-day delivery in major locations.
                         </li>
                         <li class="flex items-center gap-2">
                             <span class="w-5 h-5 bg-green-100 text-green-600 rounded-full flex items-center justify-center text-xs font-bold flex-shrink-0">✓</span>

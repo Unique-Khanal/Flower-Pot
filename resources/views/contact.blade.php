@@ -30,14 +30,19 @@
         {{-- Form --}}
         <div class="lg:col-span-2">
             <h2 class="text-2xl font-bold text-stone-800 mb-6">Send Us a Message</h2>
-            <form class="space-y-5">
+            <form class="space-y-5" method="POST" action="{{ route('contact.store') }}">
                 @csrf
+                @if (session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded-lg mb-5">
+                        {{ session('success') }}
+                    </div>
+                @endif
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                         <label class="block text-sm font-medium text-stone-700 mb-1">
                             Full Name <span class="text-red-500">*</span>
                         </label>
-                        <input type="text" name="name" placeholder="Your full name" required
+                        <input type="text" name="full_name" placeholder="Your full name" required
                                class="w-full border border-stone-300 rounded-xl px-4 py-2.5 text-sm
                                       focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition">
                     </div>
@@ -53,7 +58,7 @@
                 <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
                     <div>
                         <label class="block text-sm font-medium text-stone-700 mb-1">Phone Number</label>
-                        <input type="tel" name="phone" placeholder="+92 300 0000000"
+                        <input type="tel" name="phone_no" placeholder="+92 300 0000000"
                                class="w-full border border-stone-300 rounded-xl px-4 py-2.5 text-sm
                                       focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent transition">
                     </div>
@@ -97,7 +102,7 @@
                     </div>
                     <div>
                         <h4 class="font-semibold text-stone-800">Address</h4>
-                        <p class="text-stone-500 text-sm mt-1">123 Garden Street, Green City, Lahore, Pakistan</p>
+                        <p class="text-stone-500 text-sm mt-1">Kathmandu, Nepal</p>
                     </div>
                 </div>
 
@@ -110,8 +115,8 @@
                     </div>
                     <div>
                         <h4 class="font-semibold text-stone-800">Phone</h4>
-                        <p class="text-stone-500 text-sm mt-1">+92 300 1234567</p>
-                        <p class="text-stone-500 text-sm">+92 42 1234567</p>
+                        <p class="text-stone-500 text-sm mt-1">9763686254</p>
+                        <p class="text-stone-500 text-sm">9813067906</p>
                     </div>
                 </div>
 
@@ -124,8 +129,8 @@
                     </div>
                     <div>
                         <h4 class="font-semibold text-stone-800">Email</h4>
-                        <p class="text-stone-500 text-sm mt-1">info@flowerpot.pk</p>
-                        <p class="text-stone-500 text-sm">support@flowerpot.pk</p>
+                        <p class="text-stone-500 text-sm mt-1">uniquekhanal2020@gmail.com</p>
+                        <p class="text-stone-500 text-sm"></p>
                     </div>
                 </div>
 
@@ -141,7 +146,7 @@
                         <p class="text-stone-500 text-sm mt-1">Mon – Sat: 9:00 AM – 8:00 PM</p>
                         <p class="text-stone-500 text-sm">Sunday: 10:00 AM – 5:00 PM</p>
                     </div>
-                </div>
+                </div>  
             </div>
         </div>
     </div>

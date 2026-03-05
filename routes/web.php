@@ -1,20 +1,58 @@
 <?php
 
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ProductController;
-use App\Http\Controllers\PageController;
-use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/about', [PageController::class, 'about'])->name('about');
-Route::get('/services', [PageController::class, 'services'])->name('services');
-Route::get('/contact', [PageController::class, 'contact'])->name('contact');
-Route::get('/login', [AuthController::class, 'showLogin'])->name('login');
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
-Route::get('/products/pots', [ProductController::class, 'pots'])->name('products.pots');
-Route::get('/products/pots/ceramics', [ProductController::class, 'ceramics'])->name('products.ceramics');
-Route::get('/products/pots/cement', [ProductController::class, 'cement'])->name('products.cement');
-Route::get('/products/pots/mud', [ProductController::class, 'mud'])->name('products.mud');
-Route::get('/products/pots/plastic', [ProductController::class, 'plastic'])->name('products.plastic');
-Route::get('/products/plants', [ProductController::class, 'plants'])->name('products.plants');
+Route::get('/', function () {
+    return view('home.index');
+})->name('home');
+
+/**
+ * Products main page
+ */
+Route::get('/products', function () {
+    return view('products.index');
+})->name('products.index');
+
+/**
+ * Product categories (view-based)
+ * This will cover routes like:
+ * - products.plants
+ * - products.pots
+ * - products.cement
+ * - products.ceramics
+ * - products.mud
+ * - products.plastic
+ */
+Route::prefix('products')->name('products.')->group(function () {
+    $categories = [
+        'plants',
+        'pots',
+        'cement',
+        'ceramics',
+        'mud',
+        'plastic',
+    ];
+
+    foreach ($categories as $cat) {
+        Route::get("/{$cat}", function () use ($cat) {
+            // view path: resources/views/products/{cat}.blade.php
+            // pass empty $products for now so the view won't crash if it expects it
+            $products = [];
+
+            return view("products.{$cat}", compact('products'));
+        })->name($cat);
+    }
+});
+
+Route::get('/dashboard', function () {
+    return view('dashboard');
+})->middleware(['auth', 'verified'])->name('dashboard');
+
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+});
+
+require __DIR__ . '/auth.php';

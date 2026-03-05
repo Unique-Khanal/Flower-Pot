@@ -19,10 +19,10 @@
 
 <section class="py-12 px-4 bg-white">
     <div class="max-w-7xl mx-auto">
-        @if($products->isNotEmpty())
+        @if(count($products) > 0)
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 @foreach($products as $item)
-                    <x-product-card :image="$item['image']" :name="$item['name']" :price="$item['price']" :badge="$item['badge']" />
+                    <x-product-card :image="$item['image']" :name="$item['name']" />
                 @endforeach
             </div>
         @else
