@@ -1,22 +1,49 @@
-<nav x-data="{ open: false }" class="bg-white border-b border-gray-100">
+{{-- Load Cinzel Decorative (natural, earthy, elegant) from Google Fonts --}}
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=Lato:wght@400;600&display=swap" rel="stylesheet">
+
+<style>
+    .logo-font {
+        font-family: 'Cinzel Decorative', serif;
+        background: linear-gradient(135deg, #166534, #15803d, #a16207);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        font-size: 1.15rem;
+        letter-spacing: 0.03em;
+        line-height: 1;
+    }
+    .logo-tagline {
+        font-family: 'Lato', sans-serif;
+        font-size: 0.55rem;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: #a16207;
+        line-height: 1;
+    }
+</style>
+
+<nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow-sm">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="flex justify-between h-16">
-            <div class="flex">
+            <div class="flex items-center">
+
                 <!-- Logo -->
-                <div class="shrink-0 flex items-center">
-                    <a href="{{ route('home') }}" class="flex items-center gap-2">
-                        <x-application-logo class="block h-10 w-10" />
-                        <span class="font-bold text-green-800 text-lg hidden sm:block" style="font-family:serif;"></span>
-                    </a>
-                </div>
+                <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0">
+                    <x-application-logo class="h-11 w-11 drop-shadow-sm" />
+                    <div class="flex flex-col justify-center">
+                        <span class="logo-font">FlowerPot</span>
+                        <span class="logo-tagline">Kathmandu, Nepal</span>
+                    </div>
+                </a>
 
                 <!-- Nav Links -->
                 <div class="hidden space-x-8 sm:-my-px sm:ms-10 sm:flex">
-                    <x-nav-link :href="route('home')"          :active="request()->routeIs('home')">Home</x-nav-link>
-                    <x-nav-link :href="route('about')"         :active="request()->routeIs('about')">About</x-nav-link>
+                    <x-nav-link :href="route('home')"           :active="request()->routeIs('home')">Home</x-nav-link>
+                    <x-nav-link :href="route('about')"          :active="request()->routeIs('about')">About</x-nav-link>
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">Products</x-nav-link>
-                    <x-nav-link :href="route('services')"      :active="request()->routeIs('services')">Services</x-nav-link>
-                    <x-nav-link :href="route('contact')"       :active="request()->routeIs('contact')">Contact</x-nav-link>
+                    <x-nav-link :href="route('services')"       :active="request()->routeIs('services')">Services</x-nav-link>
+                    <x-nav-link :href="route('contact')"        :active="request()->routeIs('contact')">Contact</x-nav-link>
                 </div>
             </div>
 
@@ -38,24 +65,37 @@
                             <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
                             <form method="POST" action="{{ route('logout') }}">
                                 @csrf
-                                <x-dropdown-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">
+                                <x-dropdown-link :href="route('logout')"
+                                    onclick="event.preventDefault(); this.closest('form').submit();">
                                     {{ __('Log Out') }}
                                 </x-dropdown-link>
                             </form>
                         </x-slot>
                     </x-dropdown>
                 @else
-                    <a href="{{ route('login') }}" class="text-sm font-medium text-gray-500 hover:text-gray-700 me-4">Log in</a>
-                    <a href="{{ route('register') }}" class="text-sm font-medium bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition">Register</a>
+                    <a href="{{ route('login') }}"
+                       class="text-sm font-semibold text-gray-500 hover:text-green-700 me-4 transition">
+                        Log in
+                    </a>
+                    <a href="{{ route('register') }}"
+                       class="text-sm font-semibold bg-green-700 text-white px-4 py-2 rounded-lg hover:bg-green-800 transition shadow-sm">
+                        Register
+                    </a>
                 @endauth
             </div>
 
             <!-- Hamburger -->
             <div class="-me-2 flex items-center sm:hidden">
-                <button @click="open = ! open" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
+                <button @click="open = ! open"
+                    class="inline-flex items-center justify-center p-2 rounded-md text-gray-400
+                           hover:text-gray-500 hover:bg-gray-100 focus:outline-none transition duration-150 ease-in-out">
                     <svg class="h-6 w-6" stroke="currentColor" fill="none" viewBox="0 0 24 24">
-                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
-                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                        <path :class="{'hidden': open, 'inline-flex': ! open }" class="inline-flex"
+                              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M4 6h16M4 12h16M4 18h16" />
+                        <path :class="{'hidden': ! open, 'inline-flex': open }" class="hidden"
+                              stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                              d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
             </div>
@@ -82,7 +122,8 @@
                 <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <x-responsive-nav-link :href="route('logout')" onclick="event.preventDefault(); this.closest('form').submit();">Log Out</x-responsive-nav-link>
+                    <x-responsive-nav-link :href="route('logout')"
+                        onclick="event.preventDefault(); this.closest('form').submit();">Log Out</x-responsive-nav-link>
                 </form>
             </div>
         </div>
