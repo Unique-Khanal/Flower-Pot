@@ -27,20 +27,22 @@ class RegisteredUserController extends Controller
      *
      * @throws \Illuminate\Validation\ValidationException
      */
-    public function store(Request $request): RedirectResponse
+public function store(Request $request): RedirectResponse
 {
     $request->validate([
         'name'     => ['required', 'string', 'max:255'],
         'gender'   => ['required', 'in:male,female'],
-        'avatar'   => ['required', 'in:M2,F5'],
         'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
         'password' => ['required', 'confirmed', Rules\Password::defaults()],
     ]);
 
+    // Auto assign avatar based on gender
+    $avatar = $request->gender === 'female' ? 'F5' : 'M2';
+
     User::create([
         'name'     => $request->name,
         'gender'   => $request->gender,
-        'avatar'   => $request->avatar,
+        'avatar'   => $avatar,
         'email'    => $request->email,
         'password' => Hash::make($request->password),
     ]);
