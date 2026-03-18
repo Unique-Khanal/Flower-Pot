@@ -20,24 +20,35 @@ class CartController extends Controller
         return view('cart.index', compact('cartItems', 'total'));
     }
 
-    public function add(Request $request, Product $product)
-    {
-        $cartItem = CartItem::where('user_id', Auth::id())
-                            ->where('product_id', $product->id)
-                            ->first();
+   public function add(Request $request, Product $product)
+{
+    $request->validate([
+        'quantity' => 'nullable|integer|min:1|max:' . $product->stock,
+    ]);
 
-        if ($cartItem) {
-            $cartItem->increment('quantity');
-        } else {
-            CartItem::create([
-                'user_id'    => Auth::id(),
-                'product_id' => $product->id,
-                'quantity'   => 1,
-            ]);
-        }
+    $qty = $request->quantity ?? 1;
 
-        return back()->with('success', 'Product added to cart!');
+    $cartItem = CartItem::where('user_id', Auth::id())
+                        ->where('product_id', $product->id)
+                        ->first();
+
+    if ($cartItem) {
+        $cartItem->update(['quantity' => $cartItem->quantity + $qty]);
+    } else {
+        CartItem::create([
+            'user_id'    => Auth::id(),
+            'product_id' => $product->id,
+            'quantity'   => $qty,
+        ]);
     }
+
+    // If Place Order button was clicked → redirect to cart
+    if ($request->has('redirect_to_cart')) {
+        return redirect()->route('cart.index')->with('success', 'Order placed in cart! Review and checkout.');
+    }
+
+    return back()->with('success', 'Product added to cart!');
+}
 
     public function remove(CartItem $cartItem)
     {

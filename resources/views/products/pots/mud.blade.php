@@ -1,7 +1,5 @@
 @extends('layouts.app')
-
 @section('title', 'Mud Pots')
-
 @section('content')
 
 <section class="relative text-white py-20 px-4 text-center overflow-hidden">
@@ -19,10 +17,16 @@
 
 <section class="py-12 px-4 bg-white">
     <div class="max-w-7xl mx-auto">
-        @if(count($products) > 0)
+        @if($products->count() > 0)
             <div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-6">
                 @foreach($products as $item)
-                    <x-product-card :image="$item['image']" :name="$item['name']" />
+                    <x-product-card
+                        :image="$item->image"
+                        :name="$item->name"
+                        :badge="$item->badge"
+                        :price="$item->price"
+                        :productId="$item->id"
+                    />
                 @endforeach
             </div>
         @else
