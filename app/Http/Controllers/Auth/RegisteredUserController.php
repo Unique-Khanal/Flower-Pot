@@ -28,23 +28,24 @@ class RegisteredUserController extends Controller
      * @throws \Illuminate\Validation\ValidationException
      */
     public function store(Request $request): RedirectResponse
-    {
-        $request->validate([
-            'name' => ['required', 'string', 'max:255'],
-            'gender' => ['required','in:male,female'],
-            'email' => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-        ]);
+{
+    $request->validate([
+        'name'     => ['required', 'string', 'max:255'],
+        'gender'   => ['required', 'in:male,female'],
+        'avatar'   => ['required', 'in:M2,F5'],
+        'email'    => ['required', 'string', 'lowercase', 'email', 'max:255', 'unique:'.User::class],
+        'password' => ['required', 'confirmed', Rules\Password::defaults()],
+    ]);
 
-        $user = User::create([
-            'name' => $request->name,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
+    User::create([
+        'name'     => $request->name,
+        'gender'   => $request->gender,
+        'avatar'   => $request->avatar,
+        'email'    => $request->email,
+        'password' => Hash::make($request->password),
+    ]);
 
-        event(new Registered($user));
-
-        // Do NOT auto-login — redirect to login page instead
-return redirect()->route('login')->with('status', 'Account created! Please log in.');
-    }
+    return redirect()->route('login')
+                     ->with('status', 'Account created! Please sign in.');
+}
 }
