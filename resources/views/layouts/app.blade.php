@@ -32,5 +32,42 @@
                 @yield('content')
             </main>
         </div>
+        <!-- SweetAlert2 -->
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    <script>
+        function showLoginAlert() {
+            Swal.fire({
+                title: '🔒 Login Required',
+                html: `
+                    <p style="color:#57534e;font-size:0.95rem;margin-bottom:0.5rem;">
+                        You need an account to view product details.
+                    </p>
+                    <p style="color:#57534e;font-size:0.9rem;">
+                        Please login or create a free account to continue.
+                    </p>
+                `,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonText: '🌿 Login',
+                cancelButtonText: 'Create Account',
+                confirmButtonColor: '#15803d',
+                cancelButtonColor: '#d97706',
+                reverseButtons: true,
+                borderRadius: '1rem',
+                customClass: {
+                    popup: 'rounded-2xl',
+                    confirmButton: 'rounded-xl px-6',
+                    cancelButton: 'rounded-xl px-6',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    window.location.href = '{{ route("login") }}';
+                } else if (result.dismiss === Swal.DismissReason.cancel) {
+                    window.location.href = '{{ route("register") }}';
+                }
+            });
+        }
+    </script>
     </body>
+
 </html>

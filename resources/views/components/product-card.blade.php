@@ -35,14 +35,14 @@
                           py-1.5 rounded-lg text-center transition">
                     View Details
                 </a>
-            @else
-                <a href="{{ route('login') }}"
-                   class="mt-1 bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs font-bold
-                          py-1.5 rounded-lg text-center transition"
-                   onclick="alert('Please login or create an account to view product details!')">
-                    View Details
-                </a>
-            @endauth
+          @else
+    <button type="button"
+            onclick="showLoginAlert()"
+            class="mt-1 w-full bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs font-bold
+                   py-1.5 rounded-lg text-center transition">
+        View Details
+    </button>
+@endauth
         @endif
     </div>
 </div>
