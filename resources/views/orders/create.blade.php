@@ -175,9 +175,16 @@
 
     // Factory marker (green)
     const factoryIcon = L.divIcon({
-        html: `<div style="background:#15803d;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
-        iconSize: [16, 16], iconAnchor: [8, 8]
-    });
+    html: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                  fill="#15803d" stroke="white" stroke-width="1.5"/>
+            <circle cx="12" cy="9" r="2.5" fill="white"/>
+        </svg>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+});
     L.marker([FACTORY_LAT, FACTORY_LNG], { icon: factoryIcon })
      .addTo(map)
      .bindPopup('<b>🌿 FlowerPot Factory</b><br>Your order ships from here')
@@ -185,9 +192,16 @@
 
     // Customer marker (red)
     const customerIcon = L.divIcon({
-        html: `<div style="background:#dc2626;width:16px;height:16px;border-radius:50%;border:3px solid white;box-shadow:0 2px 6px rgba(0,0,0,0.3)"></div>`,
-        iconSize: [16, 16], iconAnchor: [8, 8]
-    });
+    html: `
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="32" height="32">
+            <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z"
+                  fill="#dc2626" stroke="white" stroke-width="1.5"/>
+            <circle cx="12" cy="9" r="2.5" fill="white"/>
+        </svg>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 32],
+    popupAnchor: [0, -32]
+});
 
     let customerMarker = null;
     let routeLine = null;
