@@ -94,9 +94,15 @@
                             <span>Rs. {{ number_format($total, 2) }}</span>
                         </div>
                     </div>
-                    <button class="w-full mt-6 bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold py-3 rounded-xl transition shadow-md">
-                        Proceed to Checkout
-                    </button>
+                    <a href="{{ route('orders.create') }}"
+   class="block w-full mt-6 bg-amber-400 hover:bg-amber-300 text-stone-900
+          font-bold py-3 rounded-xl transition shadow-md text-center">
+    Proceed to Checkout →
+</a>
+<a href="{{ route('orders.index') }}"
+   class="block text-center mt-3 text-sm text-green-700 hover:text-green-900 font-medium">
+    📦 View My Orders
+</a>
                     <a href="{{ route('products.index') }}"
                        class="block text-center mt-3 text-sm text-green-700 hover:text-green-900 font-medium">
                         ← Continue Shopping
