@@ -32,78 +32,133 @@
         @else
             <div class="space-y-6">
                 @foreach($orders as $order)
-                <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
+
+                {{-- Card --}}
+                <div id="order-{{ $order->id }}"
+                     style="position:relative; border-radius:1rem; overflow:hidden;
+                            box-shadow:0 1px 4px rgba(0,0,0,0.08);
+                            {{ $order->status === 'cancelled' ? 'background:#fef2f2; border-left:4px solid #ef4444;' : 'background:white;' }}">
+
+                    {{-- Cross dismiss button — cancelled only --}}
+                    @if($order->status === 'cancelled')
+                        <button onclick="dismissOrder('order-{{ $order->id }}')"
+                                title="Dismiss"
+                                onmouseover="this.style.background='#dc2626'"
+                                onmouseout="this.style.background='#ef4444'"
+                                style="position:absolute; top:10px; right:10px; z-index:50;
+                                       width:26px; height:26px; background:#ef4444;
+                                       border-radius:50%; border:none; cursor:pointer;
+                                       display:flex; align-items:center; justify-content:center;
+                                       box-shadow:0 2px 6px rgba(0,0,0,0.2);">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="14" height="14"
+                                 fill="none" viewBox="0 0 24 24"
+                                 stroke="white" stroke-width="2.5">
+                                <path stroke-linecap="round" stroke-linejoin="round"
+                                      d="M6 18L18 6M6 6l12 12"/>
+                            </svg>
+                        </button>
+                    @endif
 
                     {{-- Order Header --}}
-                    <div class="px-6 py-4 border-b border-stone-100 flex flex-wrap justify-between items-center gap-3">
+                    <div style="padding:1rem 1.5rem; padding-right:2.5rem;
+                                border-bottom:1px solid #f5f5f4;
+                                display:flex; flex-wrap:wrap;
+                                justify-content:space-between;
+                                align-items:center; gap:0.75rem;">
                         <div>
-                            <span class="text-xs text-stone-400 font-medium">Order #{{ $order->id }}</span>
-                            <p class="text-sm font-bold text-stone-800 mt-0.5">
+                            <span style="font-size:0.75rem; color:#a8a29e; font-weight:500;">
+                                Order #{{ $order->id }}
+                            </span>
+                            <p style="font-size:0.875rem; font-weight:700; color:#1c1917; margin-top:2px;">
                                 {{ $order->created_at->format('d M Y, h:i A') }}
                             </p>
                         </div>
-                        <div class="flex items-center gap-3">
-                            {{-- Status Badge --}}
+                        <div style="display:flex; align-items:center; gap:0.75rem;">
                             @php
-                                $colors = [
-                                    'pending'   => 'bg-amber-100 text-amber-700',
-                                    'confirmed' => 'bg-blue-100 text-blue-700',
-                                    'delivered' => 'bg-green-100 text-green-700',
-                                    'cancelled' => 'bg-red-100 text-red-700',
+                                $badgeStyles = [
+                                    'pending'   => 'background:#fef3c7; color:#b45309;',
+                                    'confirmed' => 'background:#dbeafe; color:#1d4ed8;',
+                                    'delivered' => 'background:#dcfce7; color:#15803d;',
+                                    'cancelled' => 'background:#fee2e2; color:#b91c1c;',
                                 ];
                             @endphp
-                            <span class="text-xs font-bold px-3 py-1 rounded-full uppercase {{ $colors[$order->status] }}">
+                            <span style="font-size:0.7rem; font-weight:700; padding:0.25rem 0.75rem;
+                                         border-radius:999px; text-transform:uppercase;
+                                         {{ $badgeStyles[$order->status] }}">
                                 {{ $order->status }}
                             </span>
-                            <span class="font-bold text-green-700">Rs. {{ number_format($order->total, 2) }}</span>
+                            <span style="font-weight:700; color:#15803d;">
+                                Rs. {{ number_format($order->total, 2) }}
+                            </span>
                         </div>
                     </div>
 
                     {{-- Order Items --}}
-                    <div class="px-6 py-4">
-                        <div class="space-y-3">
+                    <div style="padding:1rem 1.5rem;">
+                        <div style="display:flex; flex-direction:column; gap:0.75rem;">
                             @foreach($order->items as $item)
-                            <div class="flex items-center gap-3">
+                            <div style="display:flex; align-items:center; gap:0.75rem;">
                                 <img src="{{ asset($item->product_image) }}"
                                      alt="{{ $item->product_name }}"
-                                     class="w-12 h-12 object-cover rounded-lg flex-shrink-0">
-                                <div class="flex-1">
-                                    <p class="text-sm font-semibold text-stone-800">{{ $item->product_name }}</p>
-                                    <p class="text-xs text-stone-400">Qty: {{ $item->quantity }} × Rs. {{ number_format($item->price, 2) }}</p>
+                                     style="width:48px; height:48px; object-fit:cover;
+                                            border-radius:0.5rem; flex-shrink:0;">
+                                <div style="flex:1;">
+                                    <p style="font-size:0.875rem; font-weight:600; color:#1c1917;">
+                                        {{ $item->product_name }}
+                                    </p>
+                                    <p style="font-size:0.75rem; color:#a8a29e;">
+                                        Qty: {{ $item->quantity }} × Rs. {{ number_format($item->price, 2) }}
+                                    </p>
                                 </div>
-                                <p class="font-bold text-stone-700 text-sm">Rs. {{ number_format($item->subtotal, 2) }}</p>
+                                <p style="font-weight:700; color:#44403c; font-size:0.875rem;">
+                                    Rs. {{ number_format($item->subtotal, 2) }}
+                                </p>
                             </div>
                             @endforeach
                         </div>
 
                         {{-- Delivery Info --}}
-                        <div class="mt-4 pt-4 border-t border-stone-100 grid grid-cols-2 gap-2 text-xs text-stone-500">
-                            <div><span class="font-medium">Address:</span> {{ $order->address }}</div>
-                            <div><span class="font-medium">Distance:</span> {{ $order->distance_km }} km</div>
-                            <div><span class="font-medium">Delivery:</span> Rs. {{ number_format($order->delivery_charge, 2) }}</div>
-                            <div><span class="font-medium">Phone:</span> {{ $order->phone_no }}</div>
+                        <div style="margin-top:1rem; padding-top:1rem;
+                                    border-top:1px solid #f5f5f4;
+                                    display:grid; grid-template-columns:1fr 1fr;
+                                    gap:0.5rem; font-size:0.75rem; color:#78716c;">
+                            <div><strong>Address:</strong> {{ $order->address }}</div>
+                            <div><strong>Distance:</strong> {{ $order->distance_km }} km</div>
+                            <div><strong>Delivery:</strong> Rs. {{ number_format($order->delivery_charge, 2) }}</div>
+                            <div><strong>Phone:</strong> {{ $order->phone_no }}</div>
                         </div>
 
-                        {{-- Cancellation info --}}
+                        {{-- Cancellation Info --}}
                         @if($order->status === 'cancelled')
-                            <div class="mt-3 bg-red-50 border border-red-200 rounded-xl p-3 text-xs text-red-600">
-                                <strong>Cancelled on:</strong> {{ $order->cancelled_at->format('d M Y, h:i A') }}<br>
+                            <div style="margin-top:0.75rem; background:#fef2f2;
+                                        border:1px solid #fecaca; border-radius:0.75rem;
+                                        padding:0.75rem; font-size:0.75rem; color:#b91c1c;">
+                                <strong>Cancelled on:</strong>
+                                {{ $order->cancelled_at->format('d M Y, h:i A') }}<br>
                                 <strong>Reason:</strong> {{ $order->cancel_reason }}
                             </div>
                         @endif
 
-                        {{-- Cancel Button --}}
+                        {{-- Cancel Button — pending only --}}
                         @if($order->status === 'pending')
-                            <div class="mt-4">
+                            <div style="margin-top:1rem;">
                                 <button onclick="showCancelModal({{ $order->id }})"
-                                        class="text-sm bg-red-50 hover:bg-red-100 text-red-600 font-semibold
-                                               px-4 py-2 rounded-xl transition border border-red-200">
+                                        style="font-size:0.875rem; background:#fef2f2;
+                                               color:#dc2626; font-weight:600;
+                                               padding:0.5rem 1rem; border-radius:0.75rem;
+                                               border:1px solid #fecaca; cursor:pointer;
+                                               transition:background 0.2s;"
+                                        onmouseover="this.style.background='#fee2e2'"
+                                        onmouseout="this.style.background='#fef2f2'">
                                     ✕ Cancel Order
                                 </button>
                             </div>
                         @endif
                     </div>
+
                 </div>
+                {{-- Card ends --}}
+
                 @endforeach
             </div>
         @endif
@@ -111,29 +166,50 @@
 </section>
 
 {{-- Cancel Modal --}}
-<div id="cancelModal" class="fixed inset-0 z-50 hidden items-center justify-center"
-     style="background:rgba(0,0,0,0.5);">
-    <div class="bg-white rounded-2xl shadow-xl p-6 max-w-md w-full mx-4">
-        <h3 class="text-lg font-bold text-stone-800 mb-2">Cancel Order</h3>
-        <p class="text-stone-500 text-sm mb-4">Please tell us why you want to cancel this order.</p>
+<div id="cancelModal"
+     style="display:none; position:fixed; inset:0; z-index:50;
+            background:rgba(0,0,0,0.5);
+            align-items:center; justify-content:center;">
+    <div style="background:white; border-radius:1rem;
+                box-shadow:0 20px 60px rgba(0,0,0,0.15);
+                padding:1.5rem; max-width:28rem; width:100%; margin:0 1rem;">
+
+        <h3 style="font-size:1.1rem; font-weight:700; color:#1c1917; margin-bottom:0.5rem;">
+            Cancel Order
+        </h3>
+        <p style="color:#78716c; font-size:0.875rem; margin-bottom:1rem;">
+            Please tell us why you want to cancel this order.
+        </p>
 
         <form method="POST" id="cancelForm">
             @csrf
             <textarea name="cancel_reason" rows="4"
                       placeholder="Reason for cancellation (min 10 characters)..."
-                      class="w-full border border-stone-300 rounded-xl px-4 py-2.5 text-sm
-                             focus:outline-none focus:ring-2 focus:ring-red-400 resize-none mb-4"
+                      style="width:100%; border:1px solid #d6d3d1; border-radius:0.75rem;
+                             padding:0.75rem 1rem; font-size:0.875rem;
+                             font-family:inherit; resize:none; outline:none;
+                             margin-bottom:1rem; box-sizing:border-box;"
+                      onfocus="this.style.borderColor='#15803d';this.style.boxShadow='0 0 0 3px rgba(21,128,61,0.1)'"
+                      onblur="this.style.borderColor='#d6d3d1';this.style.boxShadow='none'"
                       required minlength="10"></textarea>
 
-            <div class="flex gap-3">
+            <div style="display:flex; gap:0.75rem;">
                 <button type="button" onclick="closeCancelModal()"
-                        class="flex-1 bg-stone-100 hover:bg-stone-200 text-stone-700 font-semibold
-                               py-2.5 rounded-xl transition text-sm">
+                        style="flex:1; background:#f5f5f4; color:#44403c;
+                               font-weight:600; padding:0.75rem;
+                               border-radius:0.75rem; border:none;
+                               cursor:pointer; font-size:0.875rem;"
+                        onmouseover="this.style.background='#e7e5e0'"
+                        onmouseout="this.style.background='#f5f5f4'">
                     Keep Order
                 </button>
                 <button type="submit"
-                        class="flex-1 bg-red-600 hover:bg-red-700 text-white font-semibold
-                               py-2.5 rounded-xl transition text-sm">
+                        style="flex:1; background:#dc2626; color:white;
+                               font-weight:600; padding:0.75rem;
+                               border-radius:0.75rem; border:none;
+                               cursor:pointer; font-size:0.875rem;"
+                        onmouseover="this.style.background='#b91c1c'"
+                        onmouseout="this.style.background='#dc2626'">
                     Confirm Cancel
                 </button>
             </div>
@@ -146,8 +222,17 @@
         document.getElementById('cancelForm').action = `/orders/${orderId}/cancel`;
         document.getElementById('cancelModal').style.display = 'flex';
     }
+
     function closeCancelModal() {
         document.getElementById('cancelModal').style.display = 'none';
+    }
+
+    function dismissOrder(cardId) {
+        const card = document.getElementById(cardId);
+        card.style.transition = 'all 0.4s ease';
+        card.style.opacity = '0';
+        card.style.transform = 'translateX(40px)';
+        setTimeout(() => card.remove(), 400);
     }
 </script>
 
