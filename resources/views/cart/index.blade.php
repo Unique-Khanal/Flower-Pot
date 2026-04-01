@@ -87,7 +87,7 @@
                         </div>
                         <div class="flex justify-between text-stone-600">
                             <span>Delivery</span>
-                            <span class="text-green-600 font-medium">Free</span>
+                            <span class="text-green-600 font-medium">Limited Charge</span>
                         </div>
                         <div class="border-t border-stone-100 pt-3 flex justify-between font-bold text-stone-800 text-base">
                             <span>Total</span>
