@@ -51,7 +51,7 @@
                     <div>
                         <label class="block text-sm font-semibold text-stone-700 mb-1">Phone Number</label>
                         <input type="tel" name="phone_no"
-                               placeholder="+977 98XXXXXXXX"
+                               placeholder="+977 "
                                class="w-full border border-stone-300 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-green-500"
                                required>
                         <x-input-error :messages="$errors->get('phone_no')" class="mt-1" />
@@ -113,7 +113,7 @@
 
             {{-- Map --}}
             <div class="bg-white rounded-2xl shadow-sm p-4">
-                <h2 class="text-lg font-bold text-stone-800 mb-3">📍 Delivery Location</h2>
+                <h2 class="text-lg font-bold text-stone-800 mb-3"> Delivery Location</h2>
                 <div id="map" class="w-full rounded-xl" style="height:420px;"></div>
                 <p class="text-xs text-stone-400 mt-2 text-center">
                     📍 Red pin = Your location &nbsp;|&nbsp; 🟢 Green pin = FlowerPot Factory
