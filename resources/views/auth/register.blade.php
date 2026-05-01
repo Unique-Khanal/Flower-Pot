@@ -10,7 +10,9 @@
 
         <!-- Name -->
         <div>
-            <label for="name" class="block text-sm font-semibold text-stone-700 mb-1.5">Full Name</label>
+            <label for="name" class="block text-sm font-semibold text-stone-700 mb-1.5">
+                Full Name
+            </label>
             <div class="relative">
                 <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -70,24 +72,38 @@
             <label for="email" class="block text-sm font-semibold text-stone-700 mb-1.5">
                 Email Address
             </label>
+            <p style="font-size:0.72rem; color:#78716c; margin-bottom:0.4rem;">
+                Must contain @ symbol with alphanumeric characters.
+            </p>
             <div class="relative">
                 <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                           d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"/>
                 </svg>
-                <input id="email" type="email" name="email"
+                {{-- type="text" so browser does NOT intercept and Laravel validates --}}
+                <input id="email" type="text" name="email"
                        value="{{ old('email') }}"
                        class="auth-input {{ $errors->has('email') ? 'border-red-400' : '' }}"
-                       placeholder="you@example.com"
-                       required autocomplete="username">
+                       placeholder="enter valid email"
+                       autocomplete="username"
+                       oninput="validateEmail(this.value)">
             </div>
+
+            {{-- Live feedback --}}
+            <p id="email-live-error"
+               style="display:none; font-size:0.75rem; color:#b91c1c;
+                      margin-top:0.35rem; align-items:center; gap:0.3rem;">
+            </p>
+            <p id="email-live-ok"
+               style="display:none; font-size:0.75rem; color:#15803d; margin-top:0.35rem;">
+            </p>
+
+            {{-- Server side errors --}}
             @if($errors->has('email'))
                 <div style="margin-top:0.5rem; background:#fef2f2; border:1px solid #fecaca;
                             border-radius:0.75rem; padding:0.6rem 1rem;">
                     <p style="font-size:0.78rem; font-weight:700; color:#b91c1c;
-                               margin:0 0 0.3rem 0;">
-                        ⚠️ Email issue:
-                    </p>
+                               margin:0 0 0.3rem 0;">⚠️ Email issue:</p>
                     @foreach($errors->get('email') as $error)
                         <p style="font-size:0.78rem; color:#b91c1c;
                                   display:flex; align-items:center; gap:0.4rem; margin:0;">
@@ -103,12 +119,9 @@
             <label for="password" class="block text-sm font-semibold text-stone-700 mb-1.5">
                 Password
             </label>
-
-            {{-- Password strength hint --}}
             <p style="font-size:0.72rem; color:#78716c; margin-bottom:0.5rem;">
                 Must be 8+ characters with uppercase, lowercase, number and symbol
             </p>
-
             <div class="relative">
                 <svg class="input-icon" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -116,18 +129,16 @@
                 </svg>
                 <input id="password" type="password" name="password"
                        class="auth-input {{ $errors->has('password') ? 'border-red-400' : '' }}"
-                       placeholder="Min. 8 characters "
+                       placeholder="Create a strong password"
                        required autocomplete="new-password"
                        oninput="checkStrength(this.value)">
-
-                {{-- Show/hide password toggle --}}
                 <button type="button"
                         onclick="togglePassword('password', this)"
                         style="position:absolute; right:0.75rem; top:50%;
                                transform:translateY(-50%); background:none;
                                border:none; cursor:pointer; color:#78716c;">
-                    <svg id="eye-password" xmlns="http://www.w3.org/2000/svg"
-                         width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -136,15 +147,15 @@
                 </button>
             </div>
 
-            {{-- Password strength bar --}}
-            <div style="margin-top:0.5rem; height:4px; background:#e7e5e0; border-radius:999px; overflow:hidden;">
+            {{-- Strength bar --}}
+            <div style="margin-top:0.5rem; height:4px; background:#e7e5e0;
+                        border-radius:999px; overflow:hidden;">
                 <div id="strength-bar"
-                     style="height:100%; width:0%; border-radius:999px; transition:all 0.3s;"></div>
+                     style="height:100%; width:0%; border-radius:999px; transition:all 0.3s;">
+                </div>
             </div>
-            <p id="strength-text"
-               style="font-size:0.7rem; margin-top:0.25rem; color:#78716c;"></p>
+            <p id="strength-text" style="font-size:0.7rem; margin-top:0.25rem;"></p>
 
-            {{-- Error messages --}}
             @if($errors->has('password'))
                 <div style="margin-top:0.5rem; background:#fef2f2; border:1px solid #fecaca;
                             border-radius:0.75rem; padding:0.75rem 1rem;">
@@ -181,15 +192,13 @@
                        placeholder="Repeat your password"
                        required autocomplete="new-password"
                        oninput="checkMatch()">
-
-                {{-- Show/hide toggle --}}
                 <button type="button"
                         onclick="togglePassword('password_confirmation', this)"
                         style="position:absolute; right:0.75rem; top:50%;
                                transform:translateY(-50%); background:none;
                                border:none; cursor:pointer; color:#78716c;">
-                    <svg xmlns="http://www.w3.org/2000/svg"
-                         width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18"
+                         fill="none" viewBox="0 0 24 24" stroke="currentColor">
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
                               d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
                         <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
@@ -198,7 +207,6 @@
                 </button>
             </div>
 
-            {{-- Match indicator --}}
             <p id="match-text"
                style="font-size:0.72rem; margin-top:0.3rem; display:none;"></p>
 
@@ -231,23 +239,70 @@
     </form>
 
     <script>
-        // Show/hide password
+        // ── Show/hide password ──────────────────────────────
         function togglePassword(fieldId, btn) {
             const input = document.getElementById(fieldId);
-            input.type = input.type === 'password' ? 'text' : 'password';
+            input.type  = input.type === 'password' ? 'text' : 'password';
             btn.style.color = input.type === 'text' ? '#15803d' : '#78716c';
         }
 
-        // Password strength checker
+        // ── Live email validation ───────────────────────────
+        function validateEmail(val) {
+            const errEl = document.getElementById('email-live-error');
+            const okEl  = document.getElementById('email-live-ok');
+
+            if (val.length === 0) {
+                errEl.style.display = 'none';
+                okEl.style.display  = 'none';
+                return;
+            }
+
+            const regex = /^[a-zA-Z0-9][a-zA-Z0-9._%+\-]*@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+            if (!val.includes('@')) {
+                errEl.innerHTML     = '✕ Email must contain @ symbol.';
+                errEl.style.display = 'flex';
+                okEl.style.display  = 'none';
+                return;
+            }
+
+            const parts = val.split('@');
+            if (parts[0].length === 0) {
+                errEl.innerHTML     = '✕ Email must have characters before @';
+                errEl.style.display = 'flex';
+                okEl.style.display  = 'none';
+                return;
+            }
+
+            if (!/[a-zA-Z]/.test(parts[0])) {
+                errEl.innerHTML     = '✕ Email username must contain alphabetic characters';
+                errEl.style.display = 'flex';
+                okEl.style.display  = 'none';
+                return;
+            }
+
+            if (!regex.test(val)) {
+                errEl.innerHTML     = '✕ Invalid format. Use correct format.';
+                errEl.style.display = 'flex';
+                okEl.style.display  = 'none';
+                return;
+            }
+
+            errEl.style.display = 'none';
+            okEl.innerHTML      = '✓ Valid email address';
+            okEl.style.display  = 'block';
+        }
+
+        // ── Password strength checker ───────────────────────
         function checkStrength(val) {
             const bar  = document.getElementById('strength-bar');
             const text = document.getElementById('strength-text');
             let score  = 0;
-            if (val.length >= 8)           score++;
-            if (/[A-Z]/.test(val))         score++;
-            if (/[a-z]/.test(val))         score++;
-            if (/[0-9]/.test(val))         score++;
-            if (/[^A-Za-z0-9]/.test(val))  score++;
+            if (val.length >= 8)            score++;
+            if (/[A-Z]/.test(val))          score++;
+            if (/[a-z]/.test(val))          score++;
+            if (/[0-9]/.test(val))          score++;
+            if (/[^A-Za-z0-9]/.test(val))   score++;
 
             const levels = [
                 { w:'0%',   color:'transparent', label:'' },
@@ -264,19 +319,22 @@
             text.style.color     = levels[score].color;
         }
 
-        // Password match checker
+        // ── Password match checker ──────────────────────────
         function checkMatch() {
             const pass    = document.getElementById('password').value;
             const confirm = document.getElementById('password_confirmation').value;
             const text    = document.getElementById('match-text');
-            if (confirm.length === 0) { text.style.display = 'none'; return; }
+            if (confirm.length === 0) {
+                text.style.display = 'none';
+                return;
+            }
             text.style.display = 'block';
             if (pass === confirm) {
-                text.textContent  = '✓ Passwords match';
-                text.style.color  = '#15803d';
+                text.textContent = '✓ Passwords match';
+                text.style.color = '#15803d';
             } else {
-                text.textContent  = '✕ Passwords do not match';
-                text.style.color  = '#b91c1c';
+                text.textContent = '✕ Passwords do not match';
+                text.style.color = '#b91c1c';
             }
         }
     </script>

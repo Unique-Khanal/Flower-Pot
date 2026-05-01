@@ -4,7 +4,6 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
-use Illuminate\Auth\Events\Registered;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
@@ -21,7 +20,7 @@ class RegisteredUserController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'name'   => [
+            'name' => [
                 'required',
                 'string',
                 'min:3',
@@ -31,13 +30,11 @@ class RegisteredUserController extends Controller
                 'required',
                 'in:male,female',
             ],
-            'email'  => [
+            'email' => [
                 'required',
                 'string',
-                'lowercase',
-                'email',
                 'max:255',
-                'regex:/^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/',
+                'regex:/^[a-zA-Z0-9][a-zA-Z0-9._%+\-]*@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/',
                 'unique:'.User::class,
             ],
             'password' => [
@@ -49,24 +46,22 @@ class RegisteredUserController extends Controller
                     ->symbols(),
             ],
         ], [
-            'name.required'   => 'Full name is required.',
-            'name.min'        => 'Name must be at least 3 characters.',
-            'gender.required' => 'Please select your gender.',
-            'email.required'  => 'Email address is required.',
-            'email.email'     => 'Please enter a valid email address with @ symbol.',
-            'email.regex'     => 'Email must be like name@gmail.com',
-            'email.unique'    => 'This email is already registered. Please login instead.',
+            'name.required'     => 'Full name is required.',
+            'name.min'          => 'Name must be at least 3 characters.',
+            'gender.required'   => 'Please select your gender.',
+            'email.required'    => 'Email address is required.',
+            'email.regex'       => 'Email must contain @ symbol with alphanumeric characters e.g. name123@gmail.com',
+            'email.unique'      => 'This email is already registered. Please login instead.',
             'password.required' => 'Password is required.',
         ]);
 
-        // Auto assign avatar based on gender
         $avatar = $request->gender === 'female' ? 'F5' : 'M2';
 
-        $user = User::create([
+        User::create([
             'name'     => $request->name,
             'gender'   => $request->gender,
             'avatar'   => $avatar,
-            'email'    => $request->email,
+            'email'    => strtolower($request->email),
             'password' => Hash::make($request->password),
         ]);
 
