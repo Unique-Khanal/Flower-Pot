@@ -93,13 +93,13 @@
                         <x-slot name="content">
     <x-dropdown-link :href="route('orders.index')">📦 My Orders</x-dropdown-link>
     <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
-    <form method="POST" action="{{ route('logout') }}">
-        @csrf
-        <x-dropdown-link :href="route('logout')"
-            onclick="event.preventDefault(); this.closest('form').submit();">
-            {{ __('Log Out') }}
-        </x-dropdown-link>
-    </form>
+    <form method="POST" action="{{ route('logout') }}" id="logout-form">
+    @csrf
+</form>
+<x-dropdown-link href="#"
+    onclick="confirmLogout()">
+    {{ __('Log Out') }}
+</x-dropdown-link>
 </x-slot>
                     </x-dropdown>
 
@@ -178,15 +178,11 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                        onclick="event.preventDefault(); this.closest('form').submit();">
-                        Log Out
-                    </x-responsive-nav-link>
-                </form>
-            </div>
+    <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
+    <x-responsive-nav-link href="#" onclick="confirmLogout()">
+        Log Out
+    </x-responsive-nav-link>
+</div>
         </div>
 
         @else
@@ -196,4 +192,29 @@
         </div>
         @endauth
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script>
+    function confirmLogout() {
+        Swal.fire({
+            title: 'Leaving so soon? 🌿',
+            text: 'Are you sure you want to log out of FlowerPot?',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: 'Yes, Log Out',
+            cancelButtonText: 'Stay Here',
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#15803d',
+            borderRadius: '1rem',
+            customClass: {
+                popup:         'rounded-2xl',
+                confirmButton: 'rounded-xl',
+                cancelButton:  'rounded-xl',
+            }
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById('logout-form').submit();
+            }
+        });
+    }
+</script>
 </nav>
