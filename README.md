@@ -250,9 +250,9 @@ Open the file in VS Code, find the text shown below, and change it to whatever y
 | What you see on screen | What to look for in the file |
 |---|---|
 | Hero paragraph | `We'd love to hear from you. Reach out and we'll get back to you within 24 hours.` |
-| Address | `123 Garden Street, Green City, Lahore, Pakistan` |
-| Phone numbers | `+92 300 1234567` / `+92 42 1234567` |
-| Email addresses | `info@flowerpot.pk` / `support@flowerpot.pk` |
+| Address | `Kathmandu, Nepal` |
+| Phone numbers | `+977 9813067906` / `+9763686254` |
+| Email addresses | `uniquekhanal2020@gmail.com` |
 | Business hours | `Mon – Sat: 9:00 AM – 8:00 PM` / `Sunday: 10:00 AM – 5:00 PM` |
 
 ---
