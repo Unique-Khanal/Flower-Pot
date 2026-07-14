@@ -26,8 +26,9 @@
             {{-- Image --}}
             <div class="relative">
                 <img src="{{ asset($product->image) }}"
-                     alt="{{ $product->name }}"
-                     class="w-full h-96 md:h-full object-cover">
+     alt="{{ $product->name }}"
+     class="w-full h-96 md:h-full object-cover"
+     data-zoomable>
                 @if($product->badge)
                     <span class="absolute top-4 left-4 bg-green-600 text-white text-xs font-bold px-3 py-1 rounded-full uppercase">
                         {{ $product->badge }}
