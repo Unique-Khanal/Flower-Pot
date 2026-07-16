@@ -72,11 +72,11 @@
 
             /* ── FOOTER ── */
             .site-footer {
-                background: #1c1917;
-                color: #a8a29e;
-                padding: 3.5rem 1.5rem 1.5rem;
-                margin-top: auto;
-            }
+    background: linear-gradient(135deg, #14532d, #166534);
+    color: #bbf7d0;
+    padding: 3.5rem 1.5rem 1.5rem;
+    margin-top: auto;
+}
             .footer-inner {
                 max-width: 1280px;
                 margin: 0 auto;
@@ -98,7 +98,7 @@
                 line-height: 1.7;
                 margin-top: 0.75rem;
                 max-width: 260px;
-                color: #78716c;
+                color: #bbf7d0;
             }
             .footer-col h4 {
                 color: #ffffff;
@@ -111,16 +111,16 @@
             .footer-col a {
                 display: block;
                 font-size: 0.85rem;
-                color: #78716c;
+                color: #86efac;
                 text-decoration: none;
                 margin-bottom: 0.55rem;
                 transition: color 0.2s;
                 cursor: pointer;
             }
-            .footer-col a:hover { color: #4ade80; }
+            .footer-col a:hover { color: #ffffff; }
             .footer-col p {
                 font-size: 0.85rem;
-                color: #78716c;
+                color: #86efac;
                 margin-bottom: 0.55rem;
                 line-height: 1.6;
             }
@@ -128,7 +128,7 @@
                 max-width: 1280px;
                 margin: 2.5rem auto 0;
                 border: none;
-                border-top: 1px solid rgba(255,255,255,0.08);
+                border-top: 1px solid rgba(255,255,255,0.15);
             }
             .footer-bottom {
                 max-width: 1280px;
@@ -139,7 +139,7 @@
                 flex-wrap: wrap;
                 gap: 0.75rem;
                 font-size: 0.8rem;
-                color: #57534e;
+                color: #bbf7d0;
             }
             .footer-badge {
                 display: inline-block;
@@ -232,8 +232,8 @@
                     <p>📞 9763686254</p>
                     <p>📞 9813067906</p>
                     <p>✉️ uniquekhanal2020@gmail.com</p>
-                    <p>🕐 Mon–Sat: 9AM – 8PM</p>
-                    <p>🕐 Sun: 10AM – 5PM</p>
+                    <p>🕐 sun–fri: 9AM – 8PM</p>
+                    <p>🕐 Sat: 10AM – 5PM</p>
                 </div>
 
             </div>
@@ -243,9 +243,9 @@
             <div class="footer-bottom">
                 <span>© {{ date('Y') }} FlowerPot. All rights reserved. Made with 🌿 in Nepal.</span>
                 <div style="display:flex; gap:1rem; align-items:center;">
-                    <a href="{{ route('about') }}" style="color:#57534e; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#4ade80'" onmouseout="this.style.color='#57534e'">Privacy Policy</a>
-                    <a href="{{ route('about') }}" style="color:#57534e; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#4ade80'" onmouseout="this.style.color='#57534e'">Terms of Service</a>
-                    <a href="{{ route('contact') }}" style="color:#57534e; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#4ade80'" onmouseout="this.style.color='#57534e'">Support</a>
+                    <a href="{{ route('about') }}" style="color:#86efac; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#86efac'">Privacy Policy</a>
+                    <a href="{{ route('about') }}" style="color:#86efac; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#86efac'">Terms of Service</a>
+                    <a href="{{ route('contact') }}" style="color:#86efac; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#86efac'">Support</a>
                 </div>
             </div>
         </footer>

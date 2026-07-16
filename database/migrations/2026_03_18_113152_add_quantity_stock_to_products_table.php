@@ -9,7 +9,7 @@ return new class extends Migration {
     {
         Schema::table('products', function (Blueprint $table) {
             $table->integer('quantity')->default(1)->after('size');
-            $table->integer('stock')->default(10)->after('quantity');
+            $table->integer('stock')->default(100)->after('quantity');
         });
     }
 
