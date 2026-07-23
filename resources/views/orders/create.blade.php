@@ -85,6 +85,56 @@
                         </div>
                     </div>
 
+                    {{-- Payment Method --}}
+                    <div class="space-y-2">
+                        <label class="block text-sm font-semibold text-stone-700">Payment Method</label>
+                        <div class="grid grid-cols-3 gap-3" id="payment-method-group">
+
+                            {{-- Cash on Delivery --}}
+                            <div class="payment-card relative flex flex-col items-center justify-center gap-2 border-2 border-stone-200 rounded-2xl py-4 px-2 cursor-pointer bg-white
+                                        transition-all duration-150 ease-out
+                                        hover:border-green-400 hover:bg-green-50 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.03]"
+                                 data-value="cod" data-color="green">
+                                <input type="radio" name="payment_method" value="cod" checked class="hidden">
+                                <div class="payment-check hidden absolute -top-2 -right-2 w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold items-center justify-center shadow ring-2 ring-white">✓</div>
+                                <div class="w-11 h-11 rounded-full bg-green-100 flex items-center justify-center text-xl pointer-events-none">
+                                    💵
+                                </div>
+                                <span class="text-xs font-semibold text-stone-700 text-center leading-tight pointer-events-none">Cash on<br>Delivery</span>
+                            </div>
+
+                            {{-- eSewa --}}
+                            <div class="payment-card relative flex flex-col items-center justify-center gap-2 border-2 border-stone-200 rounded-2xl py-4 px-2 cursor-pointer bg-white
+                                        transition-all duration-150 ease-out
+                                        hover:border-green-400 hover:bg-green-50 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.03]"
+                                 data-value="esewa" data-color="green">
+                                <input type="radio" name="payment_method" value="esewa" class="hidden">
+                                <div class="payment-check hidden absolute -top-2 -right-2 w-6 h-6 rounded-full bg-green-600 text-white text-xs font-bold items-center justify-center shadow ring-2 ring-white">✓</div>
+                                <div class="w-11 h-11 rounded-full bg-white ring-1 ring-stone-200 flex items-center justify-center overflow-hidden pointer-events-none">
+                                    <img src="{{ asset('images/payment/esewa.png') }}" alt="eSewa" class="w-8 h-8 object-contain">
+                                </div>
+                                <span class="text-xs font-semibold text-stone-700 pointer-events-none">eSewa</span>
+                            </div>
+
+                            {{-- Khalti --}}
+                            <div class="payment-card relative flex flex-col items-center justify-center gap-2 border-2 border-stone-200 rounded-2xl py-4 px-2 cursor-pointer bg-white
+                                        transition-all duration-150 ease-out
+                                        hover:border-purple-400 hover:bg-purple-50 hover:shadow-lg hover:-translate-y-0.5 hover:scale-[1.03]"
+                                 data-value="khalti" data-color="purple">
+                                <input type="radio" name="payment_method" value="khalti" class="hidden">
+                                <div class="payment-check hidden absolute -top-2 -right-2 w-6 h-6 rounded-full bg-purple-600 text-white text-xs font-bold items-center justify-center shadow ring-2 ring-white">✓</div>
+                                <div class="w-11 h-11 rounded-full bg-white ring-1 ring-stone-200 flex items-center justify-center overflow-hidden pointer-events-none">
+                                    <img src="{{ asset('images/payment/khalti.png') }}" alt="Khalti" class="w-8 h-8 object-contain">
+                                </div>
+                                <span class="text-xs font-semibold text-stone-700 pointer-events-none">Khalti</span>
+                            </div>
+
+                        </div>
+                        <p id="payment-selected-label" class="text-xs text-stone-500 pt-1">
+                            Paying via <span class="font-semibold text-green-700">Cash on Delivery</span>
+                        </p>
+                    </div>
+
                     {{-- Order Summary --}}
                     <div class="bg-stone-50 rounded-xl p-4 space-y-2 border border-stone-100">
                         <div class="flex justify-between text-sm text-stone-600">
@@ -157,7 +207,54 @@
     const SUBTOTAL     = {{ $subtotal }};
     const ORS_API_KEY  = '{{ env('ORS_API_KEY') }}';
 
-    // Delivery charge table
+    // Payment method card selection
+    const paymentCards  = document.querySelectorAll('.payment-card');
+    const paymentLabel  = document.getElementById('payment-selected-label');
+    const paymentNames  = { cod: 'Cash on Delivery', esewa: 'eSewa', khalti: 'Khalti' };
+
+    // Static class lists — Tailwind only compiles classes it can literally find
+    // in source files, so these must be spelled out, not built with template strings.
+    const selectedClasses = {
+        green:  ['border-green-600', 'bg-green-50', 'shadow-lg', 'ring-2', 'ring-green-500', 'ring-offset-2'],
+        purple: ['border-purple-600', 'bg-purple-50', 'shadow-lg', 'ring-2', 'ring-purple-500', 'ring-offset-2'],
+    };
+    const labelTextClasses = {
+        green:  'text-green-700',
+        purple: 'text-purple-700',
+    };
+
+    function selectPaymentCard(card) {
+        paymentCards.forEach(c => {
+            c.classList.remove(
+                'border-green-600', 'bg-green-50',
+                'border-purple-600', 'bg-purple-50',
+                'shadow-lg', 'ring-2', 'ring-green-500', 'ring-purple-500', 'ring-offset-2'
+            );
+            c.querySelector('input[type="radio"]').checked = false;
+            const check = c.querySelector('.payment-check');
+            check.classList.add('hidden');
+            check.classList.remove('flex');
+        });
+
+        const color = card.dataset.color;
+        card.classList.add(...selectedClasses[color]);
+        card.querySelector('input[type="radio"]').checked = true;
+        const check = card.querySelector('.payment-check');
+        check.classList.remove('hidden');
+        check.classList.add('flex');
+
+        const value = card.dataset.value;
+        paymentLabel.innerHTML = `Paying via <span class="font-semibold ${labelTextClasses[color]}">${paymentNames[value]}</span>`;
+    }
+
+    paymentCards.forEach(card => {
+        card.addEventListener('click', () => selectPaymentCard(card));
+    });
+
+    // Select Cash on Delivery by default on load
+    selectPaymentCard(document.querySelector('.payment-card[data-value="cod"]'));
+
+
     function getDeliveryCharge(km) {
         if (km <= 5)  return 50;
         if (km <= 10) return 100;

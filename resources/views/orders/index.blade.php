@@ -81,11 +81,26 @@
                                     'delivered' => 'background:#dcfce7; color:#15803d;',
                                     'cancelled' => 'background:#fee2e2; color:#b91c1c;',
                                 ];
+                                $paymentBadgeStyles = [
+                                    'pending' => 'background:#fef3c7; color:#b45309;',
+                                    'paid'    => 'background:#dcfce7; color:#15803d;',
+                                    'failed'  => 'background:#fee2e2; color:#b91c1c;',
+                                ];
+                                $paymentLabels = [
+                                    'pending' => $order->payment_method === 'cod' ? 'Pay on Delivery' : 'Payment Pending',
+                                    'paid'    => 'Paid',
+                                    'failed'  => 'Payment Failed',
+                                ];
                             @endphp
                             <span style="font-size:0.7rem; font-weight:700; padding:0.25rem 0.75rem;
                                          border-radius:999px; text-transform:uppercase;
                                          {{ $badgeStyles[$order->status] }}">
                                 {{ $order->status }}
+                            </span>
+                            <span style="font-size:0.7rem; font-weight:700; padding:0.25rem 0.75rem;
+                                         border-radius:999px; text-transform:uppercase;
+                                         {{ $paymentBadgeStyles[$order->payment_status] }}">
+                                {{ $paymentLabels[$order->payment_status] }}
                             </span>
                             <span style="font-weight:700; color:#15803d;">
                                 Rs. {{ number_format($order->total, 2) }}
@@ -136,6 +151,27 @@
                                 <strong>Cancelled on:</strong>
                                 {{ $order->cancelled_at->format('d M Y, h:i A') }}<br>
                                 <strong>Reason:</strong> {{ $order->cancel_reason }}
+                            </div>
+                        @endif
+
+                        {{-- Retry Payment — online methods that haven't succeeded yet --}}
+                        @if($order->payment_method !== 'cod' && $order->payment_status !== 'paid' && $order->status !== 'cancelled')
+                            <div style="margin-top:1rem; display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
+                                <a href="{{ route('payment.initiate', $order) }}"
+                                   style="display:inline-block; font-size:0.875rem; background:#f0fdf4;
+                                          color:#15803d; font-weight:700;
+                                          padding:0.5rem 1.25rem; border-radius:0.75rem;
+                                          border:1px solid #bbf7d0; text-decoration:none;
+                                          transition:background 0.2s;"
+                                   onmouseover="this.style.background='#dcfce7'"
+                                   onmouseout="this.style.background='#f0fdf4'">
+                                    ↻ Retry Payment via {{ ucfirst($order->payment_method) }}
+                                </a>
+                                @if($order->payment_status === 'failed')
+                                    <span style="font-size:0.75rem; color:#b91c1c;">
+                                        Last attempt didn't go through — no charge was made.
+                                    </span>
+                                @endif
                             </div>
                         @endif
 

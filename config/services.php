@@ -34,5 +34,17 @@ return [
             'channel' => env('SLACK_BOT_USER_DEFAULT_CHANNEL'),
         ],
     ],
+    'esewa' => [
+    'product_code' => env('ESEWA_PRODUCT_CODE', 'EPAYTEST'),
+    'secret_key'   => env('ESEWA_SECRET_KEY', '8gBm/:&EnhH.1/q'),
+    'form_url'     => env('ESEWA_FORM_URL', 'https://rc-epay.esewa.com.np/api/epay/main/v2/form'),
+    'status_url'   => env('ESEWA_STATUS_URL', 'https://rc.esewa.com.np/api/epay/transaction/status/'),
+],
+
+'khalti' => [
+    'secret_key'   => env('KHALTI_SECRET_KEY', 'live_secret_key_68791341fdd94846a146f0457ff7b455'),
+    'initiate_url' => env('KHALTI_INITIATE_URL', 'https://dev.khalti.com/api/v2/epayment/initiate/'),
+    'lookup_url'   => env('KHALTI_LOOKUP_URL', 'https://dev.khalti.com/api/v2/epayment/lookup/'),
+],
 
 ];

@@ -11,6 +11,7 @@ class Order extends Model
         'address', 'latitude', 'longitude',
         'distance_km', 'delivery_charge',
         'subtotal', 'total', 'status',
+        'payment_method', 'payment_status',
         'cancel_reason', 'cancelled_at',
     ];
 

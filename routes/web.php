@@ -7,6 +7,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
+use App\Http\Controllers\PaymentController;
 // Public routes
 Route::get('/',         [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/about',    [PageController::class, 'about'])->name('about');
@@ -52,6 +53,10 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/create',       [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders',             [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::get('/payment/{order}/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
+    Route::get('/payment/esewa/success', [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
+    Route::get('/payment/esewa/{order}/failure', [PaymentController::class, 'esewaFailure'])->name('payment.esewa.failure');
+    Route::get('/payment/khalti/callback', [PaymentController::class, 'khaltiCallback'])->name('payment.khalti.callback');
 });
 
 require __DIR__ . '/auth.php';
