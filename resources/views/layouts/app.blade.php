@@ -5,7 +5,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <title>{{ config('app.name', 'FlowerPot') }}</title>
+        <title>{{ config('app.name', 'Biruwa') }}</title>
 
         <!-- Fonts -->
         <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -197,7 +197,7 @@
 
                 {{-- Brand --}}
                 <div class="footer-brand">
-                    <div class="footer-logo-font">🌿 FlowerPot</div>
+                    <div class="footer-logo-font">🌿 Biruwa</div>
                     <p>Bringing nature closer to you. Quality pots and plants for every home in Kathmandu Valley. Delivered to your doorstep.</p>
                     <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
                         <span class="footer-badge">🌿 100% Natural</span>
@@ -241,7 +241,7 @@
             <hr class="footer-divider">
 
             <div class="footer-bottom">
-                <span>© {{ date('Y') }} FlowerPot. All rights reserved. Made with 🌿 in Nepal.</span>
+                <span>© {{ date('Y') }} Biruwa. All rights reserved. Made with 🌿 in Nepal.</span>
                 <div style="display:flex; gap:1rem; align-items:center;">
                     <a href="{{ route('about') }}" style="color:#86efac; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#86efac'">Privacy Policy</a>
                     <a href="{{ route('about') }}" style="color:#86efac; text-decoration:none; font-size:0.8rem; transition:color 0.2s;" onmouseover="this.style.color='#ffffff'" onmouseout="this.style.color='#86efac'">Terms of Service</a>

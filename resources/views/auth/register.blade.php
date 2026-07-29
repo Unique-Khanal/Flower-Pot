@@ -2,7 +2,7 @@
 
     <div class="text-center mb-7">
         <h1 class="text-2xl font-bold text-stone-800">Create Account 🌱</h1>
-        <p class="text-stone-500 text-sm mt-1">Join FlowerPot and bring nature home</p>
+        <p class="text-stone-500 text-sm mt-1">Join Biruwa and bring nature home</p>
     </div>
 
     <form method="POST" action="{{ route('register') }}" class="space-y-5">

@@ -2,7 +2,7 @@
 
     <div class="text-center mb-7">
         <h1 class="text-2xl font-bold text-stone-800">Welcome Back 🌿</h1>
-        <p class="text-stone-500 text-sm mt-1">Sign in to your FlowerPot account</p>
+        <p class="text-stone-500 text-sm mt-1">Sign in to your Biruwa account</p>
     </div>
 
     <x-auth-session-status class="mb-4" :status="session('status')" />

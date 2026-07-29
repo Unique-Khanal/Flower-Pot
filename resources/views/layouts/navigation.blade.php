@@ -33,11 +33,7 @@
 
                 <!-- Logo -->
                 <a href="{{ route('home') }}" class="flex items-center gap-2.5 shrink-0">
-                    <x-application-logo class="h-11 w-11 drop-shadow-sm" />
-                    <div class="flex flex-col justify-center">
-                        <span class="logo-font">FlowerPot</span>
-                        <span class="logo-tagline">Kathmandu, Nepal</span>
-                    </div>
+                    <x-application-logo class="h-11 w-auto drop-shadow-sm" />
                 </a>
 
                 <!-- Nav Links -->

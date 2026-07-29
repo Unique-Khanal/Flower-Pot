@@ -8,7 +8,7 @@
 <section class="relative text-white py-28 px-4 text-center overflow-hidden">
     <div class="absolute inset-0">
         <img src="{{ asset('images/ceramics/ceramics-large-pot2.webp') }}"
-             class="w-full h-full object-cover" alt="About FlowerPot">
+             class="w-full h-full object-cover" alt="About Biruwa">
         <div class="absolute inset-0 bg-gradient-to-b from-green-950/85 via-green-900/75 to-green-950/90"></div>
     </div>
     <div class="relative z-10 max-w-3xl mx-auto">
@@ -16,22 +16,22 @@
                      uppercase tracking-widest text-xs px-4 py-1.5 rounded-full mb-5 font-semibold">
             Our Story
         </span>
-        <h1 class="brand-font text-4xl md:text-5xl font-bold mb-5 leading-tight">About FlowerPot</h1>
+        <h1 class="brand-font text-4xl md:text-5xl font-bold mb-5 leading-tight">About Biruwa</h1>
         <p class="text-green-100 text-lg max-w-2xl mx-auto leading-relaxed">
-            We believe every home deserves a touch of green. FlowerPot was born out of a passion
+            We believe every home deserves a touch of green. Biruwa was born out of a passion
             for plants and a desire to make beautiful, quality pots accessible to everyone.
         </p>
     </div>
 </section>
 
-{{-- What is FlowerPot? --}}
+{{-- What is Biruwa? --}}
 <section class="py-20 px-4 bg-white">
     <div class="max-w-5xl mx-auto grid grid-cols-1 md:grid-cols-2 gap-14 items-center">
         <div>
             <span class="text-green-600 font-semibold text-xs uppercase tracking-widest">Who We Are</span>
             <h2 class="brand-font text-3xl font-bold text-stone-900 mt-2 mb-5">Our Story</h2>
             <p class="text-stone-600 leading-relaxed mb-4">
-                FlowerPot started with a simple idea — that bringing nature indoors should be easy, joyful,
+                Biruwa started with a simple idea — that bringing nature indoors should be easy, joyful,
                 and affordable. We are a team of plant lovers and designers who curate the finest pots and
                 plants so you can create a greener, calmer space wherever you live.
             </p>
@@ -43,12 +43,12 @@
             </p>
             <p class="text-stone-600 leading-relaxed">
                 Whether you are a seasoned plant parent or just starting your green journey,
-                FlowerPot has something for every home, every budget, and every style.
+                Biruwa has something for every home, every budget, and every style.
             </p>
         </div>
         <div class="rounded-3xl overflow-hidden shadow-xl">
             <img src="{{ asset('images/ceramics/ceramics-large-pot5.webp') }}"
-                 alt="FlowerPot Product"
+                 alt="Biruwa Product"
                  class="w-full h-80 object-cover">
         </div>
     </div>
@@ -93,7 +93,7 @@
     <div class="max-w-5xl mx-auto">
         <div class="text-center mb-12">
             <span class="text-green-600 font-semibold text-xs uppercase tracking-widest">Why Shop With Us</span>
-            <h2 class="brand-font text-3xl font-bold text-stone-900 mt-2">The FlowerPot Experience</h2>
+            <h2 class="brand-font text-3xl font-bold text-stone-900 mt-2">The Biruwa Experience</h2>
         </div>
         <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
             @foreach([

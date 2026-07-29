@@ -11,7 +11,7 @@
         <div class="absolute inset-0 bg-green-900/75"></div>
     </div>
     <div class="relative z-10 max-w-3xl mx-auto">
-        <p class="text-green-300 uppercase tracking-widest text-xs mb-3 font-semibold">FlowerPot Store</p>
+        <p class="text-green-300 uppercase tracking-widest text-xs mb-3 font-semibold">Biruwa Store</p>
         <h1 class="text-4xl md:text-5xl font-extrabold mb-4">Our Products</h1>
         <p class="text-green-100 text-lg max-w-2xl mx-auto">Explore our wide collection of beautiful pots and vibrant plants.</p>
     </div>

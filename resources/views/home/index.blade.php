@@ -19,7 +19,7 @@
         <div class="max-w-xl">
             <span class="inline-block bg-amber-400/20 border border-amber-400/40 text-amber-300
                          text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
-                🌿 Welcome to FlowerPot
+                🌿 Welcome to Biruwa
             </span>
             <h1 class="brand-font text-5xl sm:text-6xl lg:text-7xl font-bold text-white leading-tight mb-6">
                 Bring <span class="text-amber-400">Nature</span><br>Into Your Home

@@ -166,7 +166,7 @@
                 <h2 class="text-lg font-bold text-stone-800 mb-3"> Delivery Location</h2>
                 <div id="map" class="w-full rounded-xl" style="height:420px;"></div>
                 <p class="text-xs text-stone-400 mt-2 text-center">
-                    📍 Red pin = Your location &nbsp;|&nbsp; 🟢 Green pin = FlowerPot Factory
+                    📍 Red pin = Your location &nbsp;|&nbsp; 🟢 Green pin = FlowerPot & Biruwa Factory
                 </p>
             </div>
 
@@ -284,7 +284,7 @@
 });
     L.marker([FACTORY_LAT, FACTORY_LNG], { icon: factoryIcon })
      .addTo(map)
-     .bindPopup('<b>🌿 FlowerPot Factory</b><br>Your order ships from here')
+     .bindPopup('<b>🌿 FlowerPot & Biruwa Factory</b><br>Your order ships from here')
      .openPopup();
 
     // Customer marker (red)

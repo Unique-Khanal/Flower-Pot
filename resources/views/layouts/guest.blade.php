@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="csrf-token" content="{{ csrf_token() }}">
     <title>{{ config('app.name', 'FlowerPot') }}</title>
+    <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -96,11 +97,7 @@
 
         <!-- Logo -->
         <a href="{{ route('home') }}" class="flex flex-col items-center mb-8 group">
-            <x-application-logo class="h-20 w-20 drop-shadow-lg transition-transform group-hover:scale-105" />
-            <span class="logo-font text-2xl mt-2 tracking-wide">FlowerPot</span>
-            <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:#a16207;margin-top:2px;">
-                Kathmandu, Nepal
-            </span>
+            <x-application-logo class="h-20 w-auto drop-shadow-lg transition-transform group-hover:scale-105" />
         </a>
 
         <!-- Card -->

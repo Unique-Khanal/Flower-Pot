@@ -89,7 +89,7 @@ class PaymentController extends Controller
                 'website_url' => url('/'),
                 'amount' => (int) round($order->total * 100), // paisa
                 'purchase_order_id' => (string) $order->id,
-                'purchase_order_name' => 'FlowerPot Order #' . $order->id,
+                'purchase_order_name' => 'Biruwa Order #' . $order->id,
                 'customer_info' => [
                     'name' => $order->customer_name,
                     'email' => $order->email,
