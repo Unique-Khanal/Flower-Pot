@@ -1,4 +1,4 @@
-# 🌿 FlowerPot
+# 🌿 Biruwa
 
 A full-stack e-commerce web application for browsing and purchasing flower pots and plants,
 built with **Laravel 12**, **Tailwind CSS**, **Alpine.js**, and **Vite**.
