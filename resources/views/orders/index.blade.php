@@ -167,8 +167,26 @@
                                    onmouseout="this.style.background='#f0fdf4'">
                                     ↻ Retry Payment via {{ ucfirst($order->payment_method) }}
                                 </a>
+
                                 @if($order->payment_status === 'failed')
-                                    <span style="font-size:0.75rem; color:#b91c1c;">
+                                    <form action="{{ route('orders.switchToCod', $order) }}" method="POST" style="display:inline;" id="cod-switch-form-{{ $order->id }}">
+                                        @csrf
+                                        <button type="button"
+                                                onclick="confirmSwitchToCod({{ $order->id }})"
+                                                style="font-size:0.875rem; background:#fffbeb;
+                                                       color:#a16207; font-weight:700;
+                                                       padding:0.5rem 1.25rem; border-radius:0.75rem;
+                                                       border:1px solid #fde68a; cursor:pointer;
+                                                       transition:background 0.2s;"
+                                                onmouseover="this.style.background='#fef3c7'"
+                                                onmouseout="this.style.background='#fffbeb'">
+                                            💵 Switch to Cash on Delivery
+                                        </button>
+                                    </form>
+                                @endif
+
+                                @if($order->payment_status === 'failed')
+                                    <span style="font-size:0.75rem; color:#b91c1c; width:100%;">
                                         Last attempt didn't go through — no charge was made.
                                     </span>
                                 @endif
@@ -269,6 +287,25 @@
         card.style.opacity = '0';
         card.style.transform = 'translateX(40px)';
         setTimeout(() => card.remove(), 400);
+    }
+
+    function confirmSwitchToCod(orderId) {
+        Swal.fire({
+            title: 'Switch to Cash on Delivery?',
+            html: 'You will pay when the order arrives instead of paying online.<br>No online charge will be made.',
+            icon: 'question',
+            showCancelButton: true,
+            confirmButtonText: '💵 Yes, switch to COD',
+            cancelButtonText: 'Keep trying online payment',
+            confirmButtonColor: '#a16207',
+            cancelButtonColor: '#78716c',
+            reverseButtons: true,
+            focusCancel: true
+        }).then((result) => {
+            if (result.isConfirmed) {
+                document.getElementById(`cod-switch-form-${orderId}`).submit();
+            }
+        });
     }
 </script>
 

@@ -133,6 +133,32 @@ class OrderController extends Controller
         return back()->with('success', 'Order cancelled successfully.');
     }
 
+    /**
+     * Let a customer switch a failed/unpaid online order to Cash on Delivery
+     * instead of retrying the same gateway — no charge, order proceeds normally.
+     */
+    public function switchToCod(Order $order)
+    {
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        if ($order->payment_status === 'paid') {
+            return back()->with('error', 'This order is already paid — nothing to switch.');
+        }
+
+        if ($order->status === 'cancelled') {
+            return back()->with('error', 'This order was cancelled.');
+        }
+
+        $order->update([
+            'payment_method' => 'cod',
+            'payment_status' => 'pending',
+        ]);
+
+        return back()->with('success', 'Switched to Cash on Delivery — no online payment needed.');
+    }
+
     // Delivery charge calculation
     public static function calculateDeliveryCharge(float $distanceKm): int
     {

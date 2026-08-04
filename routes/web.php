@@ -53,10 +53,12 @@ Route::middleware('auth')->group(function () {
     Route::get('/orders/create',       [OrderController::class, 'create'])->name('orders.create');
     Route::post('/orders',             [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
+    Route::post('/orders/{order}/switch-to-cod', [OrderController::class, 'switchToCod'])->name('orders.switchToCod');
+
     Route::get('/payment/{order}/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
-    Route::get('/payment/esewa/success', [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
+    Route::get('/payment/esewa/success',    [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
     Route::get('/payment/esewa/{order}/failure', [PaymentController::class, 'esewaFailure'])->name('payment.esewa.failure');
-    Route::get('/payment/khalti/callback', [PaymentController::class, 'khaltiCallback'])->name('payment.khalti.callback');
+    Route::get('/payment/khalti/callback',  [PaymentController::class, 'khaltiCallback'])->name('payment.khalti.callback');
 });
 
 require __DIR__ . '/auth.php';

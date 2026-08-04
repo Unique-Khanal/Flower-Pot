@@ -31,9 +31,9 @@ class PaymentController extends Controller
         }
 
         return match ($order->payment_method) {
-            'esewa' => $this->initiateEsewa($order),
+            'esewa'  => $this->initiateEsewa($order),
             'khalti' => $this->initiateKhalti($order),
-            default => redirect()->route('orders.index'),
+            default  => redirect()->route('orders.index'),
         };
     }
 
@@ -46,16 +46,16 @@ class PaymentController extends Controller
         $transactionUuid = 'FP-' . $order->id . '-' . now()->timestamp;
 
         $fields = [
-            'amount' => number_format($order->subtotal, 2, '.', ''),
-            'tax_amount' => '0',
-            'total_amount' => number_format($order->total, 2, '.', ''),
-            'transaction_uuid' => $transactionUuid,
-            'product_code' => config('services.esewa.product_code'),
+            'amount'                => number_format($order->subtotal, 2, '.', ''),
+            'tax_amount'            => '0',
+            'total_amount'          => number_format($order->total, 2, '.', ''),
+            'transaction_uuid'      => $transactionUuid,
+            'product_code'          => config('services.esewa.product_code'),
             'product_service_charge' => '0',
             'product_delivery_charge' => number_format($order->delivery_charge, 2, '.', ''),
-            'success_url' => route('payment.esewa.success'),
-            'failure_url' => route('payment.esewa.failure', $order),
-            'signed_field_names' => 'total_amount,transaction_uuid,product_code',
+            'success_url'           => route('payment.esewa.success'),
+            'failure_url'           => route('payment.esewa.failure', $order),
+            'signed_field_names'    => 'total_amount,transaction_uuid,product_code',
         ];
 
         $signatureString = "total_amount={$fields['total_amount']},transaction_uuid={$fields['transaction_uuid']},product_code={$fields['product_code']}";
@@ -67,7 +67,7 @@ class PaymentController extends Controller
 
         return view('payment.redirecting', [
             'gatewayUrl' => config('services.esewa.form_url'),
-            'fields' => $fields,
+            'fields'     => $fields,
         ]);
     }
 
@@ -83,19 +83,19 @@ class PaymentController extends Controller
             // TEMP: local Windows dev only — PHP has no CA bundle configured, causing
             // "SSL certificate problem: self-signed certificate in certificate chain".
             // Fix php.ini's curl.cainfo instead, then delete this line before deploying.
-            ->when(app()->environment('local'), fn($http) => $http->withoutVerifying())
+            ->when(app()->environment('local'), fn ($http) => $http->withoutVerifying())
             ->post(config('services.khalti.initiate_url'), [
-                'return_url' => route('payment.khalti.callback'),
-                'website_url' => url('/'),
-                'amount' => (int) round($order->total * 100), // paisa
-                'purchase_order_id' => (string) $order->id,
-                'purchase_order_name' => 'Biruwa Order #' . $order->id,
-                'customer_info' => [
-                    'name' => $order->customer_name,
-                    'email' => $order->email,
-                    'phone' => $order->phone_no,
-                ],
-            ]);
+            'return_url'      => route('payment.khalti.callback'),
+            'website_url'     => url('/'),
+            'amount'          => (int) round($order->total * 100), // paisa
+            'purchase_order_id'   => (string) $order->id,
+            'purchase_order_name' => 'Biruwa Order #' . $order->id,
+            'customer_info'   => [
+                'name'  => $order->customer_name,
+                'email' => $order->email,
+                'phone' => $order->phone_no,
+            ],
+        ]);
 
         if ($response->failed() || !$response->json('payment_url')) {
             return redirect()->route('orders.index')
@@ -126,11 +126,12 @@ class PaymentController extends Controller
 
         $this->authorizeOrder($order);
 
-        $verify = Http::get(config('services.esewa.status_url'), [
-            'product_code' => config('services.esewa.product_code'),
-            'total_amount' => number_format($order->total, 2, '.', ''),
-            'transaction_uuid' => $transactionUuid,
-        ]);
+        $verify = Http::when(app()->environment('local'), fn ($http) => $http->withoutVerifying())
+            ->get(config('services.esewa.status_url'), [
+                'product_code'     => config('services.esewa.product_code'),
+                'total_amount'     => number_format($order->total, 2, '.', ''),
+                'transaction_uuid' => $transactionUuid,
+            ]);
 
         if ($verify->ok() && $verify->json('status') === 'COMPLETE') {
             $order->update(['payment_status' => 'paid']);
@@ -168,7 +169,7 @@ class PaymentController extends Controller
         $verify = Http::withHeaders([
             'Authorization' => 'key ' . config('services.khalti.secret_key'),
         ])
-            ->when(app()->environment('local'), fn($http) => $http->withoutVerifying())
+            ->when(app()->environment('local'), fn ($http) => $http->withoutVerifying())
             ->post(config('services.khalti.lookup_url'), ['pidx' => $pidx]);
 
         if ($verify->ok() && $verify->json('status') === 'Completed') {
