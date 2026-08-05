@@ -7,10 +7,10 @@ use App\Models\OrderItem;
 use App\Models\CartItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class OrderController extends Controller
 {
-    // Factory coordinates (Kathmandu)
     const FACTORY_LAT = 27.7172;
     const FACTORY_LNG = 85.3240;
 
@@ -44,7 +44,7 @@ class OrderController extends Controller
             'payment_method' => ['required', 'in:cod,esewa,khalti'],
         ]);
 
-        $cartItems = CartItem::with('product')
+        $cartItems = CartItem::with('product.vendor')
             ->where('user_id', Auth::id())
             ->get();
 
@@ -56,53 +56,62 @@ class OrderController extends Controller
         $subtotal = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
         $total = $subtotal + $request->delivery_charge;
 
-        // Create order
-        $order = Order::create([
-            'user_id' => Auth::id(),
-            'customer_name' => $request->customer_name,
-            'email' => $request->email,
-            'phone_no' => $request->phone_no,
-            'address' => $request->address,
-            'latitude' => $request->latitude,
-            'longitude' => $request->longitude,
-            'distance_km' => $request->distance_km,
-            'delivery_charge' => $request->delivery_charge,
-            'subtotal' => $subtotal,
-            'total' => $total,
-            'status' => 'pending',
-            'payment_method' => $request->payment_method,
-            'payment_status' => 'pending',
-        ]);
+        $order = DB::transaction(function () use ($request, $cartItems, $subtotal, $total) {
 
-        // Save order items
-        foreach ($cartItems as $item) {
-            OrderItem::create([
-                'order_id' => $order->id,
-                'product_id' => $item->product_id,
-                'product_name' => $item->product->name,
-                'product_image' => $item->product->image,
-                'price' => $item->product->price,
-                'quantity' => $item->quantity,
-                'subtotal' => $item->product->price * $item->quantity,
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'customer_name' => $request->customer_name,
+                'email' => $request->email,
+                'phone_no' => $request->phone_no,
+                'address' => $request->address,
+                'latitude' => $request->latitude,
+                'longitude' => $request->longitude,
+                'distance_km' => $request->distance_km,
+                'delivery_charge' => $request->delivery_charge,
+                'subtotal' => $subtotal,
+                'total' => $total,
+                'status' => 'pending',
+                'payment_method' => $request->payment_method,
+                'payment_status' => 'pending',
             ]);
-        }
 
-        // Clear cart after order
-        CartItem::where('user_id', Auth::id())->delete();
+            // Save order items — stamped with vendor + commission
+            foreach ($cartItems as $item) {
+                $vendorId       = $item->product->vendor_id;
+                $commissionRate = $item->product->vendor->commission_rate ?? 0;
+                $lineSubtotal   = $item->product->price * $item->quantity;
+                $commission     = round($lineSubtotal * ($commissionRate / 100), 2);
 
-        // Cash on Delivery -> done, go straight to order list
+                OrderItem::create([
+                    'order_id'          => $order->id,
+                    'product_id'        => $item->product_id,
+                    'vendor_id'         => $vendorId,
+                    'vendor_status'     => 'pending',
+                    'commission_amount' => $commission,
+                    'product_name'      => $item->product->name,
+                    'product_image'     => $item->product->image,
+                    'price'             => $item->product->price,
+                    'quantity'          => $item->quantity,
+                    'subtotal'          => $lineSubtotal,
+                ]);
+            }
+
+            CartItem::where('user_id', Auth::id())->delete();
+
+            return $order;
+        });
+
         if ($order->payment_method === 'cod') {
             return redirect()->route('orders.index')
                 ->with('success', '🎉 Order placed successfully!');
         }
 
-        // eSewa / Khalti -> send to the payment gateway next
         return redirect()->route('payment.initiate', $order);
     }
 
     public function index()
     {
-        $orders = Order::with('items')
+        $orders = Order::with('items.vendor')
             ->where('user_id', Auth::id())
             ->latest()
             ->get();
@@ -130,13 +139,12 @@ class OrderController extends Controller
             'cancelled_at' => now(),
         ]);
 
+        // Cascade cancellation down to each vendor's line item
+        $order->items()->update(['vendor_status' => 'cancelled']);
+
         return back()->with('success', 'Order cancelled successfully.');
     }
 
-    /**
-     * Let a customer switch a failed/unpaid online order to Cash on Delivery
-     * instead of retrying the same gateway — no charge, order proceeds normally.
-     */
     public function switchToCod(Order $order)
     {
         if ($order->user_id !== Auth::id()) {
@@ -159,7 +167,6 @@ class OrderController extends Controller
         return back()->with('success', 'Switched to Cash on Delivery — no online payment needed.');
     }
 
-    // Delivery charge calculation
     public static function calculateDeliveryCharge(float $distanceKm): int
     {
         return match (true) {

@@ -24,6 +24,16 @@
         0%, 100% { box-shadow: 0 0 0 0 rgba(21,128,61,0.4); }
         50%       { box-shadow: 0 0 0 6px rgba(21,128,61,0); }
     }
+    .role-badge {
+        font-size: 0.62rem;
+        font-weight: 700;
+        padding: 1px 8px;
+        border-radius: 999px;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+    }
+    .role-badge.vendor { background:#fef3c7; color:#b45309; }
+    .role-badge.admin  { background:#ede9fe; color:#6d28d9; }
 </style>
 
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow-sm">
@@ -43,6 +53,18 @@
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">Products</x-nav-link>
                     <x-nav-link :href="route('services')"       :active="request()->routeIs('services')">Services</x-nav-link>
                     <x-nav-link :href="route('contact')"        :active="request()->routeIs('contact')">Contact</x-nav-link>
+
+                    @auth
+                        @if(Auth::user()->role === 'vendor')
+                            <x-nav-link :href="route('vendor.dashboard')" :active="request()->routeIs('vendor.*')">
+                                🏪 Vendor Panel
+                            </x-nav-link>
+                        @elseif(Auth::user()->role === 'admin')
+                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                                ⚙️ Admin Panel
+                            </x-nav-link>
+                        @endif
+                    @endauth
                 </div>
             </div>
 
@@ -50,20 +72,22 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
 
                 @auth
-                    <!-- Cart Icon -->
-                    <a href="{{ route('cart.index') }}" class="relative text-stone-500 hover:text-green-700 transition">
-                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                        </svg>
-                        @php $cartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity'); @endphp
-                        @if($cartCount > 0)
-                            <span class="absolute -top-2 -right-2 bg-amber-400 text-stone-900 text-xs font-bold
-                                         w-5 h-5 rounded-full flex items-center justify-center shadow">
-                                {{ $cartCount }}
-                            </span>
-                        @endif
-                    </a>
+                    {{-- Cart Icon — customers only --}}
+                    @if(Auth::user()->role === 'customer' || !Auth::user()->role)
+                        <a href="{{ route('cart.index') }}" class="relative text-stone-500 hover:text-green-700 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                      d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                            </svg>
+                            @php $cartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity'); @endphp
+                            @if($cartCount > 0)
+                                <span class="absolute -top-2 -right-2 bg-amber-400 text-stone-900 text-xs font-bold
+                                             w-5 h-5 rounded-full flex items-center justify-center shadow">
+                                    {{ $cartCount }}
+                                </span>
+                            @endif
+                        </a>
+                    @endif
 
                     <!-- User Dropdown -->
                     <x-dropdown align="right" width="48">
@@ -78,6 +102,12 @@
                                     </div>
 
                                     <span>{{ Auth::user()->name }}</span>
+
+                                    @if(Auth::user()->role === 'vendor')
+                                        <span class="role-badge vendor">Vendor</span>
+                                    @elseif(Auth::user()->role === 'admin')
+                                        <span class="role-badge admin">Admin</span>
+                                    @endif
                                 </div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -87,16 +117,25 @@
                             </button>
                         </x-slot>
                         <x-slot name="content">
-    <x-dropdown-link :href="route('orders.index')">📦 My Orders</x-dropdown-link>
-    <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
-    <form method="POST" action="{{ route('logout') }}" id="logout-form">
-    @csrf
-</form>
-<x-dropdown-link href="#"
-    onclick="confirmLogout()">
-    {{ __('Log Out') }}
-</x-dropdown-link>
-</x-slot>
+                            @if(Auth::user()->role === 'customer' || !Auth::user()->role)
+                                <x-dropdown-link :href="route('orders.index')">📦 My Orders</x-dropdown-link>
+                            @endif
+
+                            @if(Auth::user()->role === 'vendor')
+                                <x-dropdown-link :href="route('vendor.dashboard')">🏪 Vendor Dashboard</x-dropdown-link>
+                            @elseif(Auth::user()->role === 'admin')
+                                <x-dropdown-link :href="route('admin.dashboard')">⚙️ Admin Panel</x-dropdown-link>
+                            @endif
+
+                            <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
+
+                            <form method="POST" action="{{ route('logout') }}" id="logout-form">
+                                @csrf
+                            </form>
+                            <x-dropdown-link href="#" onclick="confirmLogout()">
+                                {{ __('Log Out') }}
+                            </x-dropdown-link>
+                        </x-slot>
                     </x-dropdown>
 
                 @else
@@ -137,28 +176,42 @@
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">Products</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('services')"       :active="request()->routeIs('services')">Services</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('contact')"        :active="request()->routeIs('contact')">Contact</x-responsive-nav-link>
+
+            @auth
+                @if(Auth::user()->role === 'vendor')
+                    <x-responsive-nav-link :href="route('vendor.dashboard')" :active="request()->routeIs('vendor.*')">
+                        🏪 Vendor Panel
+                    </x-responsive-nav-link>
+                @elseif(Auth::user()->role === 'admin')
+                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
+                        ⚙️ Admin Panel
+                    </x-responsive-nav-link>
+                @endif
+            @endauth
         </div>
 
         @auth
         <div class="pt-4 pb-1 border-t border-gray-200">
 
-            <!-- Mobile Cart Link -->
-            <div class="px-4 mb-2">
-                <a href="{{ route('cart.index') }}"
-                   class="flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-green-700 transition">
-                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                              d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
-                    </svg>
-                    My Cart
-                    @php $cartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity'); @endphp
-                    @if($cartCount > 0)
-                        <span class="bg-amber-400 text-stone-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
-                            {{ $cartCount }}
-                        </span>
-                    @endif
-                </a>
-            </div>
+            {{-- Mobile Cart Link — customers only --}}
+            @if(Auth::user()->role === 'customer' || !Auth::user()->role)
+                <div class="px-4 mb-2">
+                    <a href="{{ route('cart.index') }}"
+                       class="flex items-center gap-2 text-sm font-medium text-stone-600 hover:text-green-700 transition">
+                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                  d="M3 3h2l.4 2M7 13h10l4-8H5.4M7 13L5.4 5M7 13l-2.293 2.293c-.63.63-.184 1.707.707 1.707H17m0 0a2 2 0 100 4 2 2 0 000-4zm-8 2a2 2 0 11-4 0 2 2 0 014 0z"/>
+                        </svg>
+                        My Cart
+                        @php $cartCount = \App\Models\CartItem::where('user_id', Auth::id())->sum('quantity'); @endphp
+                        @if($cartCount > 0)
+                            <span class="bg-amber-400 text-stone-900 text-xs font-bold px-1.5 py-0.5 rounded-full">
+                                {{ $cartCount }}
+                            </span>
+                        @endif
+                    </a>
+                </div>
+            @endif
 
             <div class="px-4 flex items-center gap-3">
 
@@ -168,17 +221,27 @@
                 </div>
 
                 <div>
-                    <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
+                    <div class="font-medium text-base text-gray-800 flex items-center gap-2">
+                        {{ Auth::user()->name }}
+                        @if(Auth::user()->role === 'vendor')
+                            <span class="role-badge vendor">Vendor</span>
+                        @elseif(Auth::user()->role === 'admin')
+                            <span class="role-badge admin">Admin</span>
+                        @endif
+                    </div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
             </div>
 
             <div class="mt-3 space-y-1">
-    <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
-    <x-responsive-nav-link href="#" onclick="confirmLogout()">
-        Log Out
-    </x-responsive-nav-link>
-</div>
+                @if(Auth::user()->role === 'customer' || !Auth::user()->role)
+                    <x-responsive-nav-link :href="route('orders.index')">📦 My Orders</x-responsive-nav-link>
+                @endif
+                <x-responsive-nav-link :href="route('profile.edit')">Profile</x-responsive-nav-link>
+                <x-responsive-nav-link href="#" onclick="confirmLogout()">
+                    Log Out
+                </x-responsive-nav-link>
+            </div>
         </div>
 
         @else
@@ -189,28 +252,28 @@
         @endauth
     </div>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-<script>
-    function confirmLogout() {
-        Swal.fire({
-            title: 'Leaving so soon? 🌿',
-            text: 'Are you sure you want to log out of FlowerPot?',
-            icon: 'question',
-            showCancelButton: true,
-            confirmButtonText: 'Yes, Log Out',
-            cancelButtonText: 'Stay Here',
-            confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#15803d',
-            borderRadius: '1rem',
-            customClass: {
-                popup:         'rounded-2xl',
-                confirmButton: 'rounded-xl',
-                cancelButton:  'rounded-xl',
-            }
-        }).then((result) => {
-            if (result.isConfirmed) {
-                document.getElementById('logout-form').submit();
-            }
-        });
-    }
-</script>
+    <script>
+        function confirmLogout() {
+            Swal.fire({
+                title: 'Leaving so soon? 🌿',
+                text: 'Are you sure you want to log out of FlowerPot?',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Log Out',
+                cancelButtonText: 'Stay Here',
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#15803d',
+                borderRadius: '1rem',
+                customClass: {
+                    popup:         'rounded-2xl',
+                    confirmButton: 'rounded-xl',
+                    cancelButton:  'rounded-xl',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('logout-form').submit();
+                }
+            });
+        }
+    </script>
 </nav>

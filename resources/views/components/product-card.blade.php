@@ -1,4 +1,4 @@
-@props(['image', 'name', 'price' => null, 'badge' => null, 'productId' => null])
+@props(['image', 'name', 'price' => null, 'badge' => null, 'productId' => null, 'vendorName' => null])
 
 <div class="bg-white rounded-2xl overflow-hidden shadow-sm hover:shadow-lg transition-all duration-300 flex flex-col group">
 
@@ -24,9 +24,15 @@
         <h3 class="text-stone-700 font-semibold text-xs leading-snug line-clamp-2 text-center">
             {{ $name }}
         </h3>
+
         @if($price)
             <p class="text-green-700 font-bold text-sm text-center">Rs. {{ number_format($price, 2) }}</p>
         @endif
+
+        {{-- Vendor attribution --}}
+        <p class="text-stone-400 text-[10px] text-center -mt-0.5">
+            Sold by {{ $vendorName ?? 'Biruwa' }}
+        </p>
 
         @if($productId)
             @auth

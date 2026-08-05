@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     protected $fillable = [
-        'name', 'image', 'price',
+        'vendor_id', 'name', 'image', 'price',
         'category', 'size',
         'quantity', 'stock',
         'badge'
@@ -17,6 +17,11 @@ class Product extends Model
         'price' => 'decimal:2',
     ];
 
+    public function vendor()
+    {
+        return $this->belongsTo(Vendor::class);
+    }
+
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
@@ -25,5 +30,10 @@ class Product extends Model
     public function isInStock(): bool
     {
         return $this->stock > 0;
+    }
+
+    public function isPlatformOwned(): bool
+    {
+        return is_null($this->vendor_id);
     }
 }

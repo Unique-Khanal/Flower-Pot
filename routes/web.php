@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+
 // Public routes
 Route::get('/',         [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 Route::get('/about',    [PageController::class, 'about'])->name('about');
@@ -24,7 +25,6 @@ Route::get('/products/cement',   [ProductController::class, 'cement'])->name('pr
 Route::get('/products/mud',      [ProductController::class, 'mud'])->name('products.mud');
 Route::get('/products/plastic',  [ProductController::class, 'plastic'])->name('products.plastic');
 
-// Product detail — auth required
 Route::get('/products/{product}', [ProductController::class, 'show'])
      ->name('products.show')
      ->middleware('auth');
@@ -47,6 +47,7 @@ Route::middleware('auth')->group(function () {
     Route::patch('/profile',  [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
 // Order routes
 Route::middleware('auth')->group(function () {
     Route::get('/orders',              [OrderController::class, 'index'])->name('orders.index');
@@ -59,6 +60,25 @@ Route::middleware('auth')->group(function () {
     Route::get('/payment/esewa/success',    [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
     Route::get('/payment/esewa/{order}/failure', [PaymentController::class, 'esewaFailure'])->name('payment.esewa.failure');
     Route::get('/payment/khalti/callback',  [PaymentController::class, 'khaltiCallback'])->name('payment.khalti.callback');
+});
+
+// ──────────────────────────────────────────────
+// VENDOR ROUTES (new — placeholder group)
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+    // Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
+    // Route::resource('/products', VendorProductController::class);
+    // Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
+    // Route::get('/payouts', [VendorPayoutController::class, 'index'])->name('payouts.index');
+});
+
+// ──────────────────────────────────────────────
+// ADMIN ROUTES (new — placeholder group)
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    // Route::get('/vendors', [AdminVendorController::class, 'index'])->name('vendors.index');
+    // Route::post('/vendors/{vendor}/approve', [AdminVendorController::class, 'approve'])->name('vendors.approve');
+    // Route::post('/vendors/{vendor}/reject', [AdminVendorController::class, 'reject'])->name('vendors.reject');
 });
 
 require __DIR__ . '/auth.php';
