@@ -35,20 +35,11 @@
         </p>
 
         @if($productId)
-            @auth
-                <a href="{{ route('products.show', $productId) }}"
-                   class="mt-1 bg-green-700 hover:bg-green-800 text-white text-xs font-bold
-                          py-1.5 rounded-lg text-center transition">
-                    View Details
-                </a>
-          @else
-    <button type="button"
-            onclick="showLoginAlert()"
-            class="mt-1 w-full bg-stone-200 hover:bg-stone-300 text-stone-700 text-xs font-bold
-                   py-1.5 rounded-lg text-center transition">
-        View Details
-    </button>
-@endauth
+            <a href="{{ route('products.show', $productId) }}"
+               class="mt-1 bg-green-700 hover:bg-green-800 text-white text-xs font-bold
+                      py-1.5 rounded-lg text-center transition">
+                View Details
+            </a>
         @endif
     </div>
 </div>

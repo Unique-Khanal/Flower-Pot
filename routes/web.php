@@ -5,16 +5,19 @@ use App\Http\Controllers\ProductController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\CartController;
-use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
+use App\Http\Controllers\HomeController;
+use Illuminate\Support\Facades\Route;
 
-// Public routes
-Route::get('/',         [App\Http\Controllers\HomeController::class, 'index'])->name('home');
-Route::get('/about',    [PageController::class, 'about'])->name('about');
-Route::get('/services', [PageController::class, 'services'])->name('services');
-Route::get('/contact',  [PageController::class, 'contact'])->name('contact');
-Route::post('/contact', [ContactController::class, 'store'])->name('contact.store');
+// ──────────────────────────────────────────────
+// PUBLIC ROUTES
+// ──────────────────────────────────────────────
+Route::get('/',          [HomeController::class, 'index'])->name('home');
+Route::get('/about',     [PageController::class, 'about'])->name('about');
+Route::get('/services',  [PageController::class, 'services'])->name('services');
+Route::get('/contact',   [PageController::class, 'contact'])->name('contact');
+Route::post('/contact',  [ContactController::class, 'store'])->name('contact.store');
 
 // Products — public browsing
 Route::get('/products',          [ProductController::class, 'index'])->name('products.index');
@@ -25,19 +28,25 @@ Route::get('/products/cement',   [ProductController::class, 'cement'])->name('pr
 Route::get('/products/mud',      [ProductController::class, 'mud'])->name('products.mud');
 Route::get('/products/plastic',  [ProductController::class, 'plastic'])->name('products.plastic');
 
+// Product detail — public. Anyone can view full descriptive info;
+// only Add to Cart / Place Order require a verified account (enforced
+// client-side with a login prompt, and server-side by the cart routes below).
 Route::get('/products/{product}', [ProductController::class, 'show'])
-     ->name('products.show')
-     ->middleware('auth');
+     ->name('products.show');
 
-// Cart — auth required
-Route::middleware('auth')->group(function () {
-    Route::get('/cart',                    [CartController::class, 'index'])->name('cart.index');
-    Route::post('/cart/{product}',         [CartController::class, 'add'])->name('cart.add');
-    Route::delete('/cart/{cartItem}',      [CartController::class, 'remove'])->name('cart.remove');
-    Route::patch('/cart/{cartItem}',       [CartController::class, 'update'])->name('cart.update');
+// ──────────────────────────────────────────────
+// CART — requires verified account
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/cart',               [CartController::class, 'index'])->name('cart.index');
+    Route::post('/cart/{product}',    [CartController::class, 'add'])->name('cart.add');
+    Route::delete('/cart/{cartItem}', [CartController::class, 'remove'])->name('cart.remove');
+    Route::patch('/cart/{cartItem}',  [CartController::class, 'update'])->name('cart.update');
 });
 
-// Profile
+// ──────────────────────────────────────────────
+// PROFILE — requires login only (not verification)
+// ──────────────────────────────────────────────
 Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
@@ -48,24 +57,27 @@ Route::middleware('auth')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
 
-// Order routes
-Route::middleware('auth')->group(function () {
-    Route::get('/orders',              [OrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/create',       [OrderController::class, 'create'])->name('orders.create');
-    Route::post('/orders',             [OrderController::class, 'store'])->name('orders.store');
+// ──────────────────────────────────────────────
+// ORDERS + PAYMENTS — requires verified account
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/orders',                 [OrderController::class, 'index'])->name('orders.index');
+    Route::get('/orders/create',          [OrderController::class, 'create'])->name('orders.create');
+    Route::post('/orders',                [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/{order}/switch-to-cod', [OrderController::class, 'switchToCod'])->name('orders.switchToCod');
 
-    Route::get('/payment/{order}/initiate', [PaymentController::class, 'initiate'])->name('payment.initiate');
-    Route::get('/payment/esewa/success',    [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
+    Route::get('/payment/{order}/initiate',      [PaymentController::class, 'initiate'])->name('payment.initiate');
+    Route::get('/payment/esewa/success',         [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
     Route::get('/payment/esewa/{order}/failure', [PaymentController::class, 'esewaFailure'])->name('payment.esewa.failure');
-    Route::get('/payment/khalti/callback',  [PaymentController::class, 'khaltiCallback'])->name('payment.khalti.callback');
+    Route::get('/payment/khalti/callback',       [PaymentController::class, 'khaltiCallback'])->name('payment.khalti.callback');
 });
 
 // ──────────────────────────────────────────────
-// VENDOR ROUTES (new — placeholder group)
+// VENDOR ROUTES (placeholder — pending your decision
+// on vendor onboarding flow)
 // ──────────────────────────────────────────────
-Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+Route::middleware(['auth', 'verified', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
     // Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
     // Route::resource('/products', VendorProductController::class);
     // Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
@@ -73,9 +85,9 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
 });
 
 // ──────────────────────────────────────────────
-// ADMIN ROUTES (new — placeholder group)
+// ADMIN ROUTES (placeholder)
 // ──────────────────────────────────────────────
-Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     // Route::get('/vendors', [AdminVendorController::class, 'index'])->name('vendors.index');
     // Route::post('/vendors/{vendor}/approve', [AdminVendorController::class, 'approve'])->name('vendors.approve');
     // Route::post('/vendors/{vendor}/reject', [AdminVendorController::class, 'reject'])->name('vendors.reject');

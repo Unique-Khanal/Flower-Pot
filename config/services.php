@@ -47,4 +47,8 @@ return [
     'lookup_url'   => env('KHALTI_LOOKUP_URL', 'https://dev.khalti.com/api/v2/epayment/lookup/'),
 ],
 
+    'abstract_email' => [
+        'api_key' => env('ABSTRACT_EMAIL_API_KEY', 'c4260c6e04c8434a8528b038f722d410'),
+    ],
+
 ];

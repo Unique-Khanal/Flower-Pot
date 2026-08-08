@@ -47,6 +47,13 @@
                         Rs. {{ number_format($product->price, 2) }}
                     </div>
 
+                    {{-- Description --}}
+                    @if($product->description)
+                        <p class="text-stone-600 leading-relaxed mb-6">
+                            {{ $product->description }}
+                        </p>
+                    @endif
+
                     {{-- Details Table --}}
                     <div class="space-y-3 mb-6">
                         @if($product->size)
@@ -97,29 +104,42 @@
                 {{-- Buttons --}}
                 @if($product->stock > 0)
                     <div class="flex flex-col gap-3">
+                        @auth
+                            {{-- Add to Cart --}}
+                            <form method="POST" action="{{ route('cart.add', $product) }}" id="cart-form">
+                                @csrf
+                                <input type="hidden" name="quantity" id="cart-qty" value="1">
+                                <button type="submit"
+                                        class="w-full bg-green-700 hover:bg-green-800 text-white font-bold
+                                               py-3.5 rounded-xl transition shadow-md hover:-translate-y-0.5 text-base">
+                                    🛒 Add to Cart
+                                </button>
+                            </form>
 
-                        {{-- Add to Cart --}}
-                        <form method="POST" action="{{ route('cart.add', $product) }}" id="cart-form">
-                            @csrf
-                            <input type="hidden" name="quantity" id="cart-qty" value="1">
-                            <button type="submit"
+                            {{-- Place Order --}}
+                            <form method="POST" action="{{ route('cart.add', $product) }}" id="order-form">
+                                @csrf
+                                <input type="hidden" name="quantity" id="order-qty" value="1">
+                                <input type="hidden" name="redirect_to_cart" value="1">
+                                <button type="submit"
+                                        class="w-full bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold
+                                               py-3.5 rounded-xl transition shadow-md hover:-translate-y-0.5 text-base">
+                                    ⚡ Place Order
+                                </button>
+                            </form>
+                        @else
+                            {{-- Guests: same look, but prompts login instead of submitting --}}
+                            <button type="button" onclick="showLoginAlert()"
                                     class="w-full bg-green-700 hover:bg-green-800 text-white font-bold
                                            py-3.5 rounded-xl transition shadow-md hover:-translate-y-0.5 text-base">
                                 🛒 Add to Cart
                             </button>
-                        </form>
-
-                        {{-- Place Order --}}
-                        <form method="POST" action="{{ route('cart.add', $product) }}" id="order-form">
-                            @csrf
-                            <input type="hidden" name="quantity" id="order-qty" value="1">
-                            <input type="hidden" name="redirect_to_cart" value="1">
-                            <button type="submit"
+                            <button type="button" onclick="showLoginAlert()"
                                     class="w-full bg-amber-400 hover:bg-amber-300 text-stone-900 font-bold
                                            py-3.5 rounded-xl transition shadow-md hover:-translate-y-0.5 text-base">
                                 ⚡ Place Order
                             </button>
-                        </form>
+                        @endauth
                     </div>
                 @else
                     <button disabled

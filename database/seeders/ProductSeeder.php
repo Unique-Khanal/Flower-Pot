@@ -90,9 +90,39 @@ class ProductSeeder extends Seeder
             ['vendor_id' => null, 'name' => 'Spider Plant (Hanging)',    'image' => 'images/Plants/spider_plant2.webp','price' => 550, 'category' => 'plants', 'size' => null, 'badge' => null],
         ];
 
+        foreach ($products as &$product) {
+            $product['description'] = $this->generateDescription($product);
+        }
+        unset($product);
+
         foreach ($products as $product) {
             $updateColumns = array_values(array_diff(array_keys($product), ['name']));
             DB::table('products')->upsert($product, ['name'], $updateColumns);
         }
+    }
+
+    /**
+     * Baseline descriptive copy so every product has something to show on
+     * its detail page out of the box. Admins/vendors can overwrite this
+     * later with more specific copy — this is just a sensible default.
+     */
+    protected function generateDescription(array $product): string
+    {
+        $size = $product['size'] ?? null;
+        $sizeText = match ($size) {
+            'large'  => 'A spacious large size, ',
+            'medium' => 'A versatile medium size, ',
+            'small'  => 'A compact small size, ',
+            default  => '',
+        };
+
+        return match ($product['category']) {
+            'ceramics' => $sizeText . "this handcrafted ceramic pot features a smooth glazed finish that adds an elegant touch to any indoor or outdoor space. Durable, weather-resistant, and easy to clean.",
+            'cement'   => $sizeText . "this sturdy cement pot is built to withstand sun, rain, and everyday wear — a minimalist, modern choice for gardens, balconies, and patios.",
+            'mud'      => "A traditional handmade clay pot that lets soil breathe naturally, keeping roots cool and healthy. A timeless, eco-friendly choice for plant lovers.",
+            'plastic'  => $sizeText . "this lightweight and affordable plastic pot is easy to move, resistant to cracking, and perfect for everyday indoor or outdoor gardening.",
+            'plants'   => "A healthy, nursery-grown {$product['name']}, carefully selected for vibrant foliage and easy care — a great addition to any home or office.",
+            default    => "A quality product from Biruwa, chosen for durability and style.",
+        };
     }
 }
