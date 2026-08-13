@@ -5,9 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\CartItem;
+use App\Mail\OrderConfirmationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Mail;
 
 class OrderController extends Controller
 {
@@ -102,8 +104,10 @@ class OrderController extends Controller
         });
 
         if ($order->payment_method === 'cod') {
+            Mail::to($order->email)->send(new OrderConfirmationMail($order));
+
             return redirect()->route('orders.index')
-                ->with('success', '🎉 Order placed successfully!');
+                ->with('success', '🎉 Order placed successfully! A confirmation email has been sent.');
         }
 
         return redirect()->route('payment.initiate', $order);
@@ -164,7 +168,9 @@ class OrderController extends Controller
             'payment_status' => 'pending',
         ]);
 
-        return back()->with('success', 'Switched to Cash on Delivery — no online payment needed.');
+        Mail::to($order->email)->send(new OrderConfirmationMail($order));
+
+        return back()->with('success', 'Switched to Cash on Delivery — a confirmation email has been sent.');
     }
 
     public static function calculateDeliveryCharge(float $distanceKm): int

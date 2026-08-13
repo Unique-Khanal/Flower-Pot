@@ -3,9 +3,11 @@
 namespace App\Http\Controllers;
 
 use App\Models\Order;
+use App\Mail\OrderConfirmationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 
 class PaymentController extends Controller
@@ -135,7 +137,8 @@ class PaymentController extends Controller
 
         if ($verify->ok() && $verify->json('status') === 'COMPLETE') {
             $order->update(['payment_status' => 'paid']);
-            return redirect()->route('orders.index')->with('success', '🎉 Payment successful! Order confirmed.');
+            Mail::to($order->email)->send(new OrderConfirmationMail($order));
+            return redirect()->route('orders.index')->with('success', '🎉 Payment successful! Order confirmed — a confirmation email has been sent.');
         }
 
         $order->update(['payment_status' => 'failed']);
@@ -174,7 +177,8 @@ class PaymentController extends Controller
 
         if ($verify->ok() && $verify->json('status') === 'Completed') {
             $order->update(['payment_status' => 'paid']);
-            return redirect()->route('orders.index')->with('success', '🎉 Payment successful! Order confirmed.');
+            Mail::to($order->email)->send(new OrderConfirmationMail($order));
+            return redirect()->route('orders.index')->with('success', '🎉 Payment successful! Order confirmed — a confirmation email has been sent.');
         }
 
         $order->update(['payment_status' => 'failed']);
