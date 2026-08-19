@@ -284,7 +284,7 @@
 });
     L.marker([FACTORY_LAT, FACTORY_LNG], { icon: factoryIcon })
      .addTo(map)
-     .bindPopup('<b>🌿 FlowerPot & Biruwa Factory</b><br>Your order ships from here')
+     .bindPopup('<b>🌿 FlowerPot & Biruwa Warehouse</b><br>Your order ships from here')
      .openPopup();
 
     // Customer marker (red)

@@ -12,8 +12,10 @@ class Vendor extends Model
         'business_phone',
         'business_address',
         'logo',
+        'sample_product_photos',
         'commission_rate',
         'status',
+        'rejection_reason',
         'bank_account_no',
         'bank_name',
         'approved_at',
@@ -22,6 +24,7 @@ class Vendor extends Model
     protected $casts = [
         'approved_at' => 'datetime',
         'commission_rate' => 'decimal:2',
+        'sample_product_photos' => 'array',
     ];
 
     public function user()
