@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Http\Controllers\Auth\Concerns\RedirectsAfterAuthentication;
 use App\Http\Requests\Auth\LoginRequest;
 use App\Mail\OtpVerificationMail;
 use App\Models\User;
@@ -14,6 +15,8 @@ use Illuminate\View\View;
 
 class AuthenticatedSessionController extends Controller
 {
+    use RedirectsAfterAuthentication;
+
     /**
      * Display the login view.
      */
@@ -34,9 +37,19 @@ class AuthenticatedSessionController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        // Already verified — proceed to intended page as normal
+        // Vendor status is checked FIRST — a pending/rejected/suspended vendor
+        // gets blocked immediately, before any OTP is ever generated or sent.
+        if ($user->isVendor()) {
+            $blocked = $this->blockedVendorResponse($request, $user);
+
+            if ($blocked) {
+                return $blocked;
+            }
+        }
+
+        // Past the vendor gate (or not a vendor at all) — now check verification
         if ($user->hasVerifiedEmail()) {
-            return redirect()->intended(route('home'));
+            return $this->redirectAfterLogin($request, $user);
         }
 
         // Not verified — generate a fresh OTP and email it now

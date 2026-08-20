@@ -82,11 +82,16 @@ Route::get('/vendor/register',  [VendorRegistrationController::class, 'create'])
 Route::post('/vendor/register', [VendorRegistrationController::class, 'store'])->name('vendor.register.store');
 
 // ──────────────────────────────────────────────
-// VENDOR ROUTES (placeholder — pending your decision
-// on vendor onboarding flow)
+// VENDOR ROUTES — only approved vendors reach these
+// (EnsureUserIsVendor middleware checks role + vendor relation exists;
+// pending/rejected/suspended vendors never get past login — see
+// RedirectsAfterAuthentication trait)
 // ──────────────────────────────────────────────
 Route::middleware(['auth', 'verified', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
-    // Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
+    Route::get('/dashboard', function () {
+        return view('vendor.dashboard', ['vendor' => \Illuminate\Support\Facades\Auth::user()->vendor]);
+    })->name('dashboard');
+
     // Route::resource('/products', VendorProductController::class);
     // Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
     // Route::get('/payouts', [VendorPayoutController::class, 'index'])->name('payouts.index');
