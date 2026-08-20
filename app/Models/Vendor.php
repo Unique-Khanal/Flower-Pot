@@ -11,6 +11,8 @@ class Vendor extends Model
         'business_name',
         'business_phone',
         'business_address',
+        'pan_number',
+        'pan_document',
         'logo',
         'sample_product_photos',
         'commission_rate',

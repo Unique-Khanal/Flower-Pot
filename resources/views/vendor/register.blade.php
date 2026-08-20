@@ -117,6 +117,26 @@
           </div>
         </div>
 
+        {{-- Section: PAN Verification --}}
+        <div>
+          <h2 class="text-sm font-bold text-[#1B3B2F] mb-1">PAN verification</h2>
+          <p class="text-xs text-[#8A9088] mb-3">Required for tax and business identity verification.</p>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
+            <div>
+              <x-input-label for="pan_number" value="PAN Number" class="text-[#1B3B2F]" />
+              <x-text-input id="pan_number" name="pan_number" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('pan_number')" placeholder="e.g. 123456789" required />
+            </div>
+            <div>
+              <x-input-label for="pan_document" value="PAN Certificate (photo or PDF)" class="text-[#1B3B2F]" />
+              <label for="pan_document" class="mt-1 flex items-center gap-2 border border-dashed border-[#C7D2C0] rounded-lg px-3 py-2 cursor-pointer hover:border-[#2F6B4F] hover:bg-[#F7F3E8] transition">
+                <span class="text-lg">📄</span>
+                <span id="pan-file-label" class="text-sm text-[#8A9088]">Click to upload PAN document</span>
+              </label>
+              <input id="pan_document" type="file" name="pan_document" accept="image/*,.pdf" required class="hidden">
+            </div>
+          </div>
+        </div>
+
         {{-- Section: Bank --}}
         <div>
           <h2 class="text-sm font-bold text-[#1B3B2F] mb-1">Bank details</h2>
@@ -184,6 +204,13 @@
 </div>
 
 <script>
+  document.getElementById('pan_document').addEventListener('change', function (e) {
+    const label = document.getElementById('pan-file-label');
+    label.textContent = e.target.files.length ? e.target.files[0].name : 'Click to upload PAN document';
+    label.classList.toggle('text-[#2F6B4F]', e.target.files.length > 0);
+    label.classList.toggle('font-semibold', e.target.files.length > 0);
+  });
+
   (function () {
     const MAX_PHOTOS = 5;
     const input   = document.getElementById('sample_photos');
