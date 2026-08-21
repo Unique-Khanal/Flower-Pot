@@ -9,7 +9,10 @@ use App\Http\Controllers\OrderController;
 use App\Http\Controllers\PaymentController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VendorRegistrationController;
+use App\Http\Controllers\VendorDashboardController;
 use App\Http\Controllers\Admin\VendorApplicationController;
+use App\Http\Controllers\Vendor\CommissionNegotiationController as VendorCommissionController;
+use App\Http\Controllers\Admin\CommissionNegotiationController as AdminCommissionController;
 use Illuminate\Support\Facades\Route;
 
 // ──────────────────────────────────────────────
@@ -30,9 +33,7 @@ Route::get('/products/cement',   [ProductController::class, 'cement'])->name('pr
 Route::get('/products/mud',      [ProductController::class, 'mud'])->name('products.mud');
 Route::get('/products/plastic',  [ProductController::class, 'plastic'])->name('products.plastic');
 
-// Product detail — public. Anyone can view full descriptive info;
-// only Add to Cart / Place Order require a verified account (enforced
-// client-side with a login prompt, and server-side by the cart routes below).
+// Product detail — public
 Route::get('/products/{product}', [ProductController::class, 'show'])
      ->name('products.show');
 
@@ -83,14 +84,13 @@ Route::post('/vendor/register', [VendorRegistrationController::class, 'store'])-
 
 // ──────────────────────────────────────────────
 // VENDOR ROUTES — only approved vendors reach these
-// (EnsureUserIsVendor middleware checks role + vendor relation exists;
-// pending/rejected/suspended vendors never get past login — see
-// RedirectsAfterAuthentication trait)
 // ──────────────────────────────────────────────
 Route::middleware(['auth', 'verified', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
-    Route::get('/dashboard', function () {
-        return view('vendor.dashboard', ['vendor' => \Illuminate\Support\Facades\Auth::user()->vendor]);
-    })->name('dashboard');
+    Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
+
+    Route::post('/commission/propose',              [VendorCommissionController::class, 'propose'])->name('commission.propose');
+    Route::post('/commission/{negotiation}/accept', [VendorCommissionController::class, 'accept'])->name('commission.accept');
+    Route::post('/commission/{negotiation}/reject', [VendorCommissionController::class, 'reject'])->name('commission.reject');
 
     // Route::resource('/products', VendorProductController::class);
     // Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
@@ -104,6 +104,11 @@ Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.'
     Route::get('/vendors',                    [VendorApplicationController::class, 'index'])->name('vendors.index');
     Route::post('/vendors/{vendor}/approve',  [VendorApplicationController::class, 'approve'])->name('vendors.approve');
     Route::post('/vendors/{vendor}/reject',   [VendorApplicationController::class, 'reject'])->name('vendors.reject');
+
+    Route::get('/commission-negotiations',                        [AdminCommissionController::class, 'index'])->name('commission-negotiations.index');
+    Route::post('/commission-negotiations/{negotiation}/accept',  [AdminCommissionController::class, 'accept'])->name('commission-negotiations.accept');
+    Route::post('/commission-negotiations/{negotiation}/reject',  [AdminCommissionController::class, 'reject'])->name('commission-negotiations.reject');
+    Route::post('/commission-negotiations/{negotiation}/counter', [AdminCommissionController::class, 'counter'])->name('commission-negotiations.counter');
 });
 
 require __DIR__ . '/auth.php';

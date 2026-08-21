@@ -53,4 +53,15 @@ class Vendor extends Model
     {
         return $this->status === 'approved';
     }
+    public function commissionNegotiations()
+{
+    return $this->hasMany(CommissionNegotiation::class)->latest();
+}
+
+public function pendingNegotiation()
+{
+    return $this->hasOne(CommissionNegotiation::class)
+        ->where('status', 'pending')
+        ->latestOfMany();
+}
 }

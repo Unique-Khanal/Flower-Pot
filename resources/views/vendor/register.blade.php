@@ -203,6 +203,7 @@
   </div>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script>
   document.getElementById('pan_document').addEventListener('change', function (e) {
     const label = document.getElementById('pan-file-label');
@@ -264,13 +265,28 @@
 
     input.addEventListener('change', (e) => {
       const newFiles = [...e.target.files];
+      let blocked = false;
 
       for (const file of newFiles) {
         if (selectedFiles.length >= MAX_PHOTOS) {
-          alert(`You can upload up to ${MAX_PHOTOS} photos.`);
+          blocked = true;
           break;
         }
         selectedFiles.push(file);
+      }
+
+      if (blocked) {
+        Swal.fire({
+          title: 'Photo limit reached 🌿',
+          text: `You can only upload up to ${MAX_PHOTOS} sample photos.`,
+          icon: 'warning',
+          confirmButtonText: 'Got it',
+          confirmButtonColor: '#2F6B4F',
+          customClass: {
+            popup: 'rounded-2xl',
+            confirmButton: 'rounded-xl px-6',
+          }
+        });
       }
 
       syncInputFiles();
