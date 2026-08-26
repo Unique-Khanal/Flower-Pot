@@ -48,7 +48,7 @@
 
         <div class="mt-12 pt-6 border-t border-[#2F6B4F]">
           <p class="text-xs text-[#B9C7BB]">Already applied?</p>
-          <a href="{{ route('login') }}" class="text-sm font-semibold text-[#F7F3E8] underline decoration-[#C89B3C] underline-offset-4">
+          <a href="{{ route('vendor.login') }}" class="text-sm font-semibold text-[#F7F3E8] underline decoration-[#C89B3C] underline-offset-4">
             Log in to check your status →
           </a>
         </div>
@@ -78,19 +78,26 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
               <x-input-label for="name" value="Your Full Name" class="text-[#1B3B2F]" />
-              <x-text-input id="name" name="name" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('name')" required autofocus />
+              <x-text-input id="name" name="name" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('name')" required autofocus data-live="name" />
+              <p class="field-hint text-xs mt-1 hidden" data-hint-for="name"></p>
+              <x-input-error :messages="$errors->get('name')" class="mt-1" />
             </div>
             <div>
               <x-input-label for="email" value="Email" class="text-[#1B3B2F]" />
-              <x-text-input id="email" name="email" type="email" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('email')" required />
+              <x-text-input id="email" name="email" type="email" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('email')" required data-live="email" />
+              <p class="field-hint text-xs mt-1 hidden" data-hint-for="email"></p>
+              <x-input-error :messages="$errors->get('email')" class="mt-1" />
             </div>
             <div>
               <x-input-label for="password" value="Password" class="text-[#1B3B2F]" />
-              <x-text-input id="password" name="password" type="password" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" required />
+              <x-text-input id="password" name="password" type="password" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" required data-live="password" />
+              <p class="field-hint text-xs mt-1 hidden" data-hint-for="password"></p>
+              <x-input-error :messages="$errors->get('password')" class="mt-1" />
             </div>
             <div>
               <x-input-label for="password_confirmation" value="Confirm Password" class="text-[#1B3B2F]" />
-              <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" required />
+              <x-text-input id="password_confirmation" name="password_confirmation" type="password" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" required data-live="password_confirmation" />
+              <p class="field-hint text-xs mt-1 hidden" data-hint-for="password_confirmation"></p>
             </div>
           </div>
         </div>
@@ -102,16 +109,22 @@
           <div class="space-y-4">
             <div>
               <x-input-label for="business_name" value="Shop / Business Name" class="text-[#1B3B2F]" />
-              <x-text-input id="business_name" name="business_name" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('business_name')" required />
+              <x-text-input id="business_name" name="business_name" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('business_name')" required data-live="business_name" />
+              <p class="field-hint text-xs mt-1 hidden" data-hint-for="business_name"></p>
+              <x-input-error :messages="$errors->get('business_name')" class="mt-1" />
             </div>
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
               <div>
                 <x-input-label for="business_phone" value="Business Phone" class="text-[#1B3B2F]" />
-                <x-text-input id="business_phone" name="business_phone" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('business_phone')" required />
+                <x-text-input id="business_phone" name="business_phone" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('business_phone')" required data-live="business_phone" />
+                <p class="field-hint text-xs mt-1 hidden" data-hint-for="business_phone"></p>
+                <x-input-error :messages="$errors->get('business_phone')" class="mt-1" />
               </div>
               <div>
                 <x-input-label for="business_address" value="Business Address" class="text-[#1B3B2F]" />
-                <x-text-input id="business_address" name="business_address" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('business_address')" required />
+                <x-text-input id="business_address" name="business_address" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('business_address')" required data-live="business_address" />
+                <p class="field-hint text-xs mt-1 hidden" data-hint-for="business_address"></p>
+                <x-input-error :messages="$errors->get('business_address')" class="mt-1" />
               </div>
             </div>
           </div>
@@ -124,7 +137,9 @@
           <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 items-start">
             <div>
               <x-input-label for="pan_number" value="PAN Number" class="text-[#1B3B2F]" />
-              <x-text-input id="pan_number" name="pan_number" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('pan_number')" placeholder="e.g. 123456789" required />
+              <x-text-input id="pan_number" name="pan_number" type="text" class="mt-1 block w-full rounded-lg border-[#C7D2C0] focus:border-[#2F6B4F] focus:ring-[#2F6B4F]" :value="old('pan_number')" placeholder="e.g. 123456789" required data-live="pan_number" />
+              <p class="field-hint text-xs mt-1 hidden" data-hint-for="pan_number"></p>
+              <x-input-error :messages="$errors->get('pan_number')" class="mt-1" />
             </div>
             <div>
               <x-input-label for="pan_document" value="PAN Certificate (photo or PDF)" class="text-[#1B3B2F]" />
@@ -133,6 +148,7 @@
                 <span id="pan-file-label" class="text-sm text-[#8A9088]">Click to upload PAN document</span>
               </label>
               <input id="pan_document" type="file" name="pan_document" accept="image/*,.pdf" required class="hidden">
+              <x-input-error :messages="$errors->get('pan_document')" class="mt-1" />
             </div>
           </div>
         </div>
@@ -165,6 +181,8 @@
           </label>
           <input id="sample_photos" type="file" name="sample_photos[]" multiple accept="image/*" required class="hidden">
           <div id="photo-preview" class="flex gap-2 flex-wrap mt-3"></div>
+          <x-input-error :messages="$errors->get('sample_photos')" class="mt-1" />
+          <x-input-error :messages="$errors->get('sample_photos.*')" class="mt-1" />
         </div>
 
         {{-- Section: Agreement — styled as a torn ticket stub --}}
@@ -291,6 +309,166 @@
 
       syncInputFiles();
       renderPreviews();
+    });
+  })();
+
+  // ── Live inline validation ─────────────────────────────────────
+  // Gives instant feedback as the vendor fills the form, instead of
+  // only showing problems after a full submit + page reload.
+  (function () {
+    const rules = {
+      name: (v) => v.trim().length >= 3
+        ? { ok: true }
+        : { ok: false, msg: 'Full name must be at least 3 characters.' },
+
+      email: (v) => /^[a-zA-Z0-9][a-zA-Z0-9._%+-]*@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/.test(v.trim())
+        ? { ok: true }
+        : { ok: false, msg: 'Enter a valid email, e.g. name123@gmail.com' },
+
+      password: (v) => {
+        if (v.length < 8) return { ok: false, msg: 'At least 8 characters.' };
+        if (!/[a-z]/.test(v) || !/[A-Z]/.test(v)) return { ok: false, msg: 'Include both upper and lower case letters.' };
+        if (!/[0-9]/.test(v)) return { ok: false, msg: 'Include at least one number.' };
+        return { ok: true };
+      },
+
+      password_confirmation: (v) => {
+        const pw = document.getElementById('password').value;
+        return v === pw
+          ? { ok: true }
+          : { ok: false, msg: 'Passwords do not match.' };
+      },
+
+      business_name: (v) => v.trim().length >= 2
+        ? { ok: true }
+        : { ok: false, msg: 'Business name is required.' },
+
+      business_phone: (v) => /^[0-9+\-\s()]{7,20}$/.test(v.trim())
+        ? { ok: true }
+        : { ok: false, msg: 'Enter a valid phone number.' },
+
+      business_address: (v) => v.trim().length >= 5
+        ? { ok: true }
+        : { ok: false, msg: 'Please enter a fuller address.' },
+
+      pan_number: (v) => /^[0-9]{9}$/.test(v.trim())
+        ? { ok: true }
+        : { ok: false, msg: 'PAN number should be 9 digits.' },
+    };
+
+    const okClasses  = ['border-[#2F6B4F]', 'ring-1', 'ring-[#2F6B4F]'];
+    const badClasses = ['border-[#D9765A]', 'ring-1', 'ring-[#D9765A]'];
+
+    function validateField(field) {
+      const rule = rules[field.dataset.live];
+      if (!rule) return;
+
+      const hint = document.querySelector(`[data-hint-for="${field.dataset.live}"]`);
+      const value = field.value;
+
+      // Don't scold an empty required field until they've actually left it
+      if (value.trim() === '') {
+        field.classList.remove(...okClasses, ...badClasses);
+        hint.classList.add('hidden');
+        return;
+      }
+
+      const result = rule(value);
+      field.classList.remove(...okClasses, ...badClasses);
+      field.classList.add(...(result.ok ? okClasses : badClasses));
+
+      if (result.ok) {
+        hint.classList.add('hidden');
+      } else {
+        hint.textContent = result.msg;
+        hint.classList.remove('hidden');
+        hint.classList.remove('text-[#2F6B4F]');
+        hint.classList.add('text-[#D9765A]');
+      }
+    }
+
+    document.querySelectorAll('[data-live]').forEach((field) => {
+      field.addEventListener('input', () => validateField(field));
+      field.addEventListener('blur', () => validateField(field));
+    });
+
+    // Re-check confirm-password whenever password itself changes
+    const pwField = document.getElementById('password');
+    const pwConfirmField = document.getElementById('password_confirmation');
+    if (pwField && pwConfirmField) {
+      pwField.addEventListener('input', () => {
+        if (pwConfirmField.value) validateField(pwConfirmField);
+      });
+    }
+  })();
+
+  // ── Live duplicate check (email / PAN number / business name) ──
+  // Asks the server in real time while typing, so "already
+  // registered / already used" shows immediately — no need to
+  // submit the whole form first to find out.
+  (function () {
+    const CHECK_URL = @json(route('vendor.register.check'));
+    const duplicateFields = ['email', 'pan_number', 'business_name'];
+    const timers = {};
+
+    function setDuplicateState(field, state, message) {
+      const hint = document.querySelector(`[data-hint-for="${field.dataset.live}"]`);
+      const okClasses  = ['border-[#2F6B4F]', 'ring-1', 'ring-[#2F6B4F]'];
+      const badClasses = ['border-[#D9765A]', 'ring-1', 'ring-[#D9765A]'];
+
+      if (state === 'checking') {
+        hint.textContent = 'Checking availability…';
+        hint.classList.remove('hidden', 'text-[#D9765A]');
+        hint.classList.add('text-[#8A9088]');
+        return;
+      }
+
+      if (state === 'taken') {
+        field.classList.remove(...okClasses);
+        field.classList.add(...badClasses);
+        hint.textContent = message;
+        hint.classList.remove('hidden', 'text-[#8A9088]');
+        hint.classList.add('text-[#D9765A]');
+        return;
+      }
+
+      if (state === 'available') {
+        field.classList.remove(...badClasses);
+        field.classList.add(...okClasses);
+        hint.classList.add('hidden');
+      }
+    }
+
+    duplicateFields.forEach((fieldName) => {
+      const field = document.querySelector(`[data-live="${fieldName}"]`);
+      if (!field) return;
+
+      field.addEventListener('input', () => {
+        const value = field.value.trim();
+        clearTimeout(timers[fieldName]);
+
+        if (value === '') return;
+
+        setDuplicateState(field, 'checking');
+
+        timers[fieldName] = setTimeout(() => {
+          fetch(`${CHECK_URL}?field=${fieldName}&value=${encodeURIComponent(value)}`, {
+            headers: { 'X-Requested-With': 'XMLHttpRequest' },
+          })
+            .then((res) => res.json())
+            .then((data) => {
+              // Ignore stale responses if the field has changed since
+              if (field.value.trim() !== value) return;
+
+              if (data.status === 'taken') {
+                setDuplicateState(field, 'taken', data.message);
+              } else if (data.status === 'available') {
+                setDuplicateState(field, 'available');
+              }
+            })
+            .catch(() => { /* silent — server check is a nice-to-have, not blocking */ });
+        }, 450); // debounce so we don't hit the server on every keystroke
+      });
     });
   })();
 </script>

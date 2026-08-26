@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Http\Controllers\Auth\Concerns\RedirectsAfterAuthentication;
 use App\Mail\OtpVerificationMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
@@ -14,8 +13,6 @@ use Illuminate\View\View;
 
 class OtpVerificationController extends Controller
 {
-    use RedirectsAfterAuthentication;
-
     public function show(): View
     {
         return view('auth.verify-otp');
@@ -48,21 +45,9 @@ class OtpVerificationController extends Controller
             'otp_expires_at'    => null,
         ]);
 
-        // Refresh the auth session so hasVerifiedEmail() reflects the update immediately
-        $user = $user->fresh();
-        Auth::setUser($user);
+        Auth::setUser($user->fresh());
 
-        // Safety net: re-check vendor status here too, in case a vendor's
-        // account somehow reaches the OTP screen before being approved.
-        if ($user->isVendor()) {
-            $blocked = $this->blockedVendorResponse($request, $user);
-
-            if ($blocked) {
-                return $blocked;
-            }
-        }
-
-        return $this->redirectAfterLogin($request, $user);
+        return redirect()->route('home')->with('status', '🎉 Email verified successfully! Welcome to Biruwa.');
     }
 
     public function resend(): RedirectResponse

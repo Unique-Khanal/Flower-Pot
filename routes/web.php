@@ -13,6 +13,8 @@ use App\Http\Controllers\VendorDashboardController;
 use App\Http\Controllers\Admin\VendorApplicationController;
 use App\Http\Controllers\Vendor\CommissionNegotiationController as VendorCommissionController;
 use App\Http\Controllers\Admin\CommissionNegotiationController as AdminCommissionController;
+use App\Http\Controllers\Auth\VendorAuthenticatedSessionController;
+use App\Http\Controllers\Auth\AdminAuthenticatedSessionController;
 use Illuminate\Support\Facades\Route;
 
 // ──────────────────────────────────────────────
@@ -38,7 +40,7 @@ Route::get('/products/{product}', [ProductController::class, 'show'])
      ->name('products.show');
 
 // ──────────────────────────────────────────────
-// CART — requires verified account
+// CART — requires verified customer account
 // ──────────────────────────────────────────────
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/cart',               [CartController::class, 'index'])->name('cart.index');
@@ -61,7 +63,7 @@ Route::middleware('auth')->group(function () {
 });
 
 // ──────────────────────────────────────────────
-// ORDERS + PAYMENTS — requires verified account
+// ORDERS + PAYMENTS — requires verified customer account
 // ──────────────────────────────────────────────
 Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/orders',                 [OrderController::class, 'index'])->name('orders.index');
@@ -81,26 +83,49 @@ Route::middleware(['auth', 'verified'])->group(function () {
 // ──────────────────────────────────────────────
 Route::get('/vendor/register',  [VendorRegistrationController::class, 'create'])->name('vendor.register');
 Route::post('/vendor/register', [VendorRegistrationController::class, 'store'])->name('vendor.register.store');
+Route::get('/vendor/register/check', [VendorRegistrationController::class, 'checkDuplicate'])->name('vendor.register.check');
 
 // ──────────────────────────────────────────────
-// VENDOR ROUTES — only approved vendors reach these
+// VENDOR AUTH — completely separate from customer login
 // ──────────────────────────────────────────────
-Route::middleware(['auth', 'verified', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
+// Deliberately NOT wrapped in 'guest' middleware — a customer (or vendor,
+// or admin) who's already logged in should still be able to open this page
+// to check status or switch into a separate vendor account, instead of
+// being silently bounced back to their own dashboard.
+Route::get('/vendor/login',  [VendorAuthenticatedSessionController::class, 'create'])->name('vendor.login');
+Route::post('/vendor/login', [VendorAuthenticatedSessionController::class, 'store']);
+Route::post('/vendor/logout', [VendorAuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')->name('vendor.logout');
+
+// ──────────────────────────────────────────────
+// VENDOR ROUTES — only approved vendors reach these.
+// No 'verified' middleware here — vendors are identity-checked via
+// PAN document review during admin approval, not email OTP.
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
     Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
 
     Route::post('/commission/propose',              [VendorCommissionController::class, 'propose'])->name('commission.propose');
     Route::post('/commission/{negotiation}/accept', [VendorCommissionController::class, 'accept'])->name('commission.accept');
     Route::post('/commission/{negotiation}/reject', [VendorCommissionController::class, 'reject'])->name('commission.reject');
-
-    // Route::resource('/products', VendorProductController::class);
-    // Route::get('/orders', [VendorOrderController::class, 'index'])->name('orders.index');
-    // Route::get('/payouts', [VendorPayoutController::class, 'index'])->name('payouts.index');
 });
 
 // ──────────────────────────────────────────────
-// ADMIN ROUTES
+// ADMIN AUTH — completely separate, no public registration
 // ──────────────────────────────────────────────
-Route::middleware(['auth', 'verified', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+// Same reasoning as vendor login — no 'guest' middleware, so an already
+// logged-in user of any role can still reach this page rather than being
+// redirected away from it.
+Route::get('/admin/login',  [AdminAuthenticatedSessionController::class, 'create'])->name('admin.login');
+Route::post('/admin/login', [AdminAuthenticatedSessionController::class, 'store']);
+Route::post('/admin/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
+    ->middleware('auth')->name('admin.logout');
+
+// ──────────────────────────────────────────────
+// ADMIN ROUTES — no 'verified' middleware; admin accounts are
+// created manually, not self-registered with an unverified email.
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
     Route::get('/vendors',                    [VendorApplicationController::class, 'index'])->name('vendors.index');
     Route::post('/vendors/{vendor}/approve',  [VendorApplicationController::class, 'approve'])->name('vendors.approve');
     Route::post('/vendors/{vendor}/reject',   [VendorApplicationController::class, 'reject'])->name('vendors.reject');

@@ -19,6 +19,46 @@ class VendorRegistrationController extends Controller
         return view('vendor.register');
     }
 
+    /**
+     * Live AJAX duplicate check — called while the vendor is still typing,
+     * so "already registered" / "already used" shows inline immediately
+     * instead of only after a full form submit.
+     */
+    public function checkDuplicate(Request $request)
+    {
+        $field = $request->query('field');
+        $value = trim((string) $request->query('value', ''));
+
+        if ($value === '') {
+            return response()->json(['status' => 'empty']);
+        }
+
+        $checks = [
+            'email' => fn () => User::where('email', strtolower($value))->exists()
+                ? 'This email is already registered. Please log in instead.'
+                : null,
+
+            'pan_number' => fn () => Vendor::where('pan_number', $value)->exists()
+                ? 'This PAN number is already registered with another vendor account.'
+                : null,
+
+            'business_name' => fn () => Vendor::whereRaw('LOWER(business_name) = ?', [strtolower($value)])->exists()
+                ? 'A vendor with this business name already exists.'
+                : null,
+        ];
+
+        if (! isset($checks[$field])) {
+            return response()->json(['status' => 'unknown_field'], 400);
+        }
+
+        $message = $checks[$field]();
+
+        return response()->json([
+            'status'  => $message ? 'taken' : 'available',
+            'message' => $message,
+        ]);
+    }
+
     public function store(Request $request)
     {
         $request->validate([
@@ -28,17 +68,18 @@ class VendorRegistrationController extends Controller
             'business_name'         => ['required', 'string', 'max:255'],
             'business_phone'        => ['required', 'string', 'max:20'],
             'business_address'      => ['required', 'string'],
-            'pan_number'            => ['required', 'string', 'max:20'],
+            'pan_number'            => ['required', 'string', 'max:20', 'unique:vendors,pan_number'],
             'pan_document'          => ['required', 'file', 'mimes:jpg,jpeg,png,pdf', 'max:4096'],
             'bank_name'             => ['nullable', 'string', 'max:255'],
             'bank_account_no'       => ['nullable', 'string', 'max:50'],
             'agreement'             => ['accepted'],
             'sample_photos'         => ['required', 'array', 'min:1', 'max:5'],
-            'sample_photos.*'       => ['image', 'max:4096'], // 4MB each
+            'sample_photos.*'       => ['image', 'max:4096'],
         ], [
             'agreement.accepted'    => 'You must agree to the Vendor Agreement to apply.',
             'sample_photos.required' => 'Please upload at least one sample product photo.',
             'pan_document.required' => 'Please upload a photo or scan of your PAN certificate.',
+            'pan_number.unique'     => 'This PAN number is already registered with another vendor account.',
         ]);
 
         $vendor = DB::transaction(function () use ($request) {
@@ -70,14 +111,12 @@ class VendorRegistrationController extends Controller
             ]);
         });
 
-        // Notify every admin — both by email and (implicitly) in-system, since
-        // the pending Vendor row itself is what the admin dashboard lists.
         User::where('role', 'admin')->get()->each(
             fn ($admin) => Mail::to($admin->email)->send(new VendorApplicationSubmitted($vendor))
         );
 
-        return redirect()->route('login')->with('status',
-            '🎉 Your vendor application has been submitted! We\'ll email you once it\'s reviewed.'
+        return redirect()->route('vendor.login')->with('vendor_application_submitted',
+            'Your vendor application has been submitted! We\'ll email you once it\'s reviewed.'
         );
     }
 }
