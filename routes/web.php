@@ -11,10 +11,12 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\VendorRegistrationController;
 use App\Http\Controllers\VendorDashboardController;
 use App\Http\Controllers\Admin\VendorApplicationController;
+use App\Http\Controllers\Admin\UserManagementController;
 use App\Http\Controllers\Vendor\CommissionNegotiationController as VendorCommissionController;
 use App\Http\Controllers\Admin\CommissionNegotiationController as AdminCommissionController;
 use App\Http\Controllers\Auth\VendorAuthenticatedSessionController;
 use App\Http\Controllers\Auth\AdminAuthenticatedSessionController;
+use App\Http\Controllers\Admin\AdminTwoFactorController;
 use Illuminate\Support\Facades\Route;
 
 // ──────────────────────────────────────────────
@@ -88,10 +90,6 @@ Route::get('/vendor/register/check', [VendorRegistrationController::class, 'chec
 // ──────────────────────────────────────────────
 // VENDOR AUTH — completely separate from customer login
 // ──────────────────────────────────────────────
-// Deliberately NOT wrapped in 'guest' middleware — a customer (or vendor,
-// or admin) who's already logged in should still be able to open this page
-// to check status or switch into a separate vendor account, instead of
-// being silently bounced back to their own dashboard.
 Route::get('/vendor/login',  [VendorAuthenticatedSessionController::class, 'create'])->name('vendor.login');
 Route::post('/vendor/login', [VendorAuthenticatedSessionController::class, 'store']);
 Route::post('/vendor/logout', [VendorAuthenticatedSessionController::class, 'destroy'])
@@ -99,8 +97,6 @@ Route::post('/vendor/logout', [VendorAuthenticatedSessionController::class, 'des
 
 // ──────────────────────────────────────────────
 // VENDOR ROUTES — only approved vendors reach these.
-// No 'verified' middleware here — vendors are identity-checked via
-// PAN document review during admin approval, not email OTP.
 // ──────────────────────────────────────────────
 Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
     Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
@@ -113,27 +109,50 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
 // ──────────────────────────────────────────────
 // ADMIN AUTH — completely separate, no public registration
 // ──────────────────────────────────────────────
-// Same reasoning as vendor login — no 'guest' middleware, so an already
-// logged-in user of any role can still reach this page rather than being
-// redirected away from it.
 Route::get('/admin/login',  [AdminAuthenticatedSessionController::class, 'create'])->name('admin.login');
 Route::post('/admin/login', [AdminAuthenticatedSessionController::class, 'store']);
 Route::post('/admin/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')->name('admin.logout');
 
 // ──────────────────────────────────────────────
-// ADMIN ROUTES — no 'verified' middleware; admin accounts are
-// created manually, not self-registered with an unverified email.
+// ADMIN 2FA
 // ──────────────────────────────────────────────
 Route::middleware(['auth', 'admin'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/2fa', [AdminTwoFactorController::class, 'show'])->name('2fa.show');
+    Route::post('/2fa', [AdminTwoFactorController::class, 'verify'])
+        ->middleware('throttle:5,1')->name('2fa.verify');
+    Route::post('/2fa/resend', [AdminTwoFactorController::class, 'resend'])
+        ->middleware('throttle:5,1')->name('2fa.resend');
+});
+
+// ──────────────────────────────────────────────
+// ADMIN ROUTES
+// ──────────────────────────────────────────────
+Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.')->group(function () {
+    Route::get('/dashboard', [\App\Http\Controllers\Admin\AdminDashboardController::class, 'index'])->name('dashboard');
+
     Route::get('/vendors',                    [VendorApplicationController::class, 'index'])->name('vendors.index');
     Route::post('/vendors/{vendor}/approve',  [VendorApplicationController::class, 'approve'])->name('vendors.approve');
     Route::post('/vendors/{vendor}/reject',   [VendorApplicationController::class, 'reject'])->name('vendors.reject');
+
+    // ── Vendor Directory ──────────────────────────────────────
+    Route::get('/vendors-directory',                          [\App\Http\Controllers\Admin\VendorDirectoryController::class, 'index'])->name('vendors.directory');
+    Route::post('/vendors-directory/{vendor}/suspend',        [\App\Http\Controllers\Admin\VendorDirectoryController::class, 'suspend'])->name('vendors.suspend');
+    Route::post('/vendors-directory/{vendor}/reactivate',     [\App\Http\Controllers\Admin\VendorDirectoryController::class, 'reactivate'])->name('vendors.reactivate');
+    Route::post('/vendors-directory/{vendor}/commission',     [\App\Http\Controllers\Admin\VendorDirectoryController::class, 'updateCommission'])->name('vendors.commission.update');
 
     Route::get('/commission-negotiations',                        [AdminCommissionController::class, 'index'])->name('commission-negotiations.index');
     Route::post('/commission-negotiations/{negotiation}/accept',  [AdminCommissionController::class, 'accept'])->name('commission-negotiations.accept');
     Route::post('/commission-negotiations/{negotiation}/reject',  [AdminCommissionController::class, 'reject'])->name('commission-negotiations.reject');
     Route::post('/commission-negotiations/{negotiation}/counter', [AdminCommissionController::class, 'counter'])->name('commission-negotiations.counter');
+
+    // ── User & role management ──────────────────────────────
+    Route::get('/users',                     [UserManagementController::class, 'index'])->name('users.index');
+    Route::post('/users/{user}/update-role', [UserManagementController::class, 'updateRole'])->name('users.updateRole');
+
+    // ── Settings ──────────────────────────────────────────────
+    Route::get('/settings',   [\App\Http\Controllers\Admin\AdminSettingsController::class, 'edit'])->name('settings');
+    Route::patch('/settings', [\App\Http\Controllers\Admin\AdminSettingsController::class, 'update'])->name('settings.update');
 });
 
 require __DIR__ . '/auth.php';

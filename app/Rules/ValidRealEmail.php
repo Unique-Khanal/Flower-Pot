@@ -11,7 +11,7 @@ class ValidRealEmail implements ValidationRule
 {
     public function validate(string $attribute, mixed $value, Closure $fail): void
     {
-        $apiKey = config('services.abstract_email.key');
+        $apiKey = config('services.abstract_email.api_key');
 
         // If no API key configured, skip this check silently (don't break registration)
         if (empty($apiKey)) {

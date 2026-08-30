@@ -10,11 +10,12 @@ class Product extends Model
         'vendor_id', 'name', 'description', 'image', 'price',
         'category', 'size',
         'quantity', 'stock',
-        'badge'
+        'badge', 'is_hidden', 'hidden_reason',
     ];
 
     protected $casts = [
-        'price' => 'decimal:2',
+        'price'     => 'decimal:2',
+        'is_hidden' => 'boolean',
     ];
 
     public function vendor()
@@ -25,6 +26,11 @@ class Product extends Model
     public function cartItems()
     {
         return $this->hasMany(CartItem::class);
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function isInStock(): bool

@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Http\Controllers\Auth;
+namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\OtpVerificationMail;
@@ -11,21 +11,30 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
-class OtpVerificationController extends Controller
+class AdminTwoFactorController extends Controller
 {
-    public function show(): View
+    public function show(): View|RedirectResponse
     {
-        return view('auth.verify-otp');
+        /** @var User $user */
+        $user = Auth::user();
+
+        if (! $user || ! $user->isAdmin()) {
+            return redirect()->route('admin.login');
+        }
+
+        return view('admin.two-factor');
     }
 
     public function verify(Request $request): RedirectResponse
     {
-        $request->validate([
-            'otp' => ['required', 'string', 'size:6'],
-        ]);
+        $request->validate(['otp' => ['required', 'string', 'size:6']]);
 
         /** @var User $user */
         $user = Auth::user();
+
+        if (! $user || ! $user->isAdmin()) {
+            return redirect()->route('admin.login');
+        }
 
         if (! $user->otp_code || ! $user->otp_expires_at) {
             return back()->withErrors(['otp' => 'No verification code found. Please request a new one.']);
@@ -39,33 +48,21 @@ class OtpVerificationController extends Controller
             return back()->withErrors(['otp' => 'Incorrect code. Please check and try again.']);
         }
 
-        $user->update([
-            'email_verified_at' => now(),
-            'otp_code'          => null,
-            'otp_expires_at'    => null,
-        ]);
+        $user->forceFill(['otp_code' => null, 'otp_expires_at' => null])->save();
 
-        $user = $user->fresh();
-        Auth::setUser($user);
+        // Second factor confirmed for this session — admin routes check this flag.
+        $request->session()->put('admin_2fa_verified', true);
 
-        if ($user->isVendor()) {
-            return redirect()->route('vendor.dashboard')
-                ->with('status', '🎉 Email verified successfully! Welcome to your vendor dashboard.');
-        }
-
-        return redirect()->route('home')
-            ->with('status', '🎉 Email verified successfully! Welcome to Biruwa.');
+        return redirect()->intended(route('admin.dashboard'));
     }
 
-    public function resend(): RedirectResponse
+    public function resend(Request $request): RedirectResponse
     {
         /** @var User $user */
         $user = Auth::user();
 
-        if ($user->hasVerifiedEmail()) {
-            return $user->isVendor()
-                ? redirect()->route('vendor.dashboard')
-                : redirect()->route('home');
+        if (! $user || ! $user->isAdmin()) {
+            return redirect()->route('admin.login');
         }
 
         $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
@@ -77,6 +74,6 @@ class OtpVerificationController extends Controller
 
         Mail::to($user->email)->send(new OtpVerificationMail($otp, $user->name));
 
-        return back()->with('status', 'A new verification code has been sent to your email.');
+        return back()->with('status', 'A new code has been sent to your email.');
     }
 }

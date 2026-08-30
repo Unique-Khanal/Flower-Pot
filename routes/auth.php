@@ -29,6 +29,7 @@ Route::middleware('guest')->group(function () {
                 ->name('password.reset.otp.verify');
 
     Route::post('reset-password-otp', [PasswordResetOtpController::class, 'resetPassword'])
+                ->middleware('throttle:5,1')
                 ->name('password.reset.otp.store');
 
     Route::post('reset-password-otp/resend', [PasswordResetOtpController::class, 'resendOtp'])
@@ -42,6 +43,7 @@ Route::middleware('auth')->group(function () {
                 ->name('verification.notice');
 
     Route::post('verify-email', [OtpVerificationController::class, 'verify'])
+                ->middleware('throttle:5,1')
                 ->name('verification.verify');
 
     Route::post('verify-email/resend', [OtpVerificationController::class, 'resend'])

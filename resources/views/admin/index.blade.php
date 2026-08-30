@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.admin')
 
 @section('title', 'Vendor Applications')
 
@@ -48,10 +48,10 @@
                     <p class="text-sm text-stone-500">
                         Applicant: <span class="text-stone-700 font-medium">{{ $vendor->user->name }}</span> — {{ $vendor->user->email }}
                     </p>
-                    <p class="text-sm text-stone-500">📞 {{ $vendor->business_phone }}</p>
-                    <p class="text-sm text-stone-500">📍 {{ $vendor->business_address }}</p>
+                    <p class="text-sm text-stone-500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-3.5 h-3.5 inline -mt-0.5 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 6.75c0 8.284 6.716 15 15 15h1.5a2.25 2.25 0 0 0 2.25-2.25v-1.372c0-.516-.351-.966-.852-1.091l-4.423-1.106a1.125 1.125 0 0 0-1.173.417l-.97 1.293a11.25 11.25 0 0 1-6.63-6.63l1.293-.97a1.125 1.125 0 0 0 .416-1.173L8.663 3.102a1.125 1.125 0 0 0-1.091-.852H6.75A4.5 4.5 0 0 0 2.25 6.75Z"/></svg>{{ $vendor->business_phone }}</p>
+                    <p class="text-sm text-stone-500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-3.5 h-3.5 inline -mt-0.5 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z"/></svg>{{ $vendor->business_address }}</p>
                     @if ($vendor->bank_name)
-                        <p class="text-sm text-stone-500">🏦 {{ $vendor->bank_name }} — {{ $vendor->bank_account_no }}</p>
+                        <p class="text-sm text-stone-500"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-3.5 h-3.5 inline -mt-0.5 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 21h19.5M4.5 21V9.75M19.5 21V9.75M2.25 9.75 12 3l9.75 6.75M8.25 21v-6a1.5 1.5 0 0 1 1.5-1.5h4.5a1.5 1.5 0 0 1 1.5 1.5v6"/></svg>{{ $vendor->bank_name }} — {{ $vendor->bank_account_no }}</p>
                     @endif
                     <p class="text-xs text-stone-400 mt-1">Applied {{ $vendor->created_at->diffForHumans() }}</p>
 

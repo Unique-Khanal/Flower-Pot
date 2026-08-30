@@ -102,7 +102,7 @@ class PasswordResetOtpController extends Controller
             return back()->withErrors(['otp' => 'This code has expired. Please request a new one.']);
         }
 
-        if ($request->otp !== $user->otp_code) {
+        if (! hash_equals((string) $user->otp_code, (string) $request->otp)) {
             return back()->withErrors(['otp' => 'Incorrect code. Please check and try again.']);
         }
 

@@ -24,16 +24,6 @@
         0%, 100% { box-shadow: 0 0 0 0 rgba(21,128,61,0.4); }
         50%       { box-shadow: 0 0 0 6px rgba(21,128,61,0); }
     }
-    .role-badge {
-        font-size: 0.62rem;
-        font-weight: 700;
-        padding: 1px 8px;
-        border-radius: 999px;
-        letter-spacing: 0.04em;
-        text-transform: uppercase;
-    }
-    .role-badge.vendor { background:#fef3c7; color:#b45309; }
-    .role-badge.admin  { background:#ede9fe; color:#6d28d9; }
 </style>
 
 <nav x-data="{ open: false }" class="bg-white border-b border-gray-100 shadow-sm">
@@ -53,18 +43,6 @@
                     <x-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">Products</x-nav-link>
                     <x-nav-link :href="route('services')"       :active="request()->routeIs('services')">Services</x-nav-link>
                     <x-nav-link :href="route('contact')"        :active="request()->routeIs('contact')">Contact</x-nav-link>
-
-                    @auth
-                        @if(Auth::user()->role === 'vendor')
-                            <x-nav-link :href="route('vendor.dashboard')" :active="request()->routeIs('vendor.*')">
-                                🏪 Vendor Panel
-                            </x-nav-link>
-                        @elseif(Auth::user()->role === 'admin')
-                            <x-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                                ⚙️ Admin Panel
-                            </x-nav-link>
-                        @endif
-                    @endauth
                 </div>
             </div>
 
@@ -72,6 +50,17 @@
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
 
                 @auth
+                    @if(Auth::user()->role === 'admin')
+                        {{-- Admins keep the small avatar icon for recognition, but no
+                             name or dropdown — that identity only lives in the admin panel. --}}
+                        <a href="{{ route('admin.dashboard') }}"
+                           class="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-green-700 transition">
+                            <div class="w-8 h-8 rounded-full overflow-hidden shadow-sm">
+                                <x-avatar :avatar="Auth::user()->avatar" :size="32" />
+                            </div>
+                            ← Admin Panel
+                        </a>
+                    @else
                     {{-- Cart Icon — customers only --}}
                     @if(Auth::user()->role === 'customer' || !Auth::user()->role)
                         <a href="{{ route('cart.index') }}" class="relative text-stone-500 hover:text-green-700 transition">
@@ -102,12 +91,6 @@
                                     </div>
 
                                     <span>{{ Auth::user()->name }}</span>
-
-                                    @if(Auth::user()->role === 'vendor')
-                                        <span class="role-badge vendor">Vendor</span>
-                                    @elseif(Auth::user()->role === 'admin')
-                                        <span class="role-badge admin">Admin</span>
-                                    @endif
                                 </div>
                                 <div class="ms-1">
                                     <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
@@ -121,12 +104,6 @@
                                 <x-dropdown-link :href="route('orders.index')">📦 My Orders</x-dropdown-link>
                             @endif
 
-                            @if(Auth::user()->role === 'vendor')
-                                <x-dropdown-link :href="route('vendor.dashboard')">🏪 Vendor Dashboard</x-dropdown-link>
-                            @elseif(Auth::user()->role === 'admin')
-                                <x-dropdown-link :href="route('admin.dashboard')">⚙️ Admin Panel</x-dropdown-link>
-                            @endif
-
                             <x-dropdown-link :href="route('profile.edit')">{{ __('Profile') }}</x-dropdown-link>
 
                             <form method="POST" action="{{ route('logout') }}" id="logout-form">
@@ -137,6 +114,7 @@
                             </x-dropdown-link>
                         </x-slot>
                     </x-dropdown>
+                    @endif
 
                 @else
                     <a href="{{ route('login') }}"
@@ -176,22 +154,21 @@
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">Products</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('services')"       :active="request()->routeIs('services')">Services</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('contact')"        :active="request()->routeIs('contact')">Contact</x-responsive-nav-link>
-
-            @auth
-                @if(Auth::user()->role === 'vendor')
-                    <x-responsive-nav-link :href="route('vendor.dashboard')" :active="request()->routeIs('vendor.*')">
-                        🏪 Vendor Panel
-                    </x-responsive-nav-link>
-                @elseif(Auth::user()->role === 'admin')
-                    <x-responsive-nav-link :href="route('admin.dashboard')" :active="request()->routeIs('admin.*')">
-                        ⚙️ Admin Panel
-                    </x-responsive-nav-link>
-                @endif
-            @endauth
         </div>
 
         @auth
         <div class="pt-4 pb-1 border-t border-gray-200">
+            @if(Auth::user()->role === 'admin')
+                <div class="px-4">
+                    <a href="{{ route('admin.dashboard') }}"
+                       class="flex items-center gap-2 text-sm font-semibold text-gray-500 hover:text-green-700 transition">
+                        <div class="w-8 h-8 rounded-full overflow-hidden shadow-sm">
+                            <x-avatar :avatar="Auth::user()->avatar" :size="32" />
+                        </div>
+                        ← Admin Panel
+                    </a>
+                </div>
+            @else
 
             {{-- Mobile Cart Link — customers only --}}
             @if(Auth::user()->role === 'customer' || !Auth::user()->role)
@@ -221,13 +198,8 @@
                 </div>
 
                 <div>
-                    <div class="font-medium text-base text-gray-800 flex items-center gap-2">
+                    <div class="font-medium text-base text-gray-800">
                         {{ Auth::user()->name }}
-                        @if(Auth::user()->role === 'vendor')
-                            <span class="role-badge vendor">Vendor</span>
-                        @elseif(Auth::user()->role === 'admin')
-                            <span class="role-badge admin">Admin</span>
-                        @endif
                     </div>
                     <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
                 </div>
@@ -242,6 +214,7 @@
                     Log Out
                 </x-responsive-nav-link>
             </div>
+            @endif
         </div>
 
         @else
@@ -272,6 +245,29 @@
             }).then((result) => {
                 if (result.isConfirmed) {
                     document.getElementById('logout-form').submit();
+                }
+            });
+        }
+
+        function confirmAdminLogout(formId = 'admin-logout-form') {
+            Swal.fire({
+                title: 'Sign out of Admin Panel? 🛠️',
+                text: 'You will need to sign in and verify with OTP again next time.',
+                icon: 'question',
+                showCancelButton: true,
+                confirmButtonText: 'Yes, Log Out',
+                cancelButtonText: 'Stay Here',
+                confirmButtonColor: '#dc2626',
+                cancelButtonColor: '#1B3B2F',
+                borderRadius: '1rem',
+                customClass: {
+                    popup:         'rounded-2xl',
+                    confirmButton: 'rounded-xl',
+                    cancelButton:  'rounded-xl',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById(formId).submit();
                 }
             });
         }

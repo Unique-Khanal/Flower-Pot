@@ -23,7 +23,7 @@ class CartController extends Controller
    public function add(Request $request, Product $product)
 {
     $request->validate([
-        'quantity' => 'nullable|integer|min:1|max:' . $product->stock,
+        'quantity' => 'nullable|integer|min:1|max:' . max($product->stock, 1),
     ]);
 
     $qty = $request->quantity ?? 1;
@@ -32,8 +32,14 @@ class CartController extends Controller
                         ->where('product_id', $product->id)
                         ->first();
 
+    $existingQty = $cartItem?->quantity ?? 0;
+
+    if ($existingQty + $qty > $product->stock) {
+        return back()->with('error', "Only {$product->stock} of {$product->name} in stock — you already have {$existingQty} in your cart.");
+    }
+
     if ($cartItem) {
-        $cartItem->update(['quantity' => $cartItem->quantity + $qty]);
+        $cartItem->update(['quantity' => $existingQty + $qty]);
     } else {
         CartItem::create([
             'user_id'    => Auth::id(),
@@ -65,7 +71,14 @@ class CartController extends Controller
             abort(403);
         }
 
-        $request->validate(['quantity' => 'required|integer|min:1']);
+        $stock = $cartItem->product->stock;
+
+        $request->validate([
+            'quantity' => 'required|integer|min:1|max:' . max($stock, 1),
+        ], [
+            'quantity.max' => "Only {$stock} of this item in stock.",
+        ]);
+
         $cartItem->update(['quantity' => $request->quantity]);
         return back()->with('success', 'Cart updated.');
     }

@@ -42,13 +42,17 @@ return [
 ],
 
 'khalti' => [
-    'secret_key'   => env('KHALTI_SECRET_KEY', 'live_secret_key_68791341fdd94846a146f0457ff7b455'),
+    // No hardcoded fallback secret — must be set in .env. Rotate this key
+    // in the Khalti merchant dashboard; a live-looking key was previously
+    // committed here as a default value.
+    'secret_key'   => env('KHALTI_SECRET_KEY'),
     'initiate_url' => env('KHALTI_INITIATE_URL', 'https://dev.khalti.com/api/v2/epayment/initiate/'),
     'lookup_url'   => env('KHALTI_LOOKUP_URL', 'https://dev.khalti.com/api/v2/epayment/lookup/'),
 ],
 
     'abstract_email' => [
-        'api_key' => env('ABSTRACT_EMAIL_API_KEY', 'c4260c6e04c8434a8528b038f722d410'),
+        // No hardcoded fallback key — must be set in .env.
+        'api_key' => env('ABSTRACT_EMAIL_API_KEY'),
     ],
 
 ];

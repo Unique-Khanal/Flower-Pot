@@ -21,6 +21,7 @@ class Vendor extends Model
         'bank_account_no',
         'bank_name',
         'approved_at',
+        'reviewed_by',
     ];
 
     protected $casts = [
@@ -32,6 +33,16 @@ class Vendor extends Model
     public function user()
     {
         return $this->belongsTo(User::class);
+    }
+
+    public function reviewedBy()
+    {
+        return $this->belongsTo(User::class, 'reviewed_by');
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(Review::class);
     }
 
     public function products()
@@ -53,15 +64,16 @@ class Vendor extends Model
     {
         return $this->status === 'approved';
     }
-    public function commissionNegotiations()
-{
-    return $this->hasMany(CommissionNegotiation::class)->latest();
-}
 
-public function pendingNegotiation()
-{
-    return $this->hasOne(CommissionNegotiation::class)
-        ->where('status', 'pending')
-        ->latestOfMany();
-}
+    public function commissionNegotiations()
+    {
+        return $this->hasMany(CommissionNegotiation::class)->latest();
+    }
+
+    public function pendingNegotiation()
+    {
+        return $this->hasOne(CommissionNegotiation::class)
+            ->where('status', 'pending')
+            ->latestOfMany();
+    }
 }

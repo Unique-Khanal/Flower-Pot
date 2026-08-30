@@ -4,10 +4,12 @@ namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Auth\LoginRequest;
+use App\Mail\OtpVerificationMail;
 use App\Models\User;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\View\View;
 
 class VendorAuthenticatedSessionController extends Controller
@@ -25,7 +27,6 @@ class VendorAuthenticatedSessionController extends Controller
         /** @var User $user */
         $user = $request->user();
 
-        // Not a vendor account at all — reject, don't leak them into vendor area
         if (! $user->isVendor()) {
             Auth::guard('web')->logout();
             $request->session()->invalidate();
@@ -37,7 +38,6 @@ class VendorAuthenticatedSessionController extends Controller
 
         $vendor = $user->vendor;
 
-        // Whitelist approach: only an explicit 'approved' status passes.
         if (! $vendor || in_array($vendor->status, [null, '', 'pending'], true)) {
             return $this->blockAndReturnToVendorLogin($request,
                 'Your vendor application is still under review. We\'ll email you once it\'s approved.'
@@ -63,7 +63,21 @@ class VendorAuthenticatedSessionController extends Controller
             );
         }
 
-        return redirect()->intended(route('vendor.dashboard'));
+        // Approved — now confirm the email is verified via OTP before granting access
+        if ($user->hasVerifiedEmail()) {
+            return redirect()->intended(route('vendor.dashboard'));
+        }
+
+        $otp = str_pad((string) random_int(0, 999999), 6, '0', STR_PAD_LEFT);
+
+        $user->update([
+            'otp_code'       => $otp,
+            'otp_expires_at' => now()->addMinutes(10),
+        ]);
+
+        Mail::to($user->email)->send(new OtpVerificationMail($otp, $user->name));
+
+        return redirect()->route('verification.notice');
     }
 
     public function destroy(Request $request): RedirectResponse

@@ -12,16 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
     )
     ->withMiddleware(function (Middleware $middleware): void {
         $middleware->alias([
-            'admin'  => \App\Http\Middleware\EnsureUserIsAdmin::class,
-            'vendor' => \App\Http\Middleware\EnsureUserIsVendor::class,
+            'admin'    => \App\Http\Middleware\EnsureUserIsAdmin::class,
+            'vendor'   => \App\Http\Middleware\EnsureUserIsVendor::class,
+            'admin.2fa' => \App\Http\Middleware\EnsureAdminTwoFactorVerified::class,
         ]);
 
         $middleware->redirectGuestsTo(fn () => route('login'));
-        // NOTE: app/Http/Middleware/RedirectIfAuthenticated.php already IS
-        // Laravel's 'guest' middleware (same class name/location as the
-        // framework default) — it's auto-wired, no redirectUsersTo() call
-        // needed. Passing a middleware class there was invalid: that method
-        // expects a route/URL or closure, not a middleware class reference.
     })
     ->withExceptions(function (Exceptions $exceptions): void {
         //
