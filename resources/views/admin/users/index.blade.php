@@ -50,7 +50,7 @@
                             <td class="px-4 py-3">
                                 <form method="POST" action="{{ route('admin.users.updateRole', $user) }}"
                                       class="flex items-center gap-2"
-                                      onsubmit="return confirm('Change {{ $user->name }}\'s role to ' + this.role.value + '?');">
+                                      onsubmit="return adminConfirm(this, { title: 'Change {{ $user->name }}\'s role to ' + this.role.value + '?', text: 'This changes what they can access immediately.', icon: 'warning', confirmText: 'Change Role', confirmColor: '#C89116' });">
                                     @csrf
                                     <select name="role" class="text-xs rounded-lg border-stone-300">
                                         <option value="customer" {{ $user->role === 'customer' ? 'selected' : '' }}>Customer</option>

@@ -91,7 +91,7 @@ Route::get('/vendor/register/check', [VendorRegistrationController::class, 'chec
 // VENDOR AUTH — completely separate from customer login
 // ──────────────────────────────────────────────
 Route::get('/vendor/login',  [VendorAuthenticatedSessionController::class, 'create'])->name('vendor.login');
-Route::post('/vendor/login', [VendorAuthenticatedSessionController::class, 'store']);
+Route::post('/vendor/login', [VendorAuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1');
 Route::post('/vendor/logout', [VendorAuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')->name('vendor.logout');
 
@@ -110,7 +110,7 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
 // ADMIN AUTH — completely separate, no public registration
 // ──────────────────────────────────────────────
 Route::get('/admin/login',  [AdminAuthenticatedSessionController::class, 'create'])->name('admin.login');
-Route::post('/admin/login', [AdminAuthenticatedSessionController::class, 'store']);
+Route::post('/admin/login', [AdminAuthenticatedSessionController::class, 'store'])->middleware('throttle:5,1');
 Route::post('/admin/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')->name('admin.logout');
 
@@ -134,6 +134,8 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/vendors',                    [VendorApplicationController::class, 'index'])->name('vendors.index');
     Route::post('/vendors/{vendor}/approve',  [VendorApplicationController::class, 'approve'])->name('vendors.approve');
     Route::post('/vendors/{vendor}/reject',   [VendorApplicationController::class, 'reject'])->name('vendors.reject');
+    Route::get('/vendors/{vendor}/pan-document',       [VendorApplicationController::class, 'panDocument'])->name('vendors.pan-document');
+    Route::get('/vendors/{vendor}/photo/{index}',      [VendorApplicationController::class, 'samplePhoto'])->name('vendors.sample-photo');
 
     // ── Vendor Directory ──────────────────────────────────────
     Route::get('/vendors-directory',                          [\App\Http\Controllers\Admin\VendorDirectoryController::class, 'index'])->name('vendors.directory');
@@ -149,6 +151,7 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     // ── User & role management ──────────────────────────────
     Route::get('/users',                     [UserManagementController::class, 'index'])->name('users.index');
     Route::post('/users/{user}/update-role', [UserManagementController::class, 'updateRole'])->name('users.updateRole');
+    Route::delete('/users/{user}',           [UserManagementController::class, 'destroy'])->name('users.destroy');
 
     // ── Settings ──────────────────────────────────────────────
     Route::get('/settings',   [\App\Http\Controllers\Admin\AdminSettingsController::class, 'edit'])->name('settings');

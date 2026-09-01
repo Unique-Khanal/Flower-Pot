@@ -75,7 +75,15 @@ class VendorAuthenticatedSessionController extends Controller
             'otp_expires_at' => now()->addMinutes(10),
         ]);
 
-        Mail::to($user->email)->send(new OtpVerificationMail($otp, $user->name));
+        try {
+            Mail::to($user->email)->send(new OtpVerificationMail($otp, $user->name));
+        } catch (\Throwable $e) {
+            report($e);
+
+            return $this->blockAndReturnToVendorLogin($request,
+                'We couldn\'t send your verification code right now. Please try logging in again in a moment.'
+            );
+        }
 
         return redirect()->route('verification.notice');
     }

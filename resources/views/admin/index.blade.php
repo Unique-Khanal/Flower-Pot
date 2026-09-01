@@ -64,9 +64,9 @@
 
                 {{-- Sample product photos --}}
                 <div class="flex gap-2 flex-wrap md:w-64">
-                    @foreach (($vendor->sample_product_photos ?? []) as $photo)
-                        <a href="{{ asset('storage/' . $photo) }}" target="_blank">
-                            <img src="{{ asset('storage/' . $photo) }}"
+                    @foreach (($vendor->sample_product_photos ?? []) as $i => $photo)
+                        <a href="{{ route('admin.vendors.sample-photo', [$vendor, $i]) }}" target="_blank">
+                            <img src="{{ route('admin.vendors.sample-photo', [$vendor, $i]) }}"
                                  class="w-16 h-16 object-cover rounded-lg border border-stone-200">
                         </a>
                     @endforeach

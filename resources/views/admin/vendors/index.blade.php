@@ -40,7 +40,7 @@
                         <p class="text-sm text-stone-500">
                             <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" class="w-3.5 h-3.5 inline -mt-0.5 mr-1"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 18.75a60.07 60.07 0 0 1 15.797 2.101c.727.198 1.453-.342 1.453-1.096V18.75M3.75 4.5v.75A.75.75 0 0 1 3 6h-.75m19.5 0h-.75a.75.75 0 0 1-.75-.75V4.5M3.75 4.5h16.5M3.75 4.5A2.25 2.25 0 0 0 1.5 6.75v9A2.25 2.25 0 0 0 3.75 18h16.5A2.25 2.25 0 0 0 22.5 15.75v-9A2.25 2.25 0 0 0 20.25 4.5m-16.5 0H20.25M8.25 12a2.25 2.25 0 1 1-4.5 0 2.25 2.25 0 0 1 4.5 0Z"/></svg>PAN: <span class="font-medium text-stone-700">{{ $vendor->pan_number }}</span>
                             @if ($vendor->pan_document)
-                                — <a href="{{ asset('storage/' . $vendor->pan_document) }}" target="_blank" class="text-green-700 font-semibold underline">View document</a>
+                                — <a href="{{ route('admin.vendors.pan-document', $vendor) }}" target="_blank" class="text-green-700 font-semibold underline">View document</a>
                             @endif
                         </p>
                     @endif
@@ -48,9 +48,9 @@
                 </div>
 
                 <div class="flex gap-2 flex-wrap md:w-64">
-                    @foreach (($vendor->sample_product_photos ?? []) as $photo)
-                        <a href="{{ asset('storage/' . $photo) }}" target="_blank">
-                            <img src="{{ asset('storage/' . $photo) }}" class="w-16 h-16 object-cover rounded-lg border border-stone-200">
+                    @foreach (($vendor->sample_product_photos ?? []) as $i => $photo)
+                        <a href="{{ route('admin.vendors.sample-photo', [$vendor, $i]) }}" target="_blank">
+                            <img src="{{ route('admin.vendors.sample-photo', [$vendor, $i]) }}" class="w-16 h-16 object-cover rounded-lg border border-stone-200">
                         </a>
                     @endforeach
                 </div>

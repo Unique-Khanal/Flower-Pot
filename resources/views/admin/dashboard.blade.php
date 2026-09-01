@@ -6,17 +6,18 @@
 <div class="max-w-7xl mx-auto">
 
     <div class="mb-7 rounded-2xl px-6 py-6 flex items-center justify-between overflow-hidden relative"
-         style="background: linear-gradient(120deg,#75BC99 0%,#4E8267 55%,#2E5442 140%);">
-        <div class="absolute -right-8 -top-10 w-40 h-40 rounded-full opacity-20" style="background:#D8B968; filter:blur(30px);"></div>
+         style="background: linear-gradient(120deg,#3F6B54 0%,#2E5442 60%,#1F3D2F 140%);">
+        <div class="absolute -right-8 -top-10 w-40 h-40 rounded-full opacity-25" style="background:#EF8E31; filter:blur(45px);"></div>
+        <div class="absolute right-24 -bottom-14 w-32 h-32 rounded-full opacity-15" style="background:#C89116; filter:blur(40px);"></div>
         <div class="relative z-10">
-            <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-[#D8B968] mb-1">
+            <p class="text-[10px] font-bold tracking-[0.2em] uppercase text-[#E8B54A] mb-1">
                 {{ now()->format('l, F j') }}
             </p>
             <h1 class="text-2xl font-extrabold text-white">Welcome back, {{ explode(' ', auth()->user()->name)[0] }}</h1>
             <p class="text-sm text-[#B9CBBB] mt-1">Here's what's happening across Biruwa today.</p>
         </div>
-        <div class="relative z-10 h-14 w-14 rounded-2xl shadow-lg hidden sm:flex items-center justify-center" style="background:#F4F5F1;">
-            <svg viewBox="0 0 24 24" fill="none" stroke="#1B3B2F" stroke-width="1.5" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-3-7.5-6.5-7.5-10.5A7.5 7.5 0 0 1 12 3a7.5 7.5 0 0 1 7.5 7.5c0 4-3 7.5-7.5 10.5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
+        <div class="relative z-10 h-14 w-14 rounded-2xl shadow-lg hidden sm:flex items-center justify-center" style="background:linear-gradient(135deg,#EF8E31,#C9711F);">
+            <svg viewBox="0 0 24 24" fill="none" stroke="#ffffff" stroke-width="1.5" class="w-7 h-7"><path stroke-linecap="round" stroke-linejoin="round" d="M12 21c-4.5-3-7.5-6.5-7.5-10.5A7.5 7.5 0 0 1 12 3a7.5 7.5 0 0 1 7.5 7.5c0 4-3 7.5-7.5 10.5Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M12 13.5a3 3 0 1 0 0-6 3 3 0 0 0 0 6Z"/></svg>
         </div>
     </div>
 

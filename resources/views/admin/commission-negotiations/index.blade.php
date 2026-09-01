@@ -44,7 +44,7 @@
 
             <div class="flex flex-wrap items-center gap-2 mt-5 pt-5 border-t border-stone-100">
                 <form action="{{ route('admin.commission-negotiations.accept', $negotiation) }}" method="POST"
-                      onsubmit="return confirm('Accept {{ $negotiation->proposed_rate }}% for {{ $negotiation->vendor->business_name }}?');">
+                      onsubmit="return adminConfirm(this, { title: 'Accept {{ $negotiation->proposed_rate }}% for {{ $negotiation->vendor->business_name }}?', text: 'This updates their commission rate immediately.', icon: 'question', confirmText: 'Accept', confirmColor: '#216B39' });">
                     @csrf
                     <button type="submit" class="bg-[#1B3B2F] hover:bg-[#0F2A20] text-white text-xs font-bold px-4 py-2 rounded-lg transition">
                         Accept {{ $negotiation->proposed_rate }}%
@@ -52,7 +52,7 @@
                 </form>
 
                 <form action="{{ route('admin.commission-negotiations.reject', $negotiation) }}" method="POST"
-                      onsubmit="return confirm('Reject this proposal?');">
+                      onsubmit="return adminConfirm(this, { title: 'Reject this proposal?', text: 'The vendor will be notified their rate change was declined.', icon: 'warning', confirmText: 'Reject', confirmColor: '#dc2626' });">
                     @csrf
                     <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold px-4 py-2 rounded-lg transition">
                         Reject

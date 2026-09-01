@@ -69,14 +69,15 @@
                         <td class="px-5 py-4 text-right">
                             @if ($vendor->status === 'approved')
                                 <form action="{{ route('admin.vendors.suspend', $vendor) }}" method="POST"
-                                      onsubmit="return confirm('Suspend {{ $vendor->business_name }}? Their listings will stop being sellable until reactivated.');">
+                                      onsubmit="return adminConfirm(this, { title: 'Suspend {{ $vendor->business_name }}?', text: 'Their listings will stop being sellable until reactivated.', icon: 'warning', confirmText: 'Suspend', confirmColor: '#EF8E31' });">
                                     @csrf
                                     <button type="submit" class="bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold px-3 py-1.5 rounded-lg">
                                         Suspend
                                     </button>
                                 </form>
                             @else
-                                <form action="{{ route('admin.vendors.reactivate', $vendor) }}" method="POST">
+                                <form action="{{ route('admin.vendors.reactivate', $vendor) }}" method="POST"
+                                      onsubmit="return adminConfirm(this, { title: 'Reactivate {{ $vendor->business_name }}?', text: 'Their listings will become sellable again immediately.', icon: 'question', confirmText: 'Reactivate', confirmColor: '#216B39' });">
                                     @csrf
                                     <button type="submit" class="bg-green-50 hover:bg-green-100 text-green-700 text-xs font-bold px-3 py-1.5 rounded-lg">
                                         Reactivate

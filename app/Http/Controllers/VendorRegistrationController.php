@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\User;
 use App\Models\Vendor;
 use App\Mail\VendorApplicationSubmitted;
+use App\Rules\ValidRealEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -63,7 +64,7 @@ class VendorRegistrationController extends Controller
     {
         $request->validate([
             'name'                  => ['required', 'string', 'max:255'],
-            'email'                 => ['required', 'string', 'email', 'max:255', 'unique:users,email'],
+            'email'                 => ['required', 'string', 'email', 'max:255', 'unique:users,email', new ValidRealEmail],
             'password'              => ['required', 'confirmed', Rules\Password::min(8)->mixedCase()->numbers()],
             'business_name'         => ['required', 'string', 'max:255'],
             'business_phone'        => ['required', 'string', 'max:20'],
@@ -92,10 +93,13 @@ class VendorRegistrationController extends Controller
 
             $photoPaths = [];
             foreach ($request->file('sample_photos', []) as $photo) {
-                $photoPaths[] = $photo->store('vendor-applications', 'public');
+                // Stored on the private disk — these are business documents,
+                // not public storefront assets. Served only via the
+                // admin-authenticated route, never a direct public URL.
+                $photoPaths[] = $photo->store('vendor-applications', 'local');
             }
 
-            $panDocumentPath = $request->file('pan_document')->store('vendor-applications/pan', 'public');
+            $panDocumentPath = $request->file('pan_document')->store('vendor-applications/pan', 'local');
 
             return Vendor::create([
                 'user_id'               => $user->id,

@@ -13,7 +13,7 @@
     @vite(['resources/css/app.css', 'resources/js/app.js'])
 
     <style>
-        body { font-family: 'DM Sans', sans-serif; background:#F4F5F1; }
+        body { font-family: 'DM Sans', sans-serif; background:#FBFAF6; }
         /* Nav text/icon colors reworked for the lighter sidebar green — the old
            #9FB3A6 had ~1.7–2.7:1 contrast against it (looks "blurry"/washed
            out). Near-white text + higher-opacity icons keep contrast >4:1. */
@@ -26,7 +26,7 @@
         .stat-card { transition: transform .15s, box-shadow .15s; }
         .stat-card:hover { transform: translateY(-3px); box-shadow: 0 14px 28px rgba(27,59,47,.10); }
         .icon-btn { position:relative; width:2.25rem; height:2.25rem; display:flex; align-items:center; justify-content:center; border-radius:0.65rem; color:#5A6B5C; transition:background .15s; }
-        .icon-btn:hover { background:#F0F3EE; }
+        .icon-btn:hover { background:#F3EEE0; }
         .icon-btn svg { width:19px; height:19px; }
         .icon-badge { position:absolute; top:-2px; right:-2px; min-width:16px; height:16px; padding:0 3px; border-radius:999px; background:#D8462F; color:#fff; font-size:9px; font-weight:800; display:flex; align-items:center; justify-content:center; line-height:1; }
 
@@ -269,6 +269,34 @@
                     document.getElementById(formId).submit();
                 }
             });
+        }
+
+        /**
+         * Shared confirmation dialog for admin actions that change state
+         * (suspend, reactivate, role changes, commission decisions).
+         * Call from a form's onsubmit: event.preventDefault(); adminConfirm(this, {...}); return false;
+         */
+        function adminConfirm(form, opts) {
+            Swal.fire({
+                title: opts.title,
+                text: opts.text || '',
+                icon: opts.icon || 'warning',
+                showCancelButton: true,
+                confirmButtonText: opts.confirmText || 'Confirm',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: opts.confirmColor || '#EF8E31',
+                cancelButtonColor: '#3F6B54',
+                customClass: {
+                    popup:         'rounded-2xl',
+                    confirmButton: 'rounded-xl',
+                    cancelButton:  'rounded-xl',
+                }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+            return false;
         }
     </script>
     @stack('scripts')
