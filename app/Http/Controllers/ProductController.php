@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
 {
@@ -19,6 +20,7 @@ class ProductController extends Controller
     public function ceramics()
     {
         $products = Product::where('category', 'ceramics')
+                           ->where('is_hidden', false)
                            ->orderByRaw("FIELD(size, 'large', 'medium', 'small')")
                            ->orderBy('name')
                            ->get()
@@ -29,6 +31,7 @@ class ProductController extends Controller
     public function cement()
     {
         $products = Product::where('category', 'cement')
+                           ->where('is_hidden', false)
                            ->orderByRaw("FIELD(size, 'large', 'medium', 'small')")
                            ->orderBy('name')
                            ->get()
@@ -39,6 +42,7 @@ class ProductController extends Controller
     public function mud()
     {
         $products = Product::where('category', 'mud')
+                           ->where('is_hidden', false)
                            ->orderBy('name')
                            ->get();
         return view('products.pots.mud', compact('products'));
@@ -47,6 +51,7 @@ class ProductController extends Controller
     public function plastic()
     {
         $products = Product::where('category', 'plastic')
+                           ->where('is_hidden', false)
                            ->orderByRaw("FIELD(size, 'large', 'medium', 'small')")
                            ->orderBy('name')
                            ->get()
@@ -57,6 +62,7 @@ class ProductController extends Controller
     public function plants()
     {
         $products = Product::where('category', 'plants')
+                           ->where('is_hidden', false)
                            ->orderBy('name')
                            ->get();
         return view('products.plants', compact('products'));
@@ -64,6 +70,17 @@ class ProductController extends Controller
 
     public function show(Product $product)
     {
+        // A hidden/pending-review product is only viewable by the vendor
+        // who owns it (previewing their own pending listing) or an admin —
+        // never by the general public, even with a direct link.
+        if ($product->is_hidden) {
+            $user = Auth::user();
+            $isOwner = $user && $user->vendor && $user->vendor->id === $product->vendor_id;
+            $isAdmin = $user && $user->role === 'admin';
+
+            abort_unless($isOwner || $isAdmin, 404);
+        }
+
         return view('products.show', compact('product'));
     }
 }

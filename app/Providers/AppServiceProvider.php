@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use App\Models\CommissionNegotiation;
 use App\Models\Contact;
+use App\Models\Product;
 use App\Models\Vendor;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -27,6 +28,8 @@ class AppServiceProvider extends ServiceProvider
                     + CommissionNegotiation::where('status', 'pending')
                         ->where('proposed_by', 'vendor')->count(),
                 'navUnreadContacts' => Contact::where('is_read', false)->count(),
+                'navPendingProducts' => Product::whereNotNull('vendor_id')
+                    ->where('is_hidden', true)->whereNull('hidden_reason')->count(),
             ]);
         });
     }

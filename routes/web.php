@@ -105,6 +105,13 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
     Route::post('/commission/{negotiation}/accept', [VendorCommissionController::class, 'accept'])->name('commission.accept');
     Route::post('/commission/{negotiation}/reject', [VendorCommissionController::class, 'reject'])->name('commission.reject');
 
+    Route::get('/products',                [\App\Http\Controllers\Vendor\ProductController::class, 'index'])->name('products.index');
+    Route::get('/products/create',          [\App\Http\Controllers\Vendor\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products',                [\App\Http\Controllers\Vendor\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit',  [\App\Http\Controllers\Vendor\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}',       [\App\Http\Controllers\Vendor\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}',    [\App\Http\Controllers\Vendor\ProductController::class, 'destroy'])->name('products.destroy');
+
     Route::get('/settings',   [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'edit'])->name('settings');
     Route::patch('/settings', [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'update'])->name('settings.update');
 });
@@ -159,6 +166,15 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     // ── Settings ──────────────────────────────────────────────
     Route::get('/settings',   [\App\Http\Controllers\Admin\AdminSettingsController::class, 'edit'])->name('settings');
     Route::patch('/settings', [\App\Http\Controllers\Admin\AdminSettingsController::class, 'update'])->name('settings.update');
+
+    // ── Vendor product moderation ────────────────────────────
+    Route::get('/products',                    [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
+    Route::post('/products/{product}/approve', [\App\Http\Controllers\Admin\ProductController::class, 'approve'])->name('products.approve');
+    Route::post('/products/{product}/hide',    [\App\Http\Controllers\Admin\ProductController::class, 'hide'])->name('products.hide');
+
+    // ── Billing ───────────────────────────────────────────────
+    Route::get('/billing',  [\App\Http\Controllers\Admin\BillingController::class, 'create'])->name('billing.create');
+    Route::post('/billing', [\App\Http\Controllers\Admin\BillingController::class, 'store'])->name('billing.store');
 });
 
 require __DIR__ . '/auth.php';
