@@ -104,6 +104,9 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
     Route::post('/commission/propose',              [VendorCommissionController::class, 'propose'])->name('commission.propose');
     Route::post('/commission/{negotiation}/accept', [VendorCommissionController::class, 'accept'])->name('commission.accept');
     Route::post('/commission/{negotiation}/reject', [VendorCommissionController::class, 'reject'])->name('commission.reject');
+
+    Route::get('/settings',   [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'edit'])->name('settings');
+    Route::patch('/settings', [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'update'])->name('settings.update');
 });
 
 // ──────────────────────────────────────────────
