@@ -12,13 +12,8 @@ use Illuminate\View\View;
 
 class ProductController extends Controller
 {
-    /**
-     * Categories are a plain string column (no DB enum), matching the
-     * public ProductController's existing five categories exactly so a
-     * vendor's product lands in the same storefront section a customer
-     * already browses.
-     */
     public const CATEGORIES = ['plants', 'ceramics', 'cement', 'mud', 'plastic'];
+    public const MAX_IMAGES = 5;
 
     private function vendor()
     {
@@ -41,15 +36,14 @@ class ProductController extends Controller
     {
         $validated = $this->validated($request);
 
-        $imagePath = $request->file('image')->store('products', 'public');
+        $paths = $this->storeUploadedImages($request);
 
         $this->vendor()->products()->create([
             ...$validated,
-            'image'     => $imagePath,
-            // New listings need admin sign-off before they're visible to
-            // customers — same pattern as vendor applications themselves.
-            'is_hidden'     => true,
-            'hidden_reason' => null,
+            'image'          => $paths[0],
+            'gallery_images' => array_slice($paths, 1),
+            'is_hidden'      => true,
+            'hidden_reason'  => null,
         ]);
 
         return redirect()->route('vendor.products.index')
@@ -69,11 +63,15 @@ class ProductController extends Controller
 
         $validated = $this->validated($request, updating: true);
 
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+        if ($request->hasFile('images')) {
+            // Replace the whole photo set — delete every old file first.
+            foreach ($product->allImages() as $oldPath) {
+                Storage::disk('public')->delete($oldPath);
             }
-            $validated['image'] = $request->file('image')->store('products', 'public');
+
+            $paths = $this->storeUploadedImages($request);
+            $validated['image']          = $paths[0];
+            $validated['gallery_images'] = array_slice($paths, 1);
         }
 
         // Anything that changes what the customer actually sees/pays goes
@@ -92,8 +90,8 @@ class ProductController extends Controller
     {
         $this->authorizeOwner($product);
 
-        if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+        foreach ($product->allImages() as $path) {
+            Storage::disk('public')->delete($path);
         }
 
         $product->delete();
@@ -115,7 +113,22 @@ class ProductController extends Controller
             'size'        => ['nullable', 'string', 'in:small,medium,large'],
             'price'       => ['required', 'numeric', 'min:0', 'max:999999.99'],
             'stock'       => ['required', 'integer', 'min:0'],
-            'image'       => [$updating ? 'nullable' : 'required', 'image', 'max:4096'],
+            'images'      => [$updating ? 'nullable' : 'required', 'array', 'min:1', 'max:' . self::MAX_IMAGES],
+            'images.*'    => ['image', 'max:4096'],
+        ], [
+            'images.required' => 'Please upload at least one photo.',
+            'images.max'      => 'You can upload up to ' . self::MAX_IMAGES . ' photos.',
         ]);
+    }
+
+    /**
+     * @return string[] storage paths, first element is always the primary/thumbnail image
+     */
+    private function storeUploadedImages(Request $request): array
+    {
+        return collect($request->file('images'))
+            ->map(fn ($file) => $file->store('products', 'public'))
+            ->values()
+            ->all();
     }
 }

@@ -115,11 +115,15 @@
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/55 mt-5 mb-1">Product Oversight</p>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-60 cursor-not-allowed">
-                    <span class="nav-icon">
+                <a href="{{ route('admin.products.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.products.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-70">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M21 7.5 12 3 3 7.5m18 0-9 4.5m9-4.5v9L12 21m0-9L3 7.5m9 4.5v9m-9-9v9l9 4.5"/></svg>
                     </span>
-                    Platform Products <span class="ml-auto text-[9px] bg-white/10 px-1.5 py-0.5 rounded">soon</span>
+                    Platform Products
+                    @if($navPendingProducts > 0)
+                        <span class="ml-auto text-[10px] font-bold bg-white/15 text-white px-1.5 py-0.5 rounded-full">{{ $navPendingProducts }}</span>
+                    @endif
                 </a>
                 <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-60 cursor-not-allowed">
                     <span class="nav-icon">
@@ -129,11 +133,12 @@
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/55 mt-5 mb-1">Orders &amp; Billing</p>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-60 cursor-not-allowed">
-                    <span class="nav-icon">
+                <a href="{{ route('admin.billing.create') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-70">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 3h6m-9 6h12a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 18 4.5H6a2.25 2.25 0 0 0-2.25 2.25v12A2.25 2.25 0 0 0 6 21Zm3.75-15h4.5v3.75h-4.5V6Z"/></svg>
                     </span>
-                    All Orders <span class="ml-auto text-[9px] bg-white/10 px-1.5 py-0.5 rounded">soon</span>
+                    Billing
                 </a>
                 <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-60 cursor-not-allowed">
                     <span class="nav-icon">

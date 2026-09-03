@@ -67,11 +67,12 @@
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/60 mt-5 mb-1">Catalog</p>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-50 cursor-not-allowed">
-                    <span class="nav-icon">
+                <a href="{{ route('vendor.products.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('vendor.products.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-90">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M12 2v4M8 5l1.5 2M16 5l-1.5 2"/><path stroke-linecap="round" stroke-linejoin="round" d="M7 10a5 5 0 0 1 10 0c0 3-2 5-2 8H9c0-3-2-5-2-8Z"/><path stroke-linecap="round" stroke-linejoin="round" d="M9 18h6"/></svg>
                     </span>
-                    My Products <span class="ml-auto text-[9px] bg-white/15 px-1.5 py-0.5 rounded">soon</span>
+                    My Products
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/60 mt-5 mb-1">Sales</p>
@@ -213,6 +214,29 @@
                     document.getElementById('vendor-logout-form').submit();
                 }
             });
+        }
+
+        /**
+         * Shared confirmation dialog for vendor actions that change state
+         * (e.g. deleting a product). Used by vendor/products/index.blade.php.
+         */
+        function adminConfirm(form, opts) {
+            Swal.fire({
+                title: opts.title,
+                text: opts.text || '',
+                icon: opts.icon || 'warning',
+                showCancelButton: true,
+                confirmButtonText: opts.confirmText || 'Confirm',
+                cancelButtonText: 'Cancel',
+                confirmButtonColor: opts.confirmColor || '#EF8E31',
+                cancelButtonColor: '#3E7A5A',
+                customClass: { popup: 'rounded-2xl', confirmButton: 'rounded-xl', cancelButton: 'rounded-xl' }
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    form.submit();
+                }
+            });
+            return false;
         }
     </script>
     @stack('scripts')
