@@ -72,6 +72,11 @@
                             <p style="font-size:0.875rem; font-weight:700; color:#1c1917; margin-top:2px;">
                                 {{ $order->created_at->format('d M Y, h:i A') }}
                             </p>
+                            @if($order->payment_status === 'paid' && $order->invoice_no)
+                                <p style="font-size:0.72rem; color:#78716c; margin-top:2px;">
+                                    Invoice: <span style="font-weight:600; color:#2F6B4F;">{{ $order->invoice_no }}</span>
+                                </p>
+                            @endif
                         </div>
                         <div style="display:flex; align-items:center; gap:0.75rem;">
                             @php
@@ -151,6 +156,34 @@
                                 <strong>Cancelled on:</strong>
                                 {{ $order->cancelled_at->format('d M Y, h:i A') }}<br>
                                 <strong>Reason:</strong> {{ $order->cancel_reason }}
+                            </div>
+                        @endif
+
+                        {{-- Invoice — only once payment is actually confirmed --}}
+                        @if($order->payment_status === 'paid' && $order->invoice_no)
+                            <div style="margin-top:1rem; display:flex; gap:0.5rem; flex-wrap:wrap;">
+                                <a href="{{ route('orders.invoice', $order) }}"
+                                   style="display:inline-flex; align-items:center; gap:0.4rem;
+                                          font-size:0.875rem; background:#F0F3EE;
+                                          color:#1B3B2F; font-weight:700;
+                                          padding:0.5rem 1.25rem; border-radius:0.75rem;
+                                          border:1px solid #d7e4d9; text-decoration:none;
+                                          transition:background 0.2s;"
+                                   onmouseover="this.style.background='#E4EDE4'"
+                                   onmouseout="this.style.background='#F0F3EE'">
+                                    📄 View Invoice
+                                </a>
+                                <a href="{{ route('orders.invoice.download', $order) }}"
+                                   style="display:inline-flex; align-items:center; gap:0.4rem;
+                                          font-size:0.875rem; background:#2F6B4F;
+                                          color:white; font-weight:700;
+                                          padding:0.5rem 1.25rem; border-radius:0.75rem;
+                                          border:1px solid #2F6B4F; text-decoration:none;
+                                          transition:background 0.2s;"
+                                   onmouseover="this.style.background='#1B3B2F'"
+                                   onmouseout="this.style.background='#2F6B4F'">
+                                    ⬇ Download PDF
+                                </a>
                             </div>
                         @endif
 

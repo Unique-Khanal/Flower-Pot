@@ -73,6 +73,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/orders',                [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/{order}/switch-to-cod', [OrderController::class, 'switchToCod'])->name('orders.switchToCod');
+    Route::get('/orders/{order}/invoice',          [\App\Http\Controllers\InvoiceController::class, 'show'])->name('orders.invoice');
+    Route::get('/orders/{order}/invoice/download', [\App\Http\Controllers\InvoiceController::class, 'download'])->name('orders.invoice.download');
 
     Route::get('/payment/{order}/initiate',      [PaymentController::class, 'initiate'])->name('payment.initiate');
     Route::get('/payment/esewa/success',         [PaymentController::class, 'esewaSuccess'])->name('payment.esewa.success');
@@ -175,6 +177,12 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     // ── Billing ───────────────────────────────────────────────
     Route::get('/billing',  [\App\Http\Controllers\Admin\BillingController::class, 'create'])->name('billing.create');
     Route::post('/billing', [\App\Http\Controllers\Admin\BillingController::class, 'store'])->name('billing.store');
+
+    // ── Orders ────────────────────────────────────────────────
+    Route::get('/orders',                        [\App\Http\Controllers\Admin\AdminOrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{order}/mark-cod-paid', [\App\Http\Controllers\Admin\AdminOrderController::class, 'markCodPaid'])->name('orders.markCodPaid');
+    Route::get('/orders/{order}/invoice',          [\App\Http\Controllers\InvoiceController::class, 'show'])->name('orders.invoice');
+    Route::get('/orders/{order}/invoice/download', [\App\Http\Controllers\InvoiceController::class, 'download'])->name('orders.invoice.download');
 });
 
 require __DIR__ . '/auth.php';

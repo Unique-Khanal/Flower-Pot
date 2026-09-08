@@ -136,7 +136,7 @@ class PaymentController extends Controller
             ]);
 
         if ($verify->ok() && $verify->json('status') === 'COMPLETE') {
-            $order->update(['payment_status' => 'paid']);
+            $order->markAsPaid();
             Mail::to($order->email)->send(new OrderConfirmationMail($order));
             return redirect()->route('orders.index')->with('success', '🎉 Payment successful! Order confirmed — a confirmation email has been sent.');
         }
@@ -176,7 +176,7 @@ class PaymentController extends Controller
             ->post(config('services.khalti.lookup_url'), ['pidx' => $pidx]);
 
         if ($verify->ok() && $verify->json('status') === 'Completed') {
-            $order->update(['payment_status' => 'paid']);
+            $order->markAsPaid();
             Mail::to($order->email)->send(new OrderConfirmationMail($order));
             return redirect()->route('orders.index')->with('success', '🎉 Payment successful! Order confirmed — a confirmation email has been sent.');
         }

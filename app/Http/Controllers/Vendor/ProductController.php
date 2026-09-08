@@ -65,8 +65,11 @@ class ProductController extends Controller
 
         if ($request->hasFile('images')) {
             // Replace the whole photo set — delete every old file first.
+            // allImages() returns public-facing paths (e.g. "storage/products/x.jpg"),
+            // but Storage::disk('public') expects paths relative to the disk root
+            // (e.g. "products/x.jpg"), so strip the "storage/" prefix before deleting.
             foreach ($product->allImages() as $oldPath) {
-                Storage::disk('public')->delete($oldPath);
+                Storage::disk('public')->delete($this->toDiskPath($oldPath));
             }
 
             $paths = $this->storeUploadedImages($request);
@@ -91,7 +94,7 @@ class ProductController extends Controller
         $this->authorizeOwner($product);
 
         foreach ($product->allImages() as $path) {
-            Storage::disk('public')->delete($path);
+            Storage::disk('public')->delete($this->toDiskPath($path));
         }
 
         $product->delete();
@@ -122,13 +125,31 @@ class ProductController extends Controller
     }
 
     /**
-     * @return string[] storage paths, first element is always the primary/thumbnail image
+     * Uploads and stores each image on the 'public' disk, returning
+     * public-facing paths (prefixed with "storage/") ready to save
+     * directly into Product.image / Product.gallery_images and be
+     * rendered with asset() on the storefront.
+     *
+     * @return string[] public-facing paths, first element is always the primary/thumbnail image
      */
     private function storeUploadedImages(Request $request): array
     {
         return collect($request->file('images'))
-            ->map(fn ($file) => $file->store('products', 'public'))
+            ->map(fn ($file) => 'storage/' . $file->store('products', 'public'))
             ->values()
             ->all();
+    }
+
+    /**
+     * Reverses the "storage/" prefix added by storeUploadedImages(), so a
+     * public-facing path (as stored in the DB and used with asset()) can be
+     * passed to Storage::disk('public') for deletion, which expects paths
+     * relative to the disk root instead.
+     */
+    private function toDiskPath(string $publicPath): string
+    {
+        return str_starts_with($publicPath, 'storage/')
+            ? substr($publicPath, strlen('storage/'))
+            : $publicPath;
     }
 }

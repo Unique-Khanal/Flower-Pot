@@ -11,7 +11,7 @@ class Order extends Model
         'address', 'latitude', 'longitude',
         'distance_km', 'delivery_charge',
         'subtotal', 'coupon_id', 'discount_amount', 'total', 'status',
-        'payment_method', 'payment_status', 'gateway_ref',
+        'payment_method', 'payment_status', 'gateway_ref', 'invoice_no',
         'refund_amount', 'refund_reason', 'refunded_at', 'refunded_by',
         'cancel_reason', 'cancelled_at',
     ];
@@ -39,5 +39,30 @@ class Order extends Model
     public function refundedBy()
     {
         return $this->belongsTo(User::class, 'refunded_by');
+    }
+
+    /**
+     * Marks an order as paid and issues its invoice number in the same
+     * step — the invoice number only exists once payment is confirmed,
+     * whether that's an online gateway callback or an admin marking a
+     * COD order as paid on delivery.
+     */
+    public function markAsPaid(): void
+    {
+        $this->update([
+            'payment_status' => 'paid',
+            'invoice_no'     => $this->invoice_no ?? self::nextInvoiceNumber(),
+        ]);
+    }
+
+    public static function nextInvoiceNumber(): string
+    {
+        $year = now()->format('Y');
+
+        $lastNumber = self::whereYear('created_at', now()->year)
+            ->whereNotNull('invoice_no')
+            ->count();
+
+        return sprintf('INV-%s-%06d', $year, $lastNumber + 1);
     }
 }

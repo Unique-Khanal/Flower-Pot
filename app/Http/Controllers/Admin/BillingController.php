@@ -75,7 +75,14 @@ class BillingController extends Controller
                 'total'          => $subtotal,
                 'status'         => 'delivered',
                 'payment_method' => 'cod',
+                'payment_status' => 'pending',
+            ]);
+
+            // Set instead of markAsPaid()'s own update — avoids a second
+            // write to a row we're already about to update below.
+            $order->update([
                 'payment_status' => 'paid',
+                'invoice_no'     => Order::nextInvoiceNumber(),
             ]);
 
             OrderItem::create([

@@ -133,12 +133,19 @@
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/55 mt-5 mb-1">Orders &amp; Billing</p>
+                <a href="{{ route('admin.orders.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-70">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0ZM3.75 12h.007v.008H3.75V12Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm-.375 5.25h.007v.008H3.75v-.008Zm.375 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Z"/></svg>
+                    </span>
+                    All Orders
+                </a>
                 <a href="{{ route('admin.billing.create') }}"
                    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.billing.*') ? 'active' : '' }}">
                     <span class="nav-icon opacity-70">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 3h6m-9 6h12a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 18 4.5H6a2.25 2.25 0 0 0-2.25 2.25v12A2.25 2.25 0 0 0 6 21Zm3.75-15h4.5v3.75h-4.5V6Z"/></svg>
                     </span>
-                    Billing
+                    Record a Sale
                 </a>
                 <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-60 cursor-not-allowed">
                     <span class="nav-icon">

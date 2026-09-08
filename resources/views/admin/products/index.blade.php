@@ -31,7 +31,7 @@
             @foreach ($products as $product)
                 <div class="bg-white rounded-2xl shadow-sm overflow-hidden">
                     <div class="aspect-square bg-stone-100">
-                        <img src="{{ asset('storage/' . $product->image) }}" class="w-full h-full object-cover">
+                        <img src="{{ asset($product->image) }}" class="w-full h-full object-cover">
                     </div>
                     <div class="p-4">
                         <h3 class="font-bold text-stone-800 text-sm leading-tight">{{ $product->name }}</h3>
