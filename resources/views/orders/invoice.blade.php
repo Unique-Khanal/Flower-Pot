@@ -11,18 +11,14 @@
 
         .accent-bar { height:5px; background:#2F6B4F; margin:-32px -32px 28px; }
 
-        .header { display:flex; justify-content:space-between; align-items:flex-start; padding-bottom:18px; margin-bottom:22px; border-bottom:1px solid #EDE7D6; }
         .brand { font-size:21px; font-weight:800; color:#1B3B2F; letter-spacing:-0.01em; }
         .brand span { color:#C89B3C; }
         .muted { color:#8A9088; font-size:12px; }
-        .invoice-title { text-align:right; }
-        .invoice-title h1 { font-size:12px; margin:0 0 6px; color:#8A9088; letter-spacing:.12em; text-transform:uppercase; font-weight:700; }
+        h1 { font-size:12px; margin:0 0 6px; color:#8A9088; letter-spacing:.12em; text-transform:uppercase; font-weight:700; }
         .invoice-no { font-size:17px; font-weight:800; color:#1B3B2F; }
 
-        .grid { display:flex; justify-content:space-between; gap:24px; margin-bottom:24px; }
-        .box { flex:1; }
-        .box h3 { font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:#8A9088; margin:0 0 8px; font-weight:700; }
-        .box .name { font-weight:700; color:#1B3B2F; margin-bottom:2px; }
+        h3 { font-size:10.5px; text-transform:uppercase; letter-spacing:.1em; color:#8A9088; margin:0 0 8px; font-weight:700; }
+        .name { font-weight:700; color:#1B3B2F; margin-bottom:2px; }
 
         table { width:100%; border-collapse:collapse; margin-bottom:22px; }
         th { background:#F7F3E8; text-align:left; font-size:10.5px; text-transform:uppercase; letter-spacing:.06em; color:#5A6B5C; padding:10px 12px; font-weight:700; }
@@ -79,41 +75,45 @@
             <div class="stamp">Paid</div>
         @endif
 
-        <div class="header">
-            <div>
-                @if($logoData)
-                    <img src="{{ $logoData }}" style="height:38px; width:auto; display:block;" alt="Biruwa">
-                @else
-                    <div class="brand">Biru<span>wa</span></div>
-                @endif
-                <div class="muted" style="margin-top:6px;">घर-घरमा हरियाली · Kathmandu, Nepal</div>
-            </div>
-            <div class="invoice-title">
-                <h1>Invoice</h1>
-                <div class="invoice-no">{{ $order->invoice_no }}</div>
-                <div class="muted">{{ $order->created_at->format('d M Y') }}</div>
-            </div>
-        </div>
+        <table style="width:100%; border-bottom:1px solid #EDE7D6; padding-bottom:18px; margin-bottom:22px;">
+            <tr>
+                <td style="border:none; padding:0; vertical-align:top;">
+                    @if($logoData)
+                        <img src="{{ $logoData }}" style="height:38px; width:auto; display:block;" alt="Biruwa">
+                    @else
+                        <div class="brand">Biru<span>wa</span></div>
+                    @endif
+                    <div class="muted" style="margin-top:6px;">घर-घरमा हरियाली &middot; Kathmandu, Nepal</div>
+                </td>
+                <td style="border:none; padding:0; vertical-align:top; text-align:right;">
+                    <h1>Invoice</h1>
+                    <div class="invoice-no">{{ $order->invoice_no }}</div>
+                    <div class="muted">{{ $order->created_at->format('d M Y') }}</div>
+                </td>
+            </tr>
+        </table>
 
-        <div class="grid">
-            <div class="box">
-                <h3>Billed To</h3>
-                <div class="name">{{ $order->customer_name }}</div>
-                <div class="muted">{{ $order->email }}</div>
-                <div class="muted">{{ $order->phone_no }}</div>
-                <div class="muted">{{ $order->address }}</div>
-            </div>
-            <div class="box" style="text-align:right;">
-                <h3>Payment</h3>
-                <span class="badge badge-{{ $order->payment_status }}">{{ strtoupper($order->payment_method) }} · {{ $order->payment_status }}</span>
-                @if($order->gateway_ref)
-                    <div class="muted" style="margin-top:8px;">Ref: {{ $order->gateway_ref }}</div>
-                @endif
-                @if($order->payment_status === 'refunded' && $order->refund_amount)
-                    <div class="muted" style="margin-top:4px;">Refunded: Rs. {{ number_format($order->refund_amount, 2) }}</div>
-                @endif
-            </div>
-        </div>
+        <table style="width:100%; margin-bottom:24px;">
+            <tr>
+                <td style="border:none; padding:0; vertical-align:top; width:60%;">
+                    <h3>Billed To</h3>
+                    <div class="name">{{ $order->customer_name }}</div>
+                    <div class="muted">{{ $order->email }}</div>
+                    <div class="muted">{{ $order->phone_no }}</div>
+                    <div class="muted">{{ $order->address }}</div>
+                </td>
+                <td style="border:none; padding:0; vertical-align:top; width:40%; text-align:right;">
+                    <h3>Payment</h3>
+                    <span class="badge badge-{{ $order->payment_status }}">{{ strtoupper($order->payment_method) }} &middot; {{ $order->payment_status }}</span>
+                    @if($order->gateway_ref)
+                        <div class="muted" style="margin-top:8px;">Ref: {{ $order->gateway_ref }}</div>
+                    @endif
+                    @if($order->payment_status === 'refunded' && $order->refund_amount)
+                        <div class="muted" style="margin-top:4px;">Refunded: Rs. {{ number_format($order->refund_amount, 2) }}</div>
+                    @endif
+                </td>
+            </tr>
+        </table>
 
         <table>
             <thead>

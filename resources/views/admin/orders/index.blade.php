@@ -31,22 +31,30 @@
     {{-- ── STAT ROW ── --}}
     <div class="grid grid-cols-2 md:grid-cols-4 gap-4 mb-6">
         <div class="stat-card bg-white rounded-2xl shadow-sm p-5">
-            <div class="w-11 h-11 rounded-full bg-green-100 flex items-center justify-center text-xl mb-3">💰</div>
+            <div class="w-11 h-11 rounded-full bg-green-100 flex items-center justify-center mb-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 text-green-600"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v12m-3.75-9.75h5.25a2.25 2.25 0 0 1 0 4.5h-3a2.25 2.25 0 0 0 0 4.5h5.25M12 3a9 9 0 1 0 0 18 9 9 0 0 0 0-18Z"/></svg>
+            </div>
             <div class="text-xs text-stone-400 mb-1">Total Revenue</div>
             <div class="text-xl font-extrabold text-[#1B3B2F]">Rs. {{ number_format($totalRevenue, 0) }}</div>
         </div>
         <div class="stat-card bg-white rounded-2xl shadow-sm p-5">
-            <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center text-xl mb-3">🧾</div>
+            <div class="w-11 h-11 rounded-full bg-blue-100 flex items-center justify-center mb-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 text-blue-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6M9 8h6M6 3.75h12A1.25 1.25 0 0 1 19.25 5v15.043a.5.5 0 0 1-.724.447L16 19l-2.526 1.49a.5.5 0 0 1-.5.001L10.5 19l-2.526 1.49a.5.5 0 0 1-.5.001L5 19l-.026-.011A.5.5 0 0 1 4.75 20.5V5A1.25 1.25 0 0 1 6 3.75Z"/></svg>
+            </div>
             <div class="text-xs text-stone-400 mb-1">Total Orders</div>
             <div class="text-xl font-extrabold text-[#1B3B2F]">{{ $counts['all'] }}</div>
         </div>
         <a href="{{ route('admin.orders.index', ['status' => 'cod_pending']) }}" class="stat-card bg-white rounded-2xl shadow-sm p-5 block">
-            <div class="w-11 h-11 rounded-full bg-amber-100 flex items-center justify-center text-xl mb-3">⏳</div>
+            <div class="w-11 h-11 rounded-full bg-amber-100 flex items-center justify-center mb-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 text-amber-600"><path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z"/></svg>
+            </div>
             <div class="text-xs text-stone-400 mb-1">COD Awaiting Payment</div>
             <div class="text-xl font-extrabold text-[#1B3B2F]">{{ $counts['cod_pending'] }}</div>
         </a>
         <a href="{{ route('admin.orders.index', ['status' => 'refunded']) }}" class="stat-card bg-white rounded-2xl shadow-sm p-5 block">
-            <div class="w-11 h-11 rounded-full bg-purple-100 flex items-center justify-center text-xl mb-3">↩️</div>
+            <div class="w-11 h-11 rounded-full bg-purple-100 flex items-center justify-center mb-3">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" class="w-5 h-5 text-purple-600"><path stroke-linecap="round" stroke-linejoin="round" d="M9 15 4.5 10.5 9 6m-4.5 4.5H15a5.25 5.25 0 0 1 0 10.5h-1.5"/></svg>
+            </div>
             <div class="text-xs text-stone-400 mb-1">Refunded</div>
             <div class="text-xl font-extrabold text-[#1B3B2F]">{{ $counts['refunded'] }}</div>
         </a>
