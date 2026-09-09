@@ -180,7 +180,9 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
 
     // ── Orders ────────────────────────────────────────────────
     Route::get('/orders',                        [\App\Http\Controllers\Admin\AdminOrderController::class, 'index'])->name('orders.index');
-    Route::post('/orders/{order}/mark-cod-paid', [\App\Http\Controllers\Admin\AdminOrderController::class, 'markCodPaid'])->name('orders.markCodPaid');
+    Route::post('/orders/{order}/confirm',       [\App\Http\Controllers\Admin\AdminOrderController::class, 'confirm'])->name('orders.confirm');
+    Route::post('/orders/{order}/deliver',       [\App\Http\Controllers\Admin\AdminOrderController::class, 'deliver'])->name('orders.deliver');
+    Route::post('/orders/{order}/cancel',        [\App\Http\Controllers\Admin\AdminOrderController::class, 'cancel'])->name('orders.cancel');
     Route::get('/orders/{order}/invoice',          [\App\Http\Controllers\InvoiceController::class, 'show'])->name('orders.invoice');
     Route::get('/orders/{order}/invoice/download', [\App\Http\Controllers\InvoiceController::class, 'download'])->name('orders.invoice.download');
 });
