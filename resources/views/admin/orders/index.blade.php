@@ -152,7 +152,7 @@
                             @if ($order->status === 'pending')
                                 <form method="POST" action="{{ route('admin.orders.confirm', $order) }}" class="inline">
                                     @csrf
-                                    <button type="submit" class="text-xs bg-blue-600 hover:bg-blue-700 text-white font-bold px-3 py-1.5 rounded-lg">
+                                    <button type="submit" class="text-xs bg-[#3E9C6F] hover:bg-[#34875F] text-white font-bold px-3 py-1.5 rounded-lg">
                                         Confirm
                                     </button>
                                 </form>
