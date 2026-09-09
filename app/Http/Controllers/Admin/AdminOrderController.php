@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Mail\InvoiceMail;
+use App\Mail\OrderCancelledMail;
 use App\Models\Order;
 use Illuminate\Contracts\View\View;
 use Illuminate\Http\RedirectResponse;
@@ -129,6 +130,8 @@ class AdminOrderController extends Controller
             'cancelled_at'  => now(),
         ]);
 
-        return back()->with('success', "Order #{$order->id} cancelled.");
+        Mail::to($order->email)->send(new OrderCancelledMail($order->fresh('items')));
+
+        return back()->with('success', "Order #{$order->id} cancelled — the customer has been notified by email.");
     }
 }
