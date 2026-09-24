@@ -49,6 +49,13 @@
             <!-- Auth Desktop -->
             <div class="hidden sm:flex sm:items-center sm:ms-6 gap-3">
 
+                {{-- Search Icon — everyone, every page --}}
+                <a href="{{ route('products.search') }}" class="text-stone-500 hover:text-green-700 transition" title="Search products">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m21 21-4.34-4.34M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/>
+                    </svg>
+                </a>
+
                 @auth
                     @if(Auth::user()->role === 'admin')
                         {{-- Admins keep the small avatar icon for recognition, but no
@@ -150,6 +157,7 @@
     <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
             <x-responsive-nav-link :href="route('home')"           :active="request()->routeIs('home')">Home</x-responsive-nav-link>
+            <x-responsive-nav-link :href="route('products.search')" :active="request()->routeIs('products.search')">🔍 Search</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('about')"          :active="request()->routeIs('about')">About</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('products.index')" :active="request()->routeIs('products.*')">Products</x-responsive-nav-link>
             <x-responsive-nav-link :href="route('services')"       :active="request()->routeIs('services')">Services</x-responsive-nav-link>

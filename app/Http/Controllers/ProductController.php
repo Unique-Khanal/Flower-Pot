@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Product;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ProductController extends Controller
@@ -66,6 +67,31 @@ class ProductController extends Controller
                            ->orderBy('name')
                            ->get();
         return view('products.plants', compact('products'));
+    }
+
+    /**
+     * Site-wide product search — matches name, description or category,
+     * live products only. Used by the search bar on the homepage (and
+     * anywhere else linking to products.search with ?q=...).
+     */
+    public function search(Request $request)
+    {
+        $q = trim((string) $request->get('q', ''));
+
+        $products = collect();
+
+        if ($q !== '') {
+            $products = Product::where('is_hidden', false)
+                ->where(function ($query) use ($q) {
+                    $query->where('name', 'like', "%{$q}%")
+                          ->orWhere('description', 'like', "%{$q}%")
+                          ->orWhere('category', 'like', "%{$q}%");
+                })
+                ->orderBy('name')
+                ->get();
+        }
+
+        return view('products.search', compact('products', 'q'));
     }
 
     public function show(Product $product)

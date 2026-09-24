@@ -36,6 +36,7 @@ Route::get('/products/ceramics', [ProductController::class, 'ceramics'])->name('
 Route::get('/products/cement',   [ProductController::class, 'cement'])->name('products.cement');
 Route::get('/products/mud',      [ProductController::class, 'mud'])->name('products.mud');
 Route::get('/products/plastic',  [ProductController::class, 'plastic'])->name('products.plastic');
+Route::get('/products/search',   [ProductController::class, 'search'])->name('products.search');
 
 // Product detail — public
 Route::get('/products/{product}', [ProductController::class, 'show'])
@@ -189,6 +190,15 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/products',                    [\App\Http\Controllers\Admin\ProductController::class, 'index'])->name('products.index');
     Route::post('/products/{product}/approve', [\App\Http\Controllers\Admin\ProductController::class, 'approve'])->name('products.approve');
     Route::post('/products/{product}/hide',    [\App\Http\Controllers\Admin\ProductController::class, 'hide'])->name('products.hide');
+
+    // ── Admin-owned products (vendor_id NULL) — admin sells directly,
+    //    and this is also how the pre-vendor-system legacy catalog is
+    //    now managed, since it was previously untouchable from any UI.
+    Route::get('/products/create',              [\App\Http\Controllers\Admin\ProductController::class, 'create'])->name('products.create');
+    Route::post('/products',                    [\App\Http\Controllers\Admin\ProductController::class, 'store'])->name('products.store');
+    Route::get('/products/{product}/edit',      [\App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('products.edit');
+    Route::put('/products/{product}',           [\App\Http\Controllers\Admin\ProductController::class, 'update'])->name('products.update');
+    Route::delete('/products/{product}',        [\App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('products.destroy');
 
     // ── Billing ───────────────────────────────────────────────
     Route::get('/billing',  [\App\Http\Controllers\Admin\BillingController::class, 'create'])->name('billing.create');

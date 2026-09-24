@@ -40,6 +40,21 @@
                     View Plants →
                 </a>
             </div>
+
+            {{-- ── SEARCH BAR ── --}}
+            <form action="{{ route('products.search') }}" method="GET" class="mt-8 max-w-md">
+                <div class="relative">
+                    <svg class="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-stone-400 pointer-events-none" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-4.34-4.34M19 11a8 8 0 1 1-16 0 8 8 0 0 1 16 0Z"/>
+                    </svg>
+                    <input type="text" name="q" placeholder="Search pots, plants, categories..."
+                           class="w-full pl-14 pr-28 py-3.5 rounded-xl border-0 bg-white text-base leading-none text-stone-800 placeholder-stone-400 focus:outline-none focus:ring-2 focus:ring-[#2F6B4F] shadow-lg">
+                    <button type="submit"
+                            class="absolute right-1.5 top-1.5 bottom-1.5 bg-[#1B3B2F] hover:bg-[#12281F] text-white font-bold px-5 rounded-lg text-xs transition">
+                        Search
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 
