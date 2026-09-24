@@ -126,6 +126,22 @@ Route::post('/admin/login', [AdminAuthenticatedSessionController::class, 'store'
 Route::post('/admin/logout', [AdminAuthenticatedSessionController::class, 'destroy'])
     ->middleware('auth')->name('admin.logout');
 
+// ── Admin OTP-based password reset (forgot password) ──────────
+Route::get('/admin/forgot-password', [\App\Http\Controllers\Auth\AdminPasswordResetOtpController::class, 'create'])
+    ->name('admin.password.request');
+
+Route::post('/admin/forgot-password', [\App\Http\Controllers\Auth\AdminPasswordResetOtpController::class, 'sendOtp'])
+    ->middleware('throttle:5,1')->name('admin.password.email');
+
+Route::get('/admin/reset-password-otp', [\App\Http\Controllers\Auth\AdminPasswordResetOtpController::class, 'showVerifyForm'])
+    ->name('admin.password.reset.otp.verify');
+
+Route::post('/admin/reset-password-otp', [\App\Http\Controllers\Auth\AdminPasswordResetOtpController::class, 'resetPassword'])
+    ->middleware('throttle:5,1')->name('admin.password.reset.otp.store');
+
+Route::post('/admin/reset-password-otp/resend', [\App\Http\Controllers\Auth\AdminPasswordResetOtpController::class, 'resendOtp'])
+    ->middleware('throttle:5,1')->name('admin.password.reset.otp.resend');
+
 // ──────────────────────────────────────────────
 // ADMIN 2FA
 // ──────────────────────────────────────────────

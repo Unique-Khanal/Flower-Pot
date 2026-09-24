@@ -21,6 +21,11 @@ class AdminUserSeeder extends Seeder
                 'email'    => 'uniquekhanal2080@ims.edu.np',
                 'password' => 'ChangeThisPassword2!',
             ],
+            [
+                'name'     => 'Nishant Barailly',
+                'email'    => 'barailynishant103@gmail.com',
+                'password' => 'ChangeThisPassword3!',
+            ],
         ];
 
         foreach ($admins as $admin) {

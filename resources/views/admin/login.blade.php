@@ -20,7 +20,12 @@
         </div>
 
         <div>
-            <label for="password" class="block text-sm font-semibold text-stone-700 mb-1.5">Password</label>
+            <div class="flex items-center justify-between mb-1.5">
+                <label for="password" class="block text-sm font-semibold text-stone-700">Password</label>
+                <a href="{{ route('admin.password.request') }}" class="text-xs font-semibold text-[#1B3B2F] hover:underline">
+                    Forgot password?
+                </a>
+            </div>
             <input id="password" type="password" name="password"
                    class="admin-auth-input" required autocomplete="current-password" placeholder="••••••••">
         </div>
