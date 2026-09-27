@@ -117,6 +117,8 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
 
     Route::get('/settings',   [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'edit'])->name('settings');
     Route::patch('/settings', [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'update'])->name('settings.update');
+
+    Route::get('/payouts', [\App\Http\Controllers\Vendor\PayoutController::class, 'index'])->name('payouts.index');
 });
 
 // ──────────────────────────────────────────────
@@ -204,6 +206,12 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/billing',  [\App\Http\Controllers\Admin\BillingController::class, 'create'])->name('billing.create');
     Route::post('/billing', [\App\Http\Controllers\Admin\BillingController::class, 'store'])->name('billing.store');
 
+    // ── Vendor Payouts ────────────────────────────
+    Route::get('/payouts',                     [\App\Http\Controllers\Admin\VendorPayoutController::class, 'index'])->name('payouts.index');
+    Route::post('/payouts/{vendor}/generate',  [\App\Http\Controllers\Admin\VendorPayoutController::class, 'generate'])->name('payouts.generate');
+    Route::get('/payouts/{vendor}',            [\App\Http\Controllers\Admin\VendorPayoutController::class, 'history'])->name('payouts.history');
+    Route::post('/payouts/mark-paid/{payout}', [\App\Http\Controllers\Admin\VendorPayoutController::class, 'markPaid'])->name('payouts.markPaid');
+
     // ── Orders ────────────────────────────────────────────────
     Route::get('/orders',                        [\App\Http\Controllers\Admin\AdminOrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/{order}/confirm',       [\App\Http\Controllers\Admin\AdminOrderController::class, 'confirm'])->name('orders.confirm');
@@ -213,4 +221,4 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/orders/{order}/invoice/download', [\App\Http\Controllers\InvoiceController::class, 'download'])->name('orders.invoice.download');
 });
 
-require __DIR__ . '/auth.php';
+require __DIR__ . '/auth.php';  

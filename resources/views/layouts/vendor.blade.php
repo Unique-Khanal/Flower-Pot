@@ -82,11 +82,12 @@
                     </span>
                     My Orders <span class="ml-auto text-[9px] bg-white/15 px-1.5 py-0.5 rounded">soon</span>
                 </a>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-50 cursor-not-allowed">
+                <a href="{{ route('vendor.payouts.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('vendor.payouts.*') ? 'active' : '' }}">
                     <span class="nav-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 8.25h19.5M2.25 9h19.5m-16.5 5.25h6m-6 2.25h3M4.5 19.5h15a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25v10.5A2.25 2.25 0 0 0 4.5 19.5Z"/></svg>
                     </span>
-                    Payouts <span class="ml-auto text-[9px] bg-white/15 px-1.5 py-0.5 rounded">soon</span>
+                    Payouts
                 </a>
                 <a href="{{ route('vendor.dashboard') }}#commission"
                    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition">

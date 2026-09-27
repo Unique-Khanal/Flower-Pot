@@ -27,4 +27,14 @@ class VendorPayout extends Model
     {
         return $this->belongsTo(Vendor::class);
     }
+
+    public function orderItems()
+    {
+        return $this->hasMany(OrderItem::class, 'vendor_payout_id');
+    }
+
+    public function markPaid(): void
+    {
+        $this->update(['status' => 'paid', 'paid_at' => now()]);
+    }
 }
