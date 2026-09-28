@@ -130,6 +130,10 @@ class AdminOrderController extends Controller
             'cancelled_at'  => now(),
         ]);
 
+        // Cascade to vendor line items and return quantities to stock
+        $order->items()->update(['vendor_status' => 'cancelled']);
+        $order->restoreStock();
+
         Mail::to($order->email)->send(new OrderCancelledMail($order->fresh('items')));
 
         return back()->with('success', "Order #{$order->id} cancelled — the customer has been notified by email.");

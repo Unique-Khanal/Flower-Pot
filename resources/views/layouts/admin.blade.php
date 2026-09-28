@@ -125,11 +125,12 @@
                         <span class="ml-auto text-[10px] font-bold bg-white/15 text-white px-1.5 py-0.5 rounded-full">{{ $navPendingProducts }}</span>
                     @endif
                 </a>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-60 cursor-not-allowed">
-                    <span class="nav-icon">
+                <a href="{{ route('admin.stock.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.stock.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-70">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5v9a2.25 2.25 0 0 1-2.25 2.25h-12a2.25 2.25 0 0 1-2.25-2.25v-9M3.75 7.5 5.106 4.79A1.5 1.5 0 0 1 6.447 4h11.106a1.5 1.5 0 0 1 1.341.79L20.25 7.5m-16.5 0h16.5M9.75 11.25h4.5"/></svg>
                     </span>
-                    Stock Oversight <span class="ml-auto text-[9px] bg-white/10 px-1.5 py-0.5 rounded">soon</span>
+                    Stock Oversight
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/55 mt-5 mb-1">Orders &amp; Billing</p>

@@ -295,6 +295,26 @@
                 });
             }
 
+            // ── OUT OF STOCK ALERT ────────────────────────
+            function showOutOfStockAlert(message, title) {
+                Swal.fire({
+                    title: title || 'Out of Stock',
+                    text: message || 'Sorry, this product is currently out of stock.',
+                    icon: 'error',
+                    confirmButtonText: 'OK',
+                    confirmButtonColor: '#15803d',
+                    customClass: { popup: 'rounded-2xl', confirmButton: 'rounded-xl px-6' }
+                });
+            }
+
+            // ── SERVER ERROR FLASH (e.g. stock problems) ──
+            @if(session('error'))
+            document.addEventListener('DOMContentLoaded', function () {
+                var msg = @json(session('error'));
+                showOutOfStockAlert(msg, /stock/i.test(msg) ? 'Out of Stock' : 'Oops!');
+            });
+            @endif
+
             // ── IMAGE ZOOM ────────────────────────────────
             function openZoom(src, alt) {
                 const overlay = document.getElementById('zoomOverlay');

@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Order;
 use App\Models\OrderItem;
 use App\Models\CartItem;
+use App\Models\Product;
 use App\Mail\OrderConfirmationMail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -55,10 +56,39 @@ class OrderController extends Controller
                 ->with('error', 'Your cart is empty!');
         }
 
+        // Stock check at checkout — generic message, exact stock is never revealed to customers.
+        foreach ($cartItems as $item) {
+            if (! $item->product->isInStock()) {
+                return redirect()->route('cart.index')
+                    ->with('error', "Sorry, {$item->product->name} is currently out of stock. Please remove it from your cart.");
+            }
+            if ($item->quantity > $item->product->stock) {
+                return redirect()->route('cart.index')
+                    ->with('error', "Sorry, we don't have enough {$item->product->name} in stock for the quantity in your cart. Please reduce it.");
+            }
+        }
+
         $subtotal = $cartItems->sum(fn($item) => $item->product->price * $item->quantity);
         $total = $subtotal + $request->delivery_charge;
 
+        try {
         $order = DB::transaction(function () use ($request, $cartItems, $subtotal, $total) {
+
+            // Lock the product rows so two customers can't both buy the last unit,
+            // then re-check stock and deduct it atomically with the order.
+            $products = Product::whereIn('id', $cartItems->pluck('product_id'))
+                ->lockForUpdate()
+                ->get()
+                ->keyBy('id');
+
+            foreach ($cartItems as $item) {
+                $p = $products->get($item->product_id);
+                if (! $p || $p->stock < $item->quantity) {
+                    throw new \RuntimeException(
+                        "Sorry, we don't have enough " . ($p->name ?? 'a product in your cart') . " in stock for that quantity."
+                    );
+                }
+            }
 
             $order = Order::create([
                 'user_id' => Auth::id(),
@@ -96,12 +126,18 @@ class OrderController extends Controller
                     'quantity'          => $item->quantity,
                     'subtotal'          => $lineSubtotal,
                 ]);
+
+                // Reduce the real (admin/vendor-visible) stock.
+                $products->get($item->product_id)->adjustStock(-$item->quantity, "Order #{$order->id} placed", 'order');
             }
 
             CartItem::where('user_id', Auth::id())->delete();
 
             return $order;
         });
+        } catch (\RuntimeException $e) {
+            return redirect()->route('cart.index')->with('error', $e->getMessage());
+        }
 
         if ($order->payment_method === 'cod') {
             Mail::to($order->email)->send(new OrderConfirmationMail($order));
@@ -145,6 +181,9 @@ class OrderController extends Controller
 
         // Cascade cancellation down to each vendor's line item
         $order->items()->update(['vendor_status' => 'cancelled']);
+
+        // Return the reserved quantities to stock
+        $order->restoreStock();
 
         return back()->with('success', 'Order cancelled successfully.');
     }

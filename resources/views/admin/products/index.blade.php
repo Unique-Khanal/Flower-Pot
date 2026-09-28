@@ -74,7 +74,9 @@
                         </p>
                         <p class="text-xs text-stone-400 capitalize">{{ $product->category }}@if($product->size) — {{ $product->size }}@endif</p>
                         <p class="text-lg font-extrabold text-[#1B3B2F] mt-2">Rs. {{ number_format($product->price, 2) }}</p>
-                        <p class="text-xs text-stone-500">{{ $product->stock }} in stock</p>
+                        <p class="text-xs {{ $product->stock <= 0 ? 'text-red-600 font-bold' : ($product->stock <= 5 ? 'text-red-500 font-semibold' : 'text-stone-500') }}">
+                            {{ $product->stock <= 0 ? 'Out of stock' : $product->stock . ' in stock' }}
+                        </p>
 
                         @if ($product->description)
                             <p class="text-xs text-stone-500 mt-2 line-clamp-2">{{ $product->description }}</p>
@@ -170,4 +172,4 @@
         </div>
     @endif
 </div>
-@endsection
+@endsectionma

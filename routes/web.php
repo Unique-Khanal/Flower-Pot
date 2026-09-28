@@ -206,6 +206,10 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/billing',  [\App\Http\Controllers\Admin\BillingController::class, 'create'])->name('billing.create');
     Route::post('/billing', [\App\Http\Controllers\Admin\BillingController::class, 'store'])->name('billing.store');
 
+    // ── Stock Oversight ───────────────────────────────────────
+    Route::get('/stock',            [\App\Http\Controllers\Admin\StockController::class, 'index'])->name('stock.index');
+    Route::post('/stock/{product}', [\App\Http\Controllers\Admin\StockController::class, 'update'])->name('stock.update');
+
     // ── Vendor Payouts ────────────────────────────
     Route::get('/payouts',                     [\App\Http\Controllers\Admin\VendorPayoutController::class, 'index'])->name('payouts.index');
     Route::post('/payouts/{vendor}/generate',  [\App\Http\Controllers\Admin\VendorPayoutController::class, 'generate'])->name('payouts.generate');
@@ -221,4 +225,4 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/orders/{order}/invoice/download', [\App\Http\Controllers\InvoiceController::class, 'download'])->name('orders.invoice.download');
 });
 
-require __DIR__ . '/auth.php';  
+require __DIR__ . '/auth.php';

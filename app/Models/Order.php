@@ -21,6 +21,21 @@ class Order extends Model
         'refunded_at'  => 'datetime',
     ];
 
+    /**
+     * Put this order's quantities back into product stock (admin/vendor
+     * inventory). Call only when an order moves pending -> cancelled;
+     * those paths are already status-guarded so it fires once per order.
+     */
+    public function restoreStock(): void
+    {
+        foreach ($this->items as $item) {
+            if ($item->product_id) {
+                \App\Models\Product::find($item->product_id)
+                    ?->adjustStock($item->quantity, "Order #{$this->id} cancelled", 'order_cancel');
+            }
+        }
+    }
+
     public function items()
     {
         return $this->hasMany(OrderItem::class);

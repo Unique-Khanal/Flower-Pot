@@ -63,9 +63,9 @@
                         </div>
                         @endif
                         <div class="flex justify-between py-2 border-b border-stone-100">
-                            <span class="text-stone-500 font-medium">Stock</span>
-                            @if($product->stock > 0)
-                                <span class="text-green-600 font-semibold">{{ $product->stock }} available</span>
+                            <span class="text-stone-500 font-medium">Availability</span>
+                            @if($product->isInStock())
+                                <span class="text-green-600 font-semibold">✓ In Stock</span>
                             @else
                                 <span class="text-red-500 font-semibold">Out of Stock</span>
                             @endif
@@ -77,7 +77,7 @@
                     </div>
 
                     {{-- Quantity Selector --}}
-                    @if($product->stock > 0)
+                    @if($product->isInStock())
                     <div class="flex items-center gap-4 mb-6">
                         <span class="text-stone-600 font-medium text-sm">Quantity</span>
                         <div class="flex items-center border border-stone-300 rounded-xl overflow-hidden">
@@ -90,19 +90,18 @@
                                   class="w-10 h-10 flex items-center justify-center font-bold text-stone-800 border-x border-stone-300">
                                 1
                             </span>
-                            <button type="button" onclick="increaseQty({{ $product->stock }})"
+                            <button type="button" onclick="increaseQty()"
                                     class="w-10 h-10 flex items-center justify-center text-stone-600
                                            hover:bg-stone-100 transition text-lg font-bold">
                                 +
                             </button>
                         </div>
-                        <span class="text-xs text-stone-400">Max: {{ $product->stock }}</span>
                     </div>
                     @endif
                 </div>
 
                 {{-- Buttons --}}
-                @if($product->stock > 0)
+                @if($product->isInStock())
                     <div class="flex flex-col gap-3">
                         @auth
                             {{-- Add to Cart --}}
@@ -142,7 +141,7 @@
                         @endauth
                     </div>
                 @else
-                    <button disabled
+                    <button type="button" onclick="showOutOfStockAlert()"
                             class="w-full bg-stone-300 text-stone-500 font-bold py-3.5 rounded-xl cursor-not-allowed">
                         Out of Stock
                     </button>
@@ -159,10 +158,12 @@
 
 <script>
     let qty = 1;
-    const maxStock = {{ $product->stock }};
+    // Generic UI cap only. The real stock number is never sent to the browser;
+    // the server validates against actual stock and a SweetAlert is shown if exceeded.
+    const UI_MAX_QTY = 99;
 
-    function increaseQty(max) {
-        if (qty < max) {
+    function increaseQty() {
+        if (qty < UI_MAX_QTY) {
             qty++;
             updateDisplay();
         }

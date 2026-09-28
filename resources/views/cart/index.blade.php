@@ -50,7 +50,7 @@
                         {{-- Quantity Controls with +/- buttons --}}
                         <div style="display:flex; align-items:center; gap:6px;">
                             <button type="button"
-                                    onclick="changeQty({{ $item->id }}, -1, {{ $item->product->price }}, {{ $item->product->stock }})"
+                                    onclick="changeQty({{ $item->id }}, -1, {{ $item->product->price }})"
                                     style="width:30px; height:30px; border-radius:50%;
                                            border:1.5px solid #d6d3d1; background:white;
                                            cursor:pointer; font-size:1.1rem; font-weight:700;
@@ -69,7 +69,7 @@
                             </span>
 
                             <button type="button"
-                                    onclick="changeQty({{ $item->id }}, 1, {{ $item->product->price }}, {{ $item->product->stock }})"
+                                    onclick="changeQty({{ $item->id }}, 1, {{ $item->product->price }})"
                                     style="width:30px; height:30px; border-radius:50%;
                                            border:1.5px solid #d6d3d1; background:white;
                                            cursor:pointer; font-size:1.1rem; font-weight:700;
@@ -175,18 +175,18 @@
         @foreach($cartItems as $item)
         {{ $item->id }}: {
             price: {{ $item->product->price }},
-            qty:   {{ $item->quantity }},
-            max:   {{ $item->product->stock }}
+            qty:   {{ $item->quantity }}
         },
         @endforeach
     };
 
-    function changeQty(itemId, delta, price, maxStock) {
+    function changeQty(itemId, delta, price) {
         const current = itemPrices[itemId].qty;
         const newQty  = current + delta;
 
-        // Enforce min = 1 and max = stock
-        if (newQty < 1 || newQty > maxStock) return;
+        // Enforce min = 1 and a generic UI cap. Real stock is validated
+        // server-side (Save) and never exposed to the browser.
+        if (newQty < 1 || newQty > 99) return;
 
         // Update stored qty
         itemPrices[itemId].qty = newQty;

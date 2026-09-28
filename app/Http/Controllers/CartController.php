@@ -22,9 +22,17 @@ class CartController extends Controller
 
    public function add(Request $request, Product $product)
 {
+    // Deliberately no numeric ceiling here that reveals the real stock
+    // count to the customer (Laravel's default "max" message would
+    // otherwise leak it, e.g. "must not be greater than 7"). Just a
+    // sane upper bound on input size; the real check is below.
     $request->validate([
-        'quantity' => 'nullable|integer|min:1|max:' . max($product->stock, 1),
+        'quantity' => 'nullable|integer|min:1|max:999',
     ]);
+
+    if (! $product->isInStock()) {
+        return back()->with('error', "Sorry, {$product->name} is currently out of stock.");
+    }
 
     $qty = $request->quantity ?? 1;
 
@@ -35,7 +43,8 @@ class CartController extends Controller
     $existingQty = $cartItem?->quantity ?? 0;
 
     if ($existingQty + $qty > $product->stock) {
-        return back()->with('error', "Only {$product->stock} of {$product->name} in stock — you already have {$existingQty} in your cart.");
+        // Generic on purpose — never reveal the exact stock number to a customer.
+        return back()->with('error', "Sorry, we don't have enough {$product->name} in stock for that quantity.");
     }
 
     if ($cartItem) {
@@ -71,13 +80,20 @@ class CartController extends Controller
             abort(403);
         }
 
-        $stock = $cartItem->product->stock;
+        $product = $cartItem->product;
 
         $request->validate([
-            'quantity' => 'required|integer|min:1|max:' . max($stock, 1),
-        ], [
-            'quantity.max' => "Only {$stock} of this item in stock.",
+            'quantity' => 'required|integer|min:1|max:999',
         ]);
+
+        if (! $product->isInStock()) {
+            return back()->with('error', "Sorry, {$product->name} is currently out of stock.");
+        }
+
+        if ($request->quantity > $product->stock) {
+            // Generic on purpose — never reveal the exact stock number to a customer.
+            return back()->with('error', "Sorry, we don't have enough {$product->name} in stock for that quantity.");
+        }
 
         $cartItem->update(['quantity' => $request->quantity]);
         return back()->with('success', 'Cart updated.');
