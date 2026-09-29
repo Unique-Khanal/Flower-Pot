@@ -25,7 +25,7 @@
             @error('description') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-semibold text-stone-700 mb-1">Category</label>
                 <select name="category" required class="w-full rounded-xl border-stone-300 focus:border-[#2F6B4F] focus:ring-[#2F6B4F]">
@@ -46,7 +46,7 @@
             </div>
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-semibold text-stone-700 mb-1">Price (Rs.)</label>
                 <input type="number" name="price" step="0.01" min="0" value="{{ old('price', $product->price) }}" required

@@ -65,12 +65,16 @@ class StockController extends Controller
     }
 
     /**
-     * Admin sets the real stock for ANY product (platform or vendor-owned).
-     * The change is logged, and the vendor sees the new number on their side
-     * because it's the same products.stock column.
+     * Admin can only set stock for admin-owned (platform) products.
+     * A vendor's stock belongs to the vendor — admin can see it here for
+     * oversight, but editing it is reserved for the vendor themselves.
      */
     public function update(Request $request, Product $product): RedirectResponse
     {
+        if ($product->vendor_id !== null) {
+            return back()->with('error', "{$product->name} belongs to a vendor — only that vendor can update its stock.");
+        }
+
         $data = $request->validate([
             'new_stock' => ['required', 'integer', 'min:0', 'max:1000000'],
             'reason'    => ['required', 'string', 'max:255'],

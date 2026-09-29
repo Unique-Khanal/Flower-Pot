@@ -74,13 +74,24 @@
                     </span>
                     My Products
                 </a>
+                <a href="{{ route('vendor.stock.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('vendor.stock.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-90">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M20.25 7.5v9a2.25 2.25 0 0 1-2.25 2.25h-12a2.25 2.25 0 0 1-2.25-2.25v-9M3.75 7.5 5.106 4.79A1.5 1.5 0 0 1 6.447 4h11.106a1.5 1.5 0 0 1 1.341.79L20.25 7.5m-16.5 0h16.5M9.75 11.25h4.5"/></svg>
+                    </span>
+                    Stock Oversight
+                </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/60 mt-5 mb-1">Sales</p>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-50 cursor-not-allowed">
+                <a href="{{ route('vendor.orders.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('vendor.orders.*') ? 'active' : '' }}">
                     <span class="nav-icon">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 3h6m-9 6h12a2.25 2.25 0 0 0 2.25-2.25V6.75A2.25 2.25 0 0 0 18 4.5H6a2.25 2.25 0 0 0-2.25 2.25v12A2.25 2.25 0 0 0 6 21Zm3.75-15h4.5v3.75h-4.5V6Z"/></svg>
                     </span>
-                    My Orders <span class="ml-auto text-[9px] bg-white/15 px-1.5 py-0.5 rounded">soon</span>
+                    My Orders
+                    @if(($stats['pending_orders'] ?? 0) > 0)
+                        <span class="ml-auto text-[10px] font-bold bg-white/20 text-white px-1.5 py-0.5 rounded-full">{{ $stats['pending_orders'] }}</span>
+                    @endif
                 </a>
                 <a href="{{ route('vendor.payouts.index') }}"
                    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('vendor.payouts.*') ? 'active' : '' }}">

@@ -83,7 +83,12 @@ class ProductController extends Controller
         $validated['is_hidden'] = true;
         $validated['hidden_reason'] = null;
 
+        // Stock goes through setStock() so the change lands in the audit log.
+        $newStock = (int) $validated['stock'];
+        unset($validated['stock']);
+
         $product->update($validated);
+        $product->setStock($newStock, 'Updated via product edit', 'vendor');
 
         return redirect()->route('vendor.products.index')
             ->with('success', 'Product updated and resubmitted for admin review.');

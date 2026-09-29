@@ -115,6 +115,14 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
     Route::put('/products/{product}',       [\App\Http\Controllers\Vendor\ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}',    [\App\Http\Controllers\Vendor\ProductController::class, 'destroy'])->name('products.destroy');
 
+    // ── Stock Oversight (own products only) ──
+    Route::get('/stock',            [\App\Http\Controllers\Vendor\StockController::class, 'index'])->name('stock.index');
+    Route::post('/stock/{product}', [\App\Http\Controllers\Vendor\StockController::class, 'update'])->name('stock.update');
+
+    // ── Orders for this vendor's products ──
+    Route::get('/orders',               [\App\Http\Controllers\Vendor\OrderController::class, 'index'])->name('orders.index');
+    Route::post('/orders/{item}/status', [\App\Http\Controllers\Vendor\OrderController::class, 'updateStatus'])->name('orders.status');
+
     Route::get('/settings',   [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'edit'])->name('settings');
     Route::patch('/settings', [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'update'])->name('settings.update');
 

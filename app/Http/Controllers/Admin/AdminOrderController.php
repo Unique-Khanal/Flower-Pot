@@ -92,6 +92,9 @@ class AdminOrderController extends Controller
 
         $order->update(['status' => 'delivered']);
 
+        // Every live product line in this order is now delivered too
+        $order->items()->where('vendor_status', '!=', 'cancelled')->update(['vendor_status' => 'delivered']);
+
         $wasAlreadyInvoiced = (bool) $order->invoice_no;
 
         if ($order->payment_method === 'cod' && $order->payment_status !== 'paid') {

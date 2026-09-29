@@ -55,7 +55,7 @@
             @error('customer_name') <p class="text-xs text-red-600 mt-1">{{ $message }}</p> @enderror
         </div>
 
-        <div class="grid grid-cols-2 gap-4">
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
             <div>
                 <label class="block text-sm font-semibold text-stone-700 mb-1">Phone <span class="text-stone-400 font-normal">(optional)</span></label>
                 <input type="text" name="phone_no" value="{{ old('phone_no') }}"

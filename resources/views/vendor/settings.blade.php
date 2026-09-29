@@ -54,7 +54,7 @@
 
             <div class="border-t border-stone-100 pt-5">
                 <p class="text-sm font-semibold text-stone-700 mb-3">Bank Details (for payouts)</p>
-                <div class="grid grid-cols-2 gap-4">
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                     <div>
                         <label class="block text-xs font-semibold text-stone-600 mb-1">Bank Name</label>
                         <input type="text" name="bank_name" value="{{ old('bank_name', $vendor->bank_name) }}"

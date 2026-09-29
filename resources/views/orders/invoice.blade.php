@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Invoice {{ $order->invoice_no }}</title>
     <style>
         body { font-family: 'DM Sans', Arial, sans-serif; color:#1B3B2F; font-size:13px; margin:0; padding:0; background:#F7F3E8; }
@@ -50,6 +51,24 @@
         .print-btn { text-align:right; margin-bottom:16px; }
         .print-btn a { background:#2F6B4F; color:#fff; text-decoration:none; padding:9px 18px; border-radius:10px; font-size:12.5px; font-weight:700; margin-left:8px; display:inline-block; }
         .print-btn a.secondary { background:#F0F3EE; color:#1B3B2F; }
+
+        .items-scroll { overflow-x:auto; -webkit-overflow-scrolling:touch; margin-bottom:22px; }
+        .items-scroll table { margin-bottom:0; }
+
+        @media (max-width: 640px) {
+            .wrap { padding: 1.25rem 0.75rem; }
+            .card { padding:20px; }
+            .accent-bar { margin:-20px -20px 20px; }
+            .stamp { top:50px; right:20px; font-size:16px; padding:4px 12px; }
+
+            .header-table td, .billed-table td {
+                display:block; width:100% !important; text-align:left !important; padding:0;
+            }
+            .header-table td:last-child { margin-top:14px; text-align:left !important; }
+            .billed-table td:last-child { margin-top:14px; text-align:left !important; }
+
+            .totals { width:100%; }
+        }
         @endif
     </style>
 </head>
@@ -58,6 +77,7 @@
 
     @if(!isset($forPdf))
     <div class="print-btn">
+        <a href="#" onclick="window.print(); return false;">🖨 Print</a>
         @if (auth()->user()->role === 'admin')
             <a href="{{ route('admin.orders.invoice.download', $order) }}">⬇ Download PDF</a>
             <a href="{{ route('admin.orders.index') }}" class="secondary">← Back to All Orders</a>
@@ -75,7 +95,7 @@
             <div class="stamp">Paid</div>
         @endif
 
-        <table style="width:100%; border-bottom:1px solid #EDE7D6; padding-bottom:18px; margin-bottom:22px;">
+        <table class="header-table" style="width:100%; border-bottom:1px solid #EDE7D6; padding-bottom:18px; margin-bottom:22px;">
             <tr>
                 <td style="border:none; padding:0; vertical-align:top;">
                     @if($logoData)
@@ -93,7 +113,7 @@
             </tr>
         </table>
 
-        <table style="width:100%; margin-bottom:24px;">
+        <table class="billed-table" style="width:100%; margin-bottom:24px;">
             <tr>
                 <td style="border:none; padding:0; vertical-align:top; width:60%;">
                     <h3>Billed To</h3>
@@ -115,6 +135,7 @@
             </tr>
         </table>
 
+        <div class="{{ isset($forPdf) ? '' : 'items-scroll' }}">
         <table>
             <thead>
                 <tr>
@@ -137,6 +158,7 @@
                 @endforeach
             </tbody>
         </table>
+        </div>
 
         <table class="totals">
             <tr><td>Subtotal</td><td style="text-align:right;">Rs. {{ number_format($order->subtotal, 2) }}</td></tr>

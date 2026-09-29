@@ -12,7 +12,7 @@
     {{-- ── CURRENT UNPAID SUMMARY ── --}}
     <div class="bg-white rounded-2xl shadow-sm p-6 mb-6">
         <h2 class="text-sm font-bold text-stone-800 mb-4">Since your last payout</h2>
-        <div class="grid grid-cols-3 gap-4 text-center">
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
             <div>
                 <p class="text-xs text-stone-400 mb-1">Your Sales</p>
                 <p class="text-xl font-extrabold text-stone-800">Rs. {{ number_format($unpaidSales, 2) }}</p>
