@@ -117,18 +117,34 @@
                     <div style="padding:1rem 1.5rem;">
                         <div style="display:flex; flex-direction:column; gap:0.75rem;">
                             @foreach($order->items as $item)
-                            <div style="display:flex; align-items:center; gap:0.75rem;">
+                            @php $myReview = $myReviews->get($item->product_id); @endphp
+                            <div style="display:flex; align-items:center; gap:0.75rem; flex-wrap:wrap;">
                                 <img src="{{ asset($item->product_image) }}"
                                      alt="{{ $item->product_name }}"
                                      style="width:48px; height:48px; object-fit:cover;
                                             border-radius:0.5rem; flex-shrink:0;">
-                                <div style="flex:1;">
+                                <div style="flex:1; min-width:160px;">
                                     <p style="font-size:0.875rem; font-weight:600; color:#1c1917;">
                                         {{ $item->product_name }}
                                     </p>
                                     <p style="font-size:0.75rem; color:#a8a29e;">
                                         Qty: {{ $item->quantity }} × Rs. {{ number_format($item->price, 2) }}
                                     </p>
+                                    @if($item->vendor_status === 'delivered')
+                                        <button type="button"
+                                                onclick="showReviewModal({{ $item->product_id }}, @js($item->product_name), {{ $myReview->rating ?? 0 }}, @js($myReview->comment ?? ''))"
+                                                style="margin-top:4px; font-size:0.72rem; font-weight:700;
+                                                       color:{{ $myReview ? '#2F6B4F' : '#a16207' }};
+                                                       background:none; border:none; padding:0; cursor:pointer;
+                                                       display:inline-flex; align-items:center; gap:3px;">
+                                            @if($myReview)
+                                                <span style="color:#fbbf24;">{{ str_repeat('★', $myReview->rating) }}{{ str_repeat('☆', 5 - $myReview->rating) }}</span>
+                                                ✎ Edit your review
+                                            @else
+                                                ⭐ Write a review
+                                            @endif
+                                        </button>
+                                    @endif
                                 </div>
                                 <p style="font-weight:700; color:#44403c; font-size:0.875rem;">
                                     Rs. {{ number_format($item->subtotal, 2) }}
@@ -304,7 +320,101 @@
     </div>
 </div>
 
+{{-- Review Modal --}}
+<div id="reviewModal"
+     style="display:none; position:fixed; inset:0; z-index:50;
+            background:rgba(0,0,0,0.5);
+            align-items:center; justify-content:center;">
+    <div style="background:white; border-radius:1rem;
+                box-shadow:0 20px 60px rgba(0,0,0,0.15);
+                padding:1.5rem; max-width:28rem; width:100%; margin:0 1rem;">
+
+        <h3 id="reviewModalTitle" style="font-size:1.1rem; font-weight:700; color:#1c1917; margin-bottom:0.25rem;">
+            Review this product
+        </h3>
+        <p style="color:#78716c; font-size:0.875rem; margin-bottom:1rem;">
+            Only visible after your product is delivered — your review helps other customers and the vendor.
+        </p>
+
+        <form method="POST" action="{{ route('reviews.store') }}">
+            @csrf
+            <input type="hidden" name="product_id" id="review-product-id">
+
+            <div id="star-picker" style="display:flex; gap:0.35rem; justify-content:center; font-size:2rem; margin-bottom:1rem; line-height:1;">
+                @for($i = 1; $i <= 5; $i++)
+                    <span class="star" data-value="{{ $i }}" onclick="setRating({{ $i }})"
+                          style="cursor:pointer; color:#d6d3d1; transition:color 0.15s;">★</span>
+                @endfor
+            </div>
+            <input type="hidden" name="rating" id="review-rating" value="0" required>
+
+            <textarea name="comment" id="review-comment" rows="4"
+                      placeholder="What did you think? (optional)"
+                      style="width:100%; border:1px solid #d6d3d1; border-radius:0.75rem;
+                             padding:0.75rem 1rem; font-size:0.875rem;
+                             font-family:inherit; resize:none; outline:none;
+                             margin-bottom:1rem; box-sizing:border-box;"
+                      onfocus="this.style.borderColor='#15803d';this.style.boxShadow='0 0 0 3px rgba(21,128,61,0.1)'"
+                      onblur="this.style.borderColor='#d6d3d1';this.style.boxShadow='none'"
+                      maxlength="1000"></textarea>
+
+            <div style="display:flex; gap:0.75rem;">
+                <button type="button" onclick="closeReviewModal()"
+                        style="flex:1; background:#f5f5f4; color:#44403c;
+                               font-weight:600; padding:0.75rem;
+                               border-radius:0.75rem; border:none;
+                               cursor:pointer; font-size:0.875rem;"
+                        onmouseover="this.style.background='#e7e5e0'"
+                        onmouseout="this.style.background='#f5f5f4'">
+                    Cancel
+                </button>
+                <button type="submit"
+                        style="flex:1; background:#15803d; color:white;
+                               font-weight:600; padding:0.75rem;
+                               border-radius:0.75rem; border:none;
+                               cursor:pointer; font-size:0.875rem;"
+                        onmouseover="this.style.background='#166534'"
+                        onmouseout="this.style.background='#15803d'">
+                    Submit Review
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
 <script>
+    function setRating(value) {
+        document.getElementById('review-rating').value = value;
+        document.querySelectorAll('#star-picker .star').forEach(function (star) {
+            star.style.color = (parseInt(star.dataset.value) <= value) ? '#fbbf24' : '#d6d3d1';
+        });
+    }
+
+    function showReviewModal(productId, productName, existingRating, existingComment) {
+        document.getElementById('reviewModalTitle').textContent = 'Review: ' + productName;
+        document.getElementById('review-product-id').value = productId;
+        document.getElementById('review-comment').value = existingComment || '';
+        setRating(existingRating || 0);
+        document.getElementById('reviewModal').style.display = 'flex';
+    }
+
+    function closeReviewModal() {
+        document.getElementById('reviewModal').style.display = 'none';
+    }
+
+    document.addEventListener('submit', function (e) {
+        if (e.target.getAttribute('action') === '{{ route('reviews.store') }}' &&
+            document.getElementById('review-rating').value === '0') {
+            e.preventDefault();
+            Swal.fire({
+                title: 'Pick a rating',
+                text: 'Tap a star from 1 to 5 before submitting your review.',
+                icon: 'warning',
+                confirmButtonColor: '#15803d'
+            });
+        }
+    });
+
     function showCancelModal(orderId) {
         document.getElementById('cancelForm').action = `/orders/${orderId}/cancel`;
         document.getElementById('cancelModal').style.display = 'flex';

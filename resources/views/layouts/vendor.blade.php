@@ -112,11 +112,12 @@
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/60 mt-5 mb-1">Feedback</p>
-                <a href="#" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm opacity-50 cursor-not-allowed">
-                    <span class="nav-icon">
+                <a href="{{ route('vendor.reviews.index') }}"
+                   class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('vendor.reviews.*') ? 'active' : '' }}">
+                    <span class="nav-icon opacity-90">
                         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6"><path stroke-linecap="round" stroke-linejoin="round" d="m11.48 3.499 2.325 4.995 5.51.804a.563.563 0 0 1 .312.96l-3.987 3.89.941 5.483a.562.562 0 0 1-.816.592l-4.924-2.59-4.924 2.59a.562.562 0 0 1-.816-.592l.94-5.483-3.986-3.89a.563.563 0 0 1 .312-.96l5.51-.804 2.324-4.995a.563.563 0 0 1 1.018 0Z"/></svg>
                     </span>
-                    Reviews <span class="ml-auto text-[9px] bg-white/15 px-1.5 py-0.5 rounded">soon</span>
+                    Reviews
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/60 mt-5 mb-1">Store</p>

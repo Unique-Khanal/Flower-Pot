@@ -107,6 +107,8 @@ class ProductController extends Controller
             abort_unless($isOwner || $isAdmin, 404);
         }
 
+        $product->load(['reviews' => fn ($q) => $q->with('user')->latest()]);
+
         return view('products.show', compact('product'));
     }
 }

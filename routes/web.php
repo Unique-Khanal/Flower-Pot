@@ -74,6 +74,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::post('/orders',                [OrderController::class, 'store'])->name('orders.store');
     Route::post('/orders/{order}/cancel', [OrderController::class, 'cancel'])->name('orders.cancel');
     Route::post('/orders/{order}/switch-to-cod', [OrderController::class, 'switchToCod'])->name('orders.switchToCod');
+
+    Route::post('/reviews', [\App\Http\Controllers\ReviewController::class, 'store'])->name('reviews.store');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\ReviewController::class, 'destroy'])->name('reviews.destroy');
     Route::get('/orders/{order}/invoice',          [\App\Http\Controllers\InvoiceController::class, 'show'])->name('orders.invoice');
     Route::get('/orders/{order}/invoice/download', [\App\Http\Controllers\InvoiceController::class, 'download'])->name('orders.invoice.download');
 
@@ -122,6 +125,8 @@ Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(
     // ── Orders for this vendor's products ──
     Route::get('/orders',               [\App\Http\Controllers\Vendor\OrderController::class, 'index'])->name('orders.index');
     Route::post('/orders/{item}/status', [\App\Http\Controllers\Vendor\OrderController::class, 'updateStatus'])->name('orders.status');
+
+    Route::get('/reviews', [\App\Http\Controllers\Vendor\ReviewController::class, 'index'])->name('reviews.index');
 
     Route::get('/settings',   [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'edit'])->name('settings');
     Route::patch('/settings', [\App\Http\Controllers\Vendor\VendorSettingsController::class, 'update'])->name('settings.update');
@@ -209,6 +214,15 @@ Route::middleware(['auth', 'admin', 'admin.2fa'])->prefix('admin')->name('admin.
     Route::get('/products/{product}/edit',      [\App\Http\Controllers\Admin\ProductController::class, 'edit'])->name('products.edit');
     Route::put('/products/{product}',           [\App\Http\Controllers\Admin\ProductController::class, 'update'])->name('products.update');
     Route::delete('/products/{product}',        [\App\Http\Controllers\Admin\ProductController::class, 'destroy'])->name('products.destroy');
+
+    // ── Customer Reviews (all products) ───────────────────────
+    Route::get('/reviews',             [\App\Http\Controllers\Admin\ReviewController::class, 'index'])->name('reviews.index');
+    Route::delete('/reviews/{review}', [\App\Http\Controllers\Admin\ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    // ── Contact Messages ──────────────────────────────────────
+    Route::get('/contacts',                     [\App\Http\Controllers\Admin\ContactController::class, 'index'])->name('contacts.index');
+    Route::post('/contacts/{contact}/toggle-read', [\App\Http\Controllers\Admin\ContactController::class, 'toggleRead'])->name('contacts.toggleRead');
+    Route::delete('/contacts/{contact}',        [\App\Http\Controllers\Admin\ContactController::class, 'destroy'])->name('contacts.destroy');
 
     // ── Billing ───────────────────────────────────────────────
     Route::get('/billing',  [\App\Http\Controllers\Admin\BillingController::class, 'create'])->name('billing.create');

@@ -153,6 +153,70 @@
                 </a>
             </div>
         </div>
+
+        {{-- ── CUSTOMER REVIEWS ── --}}
+        @php
+            $reviewCount = $product->reviews->count();
+            $avgRating   = $reviewCount ? round($product->reviews->avg('rating'), 1) : 0;
+            $breakdown   = [];
+            for ($i = 5; $i >= 1; $i--) {
+                $breakdown[$i] = $product->reviews->where('rating', $i)->count();
+            }
+        @endphp
+        <div class="bg-white rounded-3xl shadow-lg p-8 mt-8">
+            <h2 class="text-xl font-bold text-stone-800 mb-5">Customer Reviews</h2>
+
+            @if ($reviewCount === 0)
+                <p class="text-sm text-stone-400">
+                    No reviews yet — be the first to review this product once your order is delivered.
+                </p>
+            @else
+                <div class="flex flex-col sm:flex-row gap-6 mb-8 pb-8 border-b border-stone-100">
+                    <div class="flex items-center gap-4 sm:border-r sm:border-stone-100 sm:pr-6">
+                        <div class="text-4xl font-extrabold text-stone-800">{{ $avgRating }}<span class="text-lg text-stone-400">/5</span></div>
+                        <div>
+                            <div class="text-amber-400 text-base leading-none">
+                                @for ($i = 1; $i <= 5; $i++){{ $i <= round($avgRating) ? '★' : '☆' }}@endfor
+                            </div>
+                            <p class="text-xs text-stone-400 mt-1">{{ $reviewCount }} review{{ $reviewCount === 1 ? '' : 's' }}</p>
+                        </div>
+                    </div>
+                    <div class="flex-1 max-w-xs">
+                        @foreach ($breakdown as $star => $count)
+                            <div class="flex items-center gap-2 text-xs mb-1 last:mb-0 text-stone-500">
+                                <span class="w-8">{{ $star }}★</span>
+                                <span class="flex-1 h-2 bg-stone-100 rounded-full overflow-hidden">
+                                    <span class="block h-full bg-amber-400" style="width: {{ $reviewCount > 0 ? ($count / $reviewCount * 100) : 0 }}%"></span>
+                                </span>
+                                <span class="w-6 text-right">{{ $count }}</span>
+                            </div>
+                        @endforeach
+                    </div>
+                </div>
+
+                <div class="space-y-6">
+                    @foreach ($product->reviews as $review)
+                        <div class="flex gap-3 {{ $loop->last ? '' : 'pb-6 border-b border-stone-100' }}">
+                            <div class="w-9 h-9 rounded-full bg-green-100 text-green-700 font-bold text-sm flex items-center justify-center flex-shrink-0">
+                                {{ strtoupper(substr($review->user->name ?? '?', 0, 1)) }}
+                            </div>
+                            <div class="flex-1 min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <span class="font-semibold text-stone-800 text-sm">{{ $review->user->name ?? 'Anonymous' }}</span>
+                                    <span class="text-amber-400 text-xs">
+                                        @for ($i = 1; $i <= 5; $i++){{ $i <= $review->rating ? '★' : '☆' }}@endfor
+                                    </span>
+                                    <span class="text-xs text-stone-400">{{ $review->created_at->diffForHumans() }}</span>
+                                </div>
+                                @if ($review->comment)
+                                    <p class="text-sm text-stone-600 mt-1 whitespace-pre-line">{{ $review->comment }}</p>
+                                @endif
+                            </div>
+                        </div>
+                    @endforeach
+                </div>
+            @endif
+        </div>
     </div>
 </section>
 

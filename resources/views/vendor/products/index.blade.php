@@ -67,7 +67,7 @@
                                 Edit
                             </a>
                             <form action="{{ route('vendor.products.destroy', $product) }}" method="POST" class="flex-1"
-                                  onsubmit="return confirm('Remove this product? This can\'t be undone.');">
+                                  onsubmit="return confirmDelete(this, 'Remove this product?', 'This cannot be undone.', 'Yes, remove');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="w-full bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold py-2 rounded-lg">
@@ -82,3 +82,40 @@
     @endif
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    function confirmDelete(form, title, text, confirmText) {
+        // If SweetAlert failed to load, fall back to the browser dialog
+        // so the Delete button never becomes dead.
+        if (typeof Swal === 'undefined') {
+            if (window.confirm(title + '\n' + text)) {
+                form.submit();
+            }
+            return false;
+        }
+
+        Swal.fire({
+            title: title,
+            text: text,
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonText: confirmText || 'Yes, remove',
+            cancelButtonText: 'Cancel',
+            confirmButtonColor: '#dc2626',
+            cancelButtonColor: '#3E7A5A',
+            customClass: {
+                popup:         'rounded-2xl',
+                confirmButton: 'rounded-xl',
+                cancelButton:  'rounded-xl',
+            }
+        }).then(function (result) {
+            if (result.isConfirmed) {
+                form.submit();
+            }
+        });
+
+        return false; // always block the normal submit; we submit manually above
+    }
+</script>
+@endpush

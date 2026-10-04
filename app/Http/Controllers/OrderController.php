@@ -156,7 +156,13 @@ class OrderController extends Controller
             ->latest()
             ->get();
 
-        return view('orders.index', compact('orders'));
+        // Keyed by product_id so the view can show "Edit review" vs "Leave a review"
+        // and prefill the form, without an extra query per item.
+        $myReviews = \App\Models\Review::where('user_id', Auth::id())
+            ->get()
+            ->keyBy('product_id');
+
+        return view('orders.index', compact('orders', 'myReviews'));
     }
 
     public function cancel(Request $request, Order $order)

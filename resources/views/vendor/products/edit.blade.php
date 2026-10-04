@@ -66,7 +66,7 @@
             <div class="flex gap-2 flex-wrap mb-3">
                 @foreach ($product->allImages() as $index => $path)
                     <div class="relative w-16 h-16">
-                        <img src="{{ asset('storage/' . $path) }}" class="w-16 h-16 object-cover rounded-lg border border-stone-200">
+                        <img src="{{ asset($path) }}" class="w-16 h-16 object-cover rounded-lg border border-stone-200">
                         @if($index === 0)
                             <span class="absolute bottom-0 left-0 right-0 bg-[#1B3B2F] text-white text-[8px] font-bold text-center rounded-b-lg">MAIN</span>
                         @endif
