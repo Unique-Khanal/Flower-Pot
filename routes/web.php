@@ -107,6 +107,7 @@ Route::post('/vendor/logout', [VendorAuthenticatedSessionController::class, 'des
 Route::middleware(['auth', 'vendor'])->prefix('vendor')->name('vendor.')->group(function () {
     Route::get('/dashboard', [VendorDashboardController::class, 'index'])->name('dashboard');
 
+    Route::get('/commission',                        [VendorCommissionController::class, 'index'])->name('commission.index');
     Route::post('/commission/propose',              [VendorCommissionController::class, 'propose'])->name('commission.propose');
     Route::post('/commission/{negotiation}/accept', [VendorCommissionController::class, 'accept'])->name('commission.accept');
     Route::post('/commission/{negotiation}/reject', [VendorCommissionController::class, 'reject'])->name('commission.reject');

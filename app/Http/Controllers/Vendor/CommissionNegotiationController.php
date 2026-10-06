@@ -7,9 +7,34 @@ use App\Models\CommissionNegotiation;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Contracts\View\View;
 
 class CommissionNegotiationController extends Controller
 {
+    public function index(): View
+    {
+        $vendor = Auth::user()->vendor;
+
+        $pendingFromAdmin = $vendor->commissionNegotiations()
+            ->where('status', 'pending')
+            ->where('proposed_by', 'admin')
+            ->first();
+
+        $pendingFromVendor = $vendor->commissionNegotiations()
+            ->where('status', 'pending')
+            ->where('proposed_by', 'vendor')
+            ->first();
+
+        $history = $vendor->commissionNegotiations()
+            ->where('status', '!=', 'pending')
+            ->with('respondedByUser')
+            ->latest()
+            ->limit(10)
+            ->get();
+
+        return view('vendor.commission.index', compact('vendor', 'pendingFromAdmin', 'pendingFromVendor', 'history'));
+    }
+
     /**
      * Vendor proposes a new rate (either opening a negotiation,
      * or responding to admin's counter-offer).

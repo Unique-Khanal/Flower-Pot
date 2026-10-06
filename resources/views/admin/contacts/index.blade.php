@@ -64,7 +64,8 @@
                             @if ($contact->phone_no)
                                 <span>📞 {{ $contact->phone_no }}</span>
                             @endif
-                                                        <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ rawurlencode($contact->email) }}&su={{ rawurlencode('Re: ' . $contact->subject) }}"
+
+                            <a href="https://mail.google.com/mail/?view=cm&fs=1&to={{ rawurlencode($contact->email) }}&su={{ rawurlencode('Re: ' . $contact->subject) }}"
                                target="_blank" rel="noopener"
                                class="text-[#2F6B4F] font-semibold hover:underline">✉ Reply by email</a>
                             <a href="mailto:{{ $contact->email }}?subject={{ rawurlencode('Re: ' . $contact->subject) }}"
@@ -78,7 +79,7 @@
                             </form>
 
                             <form action="{{ route('admin.contacts.destroy', $contact) }}" method="POST" class="inline"
-                                  onsubmit="return confirmDelete(this, 'Delete this message?', 'This will permanently delete the message from {{ addslashes($contact->full_name) }}.', 'Yes, delete');">
+                                  onsubmit="return confirmDelete(this, 'Delete this message? 🗑️', 'This will permanently delete the message from {{ addslashes($contact->full_name) }}. You can\'t undo this.');">
                                 @csrf
                                 @method('DELETE')
                                 <button type="submit" class="text-red-500 hover:text-red-700 font-semibold">Delete</button>
@@ -96,7 +97,7 @@
 
 @push('scripts')
 <script>
-    function confirmDelete(form, title, text, confirmText) {
+    function confirmDelete(form, title, text) {
         // If SweetAlert failed to load, fall back to the browser dialog
         // so the Delete button never becomes dead.
         if (typeof Swal === 'undefined') {
@@ -109,12 +110,12 @@
         Swal.fire({
             title: title,
             text: text,
-            icon: 'warning',
+            icon: 'question',
             showCancelButton: true,
-            confirmButtonText: confirmText || 'Yes, delete',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: 'Yes, Delete',
+            cancelButtonText: 'Keep Message',
             confirmButtonColor: '#dc2626',
-            cancelButtonColor: '#3F6B54',
+            cancelButtonColor: '#1B3B2F',
             customClass: {
                 popup:         'rounded-2xl',
                 confirmButton: 'rounded-xl',

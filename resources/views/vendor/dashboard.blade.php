@@ -119,55 +119,21 @@
 
     </div>
 
-    {{-- ── COMMISSION SECTION (kept from before) ── --}}
-    <div id="commission" class="bg-white rounded-2xl p-6" style="border:1px solid #EDE7D6;">
-        <h2 class="text-lg font-bold text-[#1B3B2F] mb-2">Commission Rate</h2>
-        <p class="text-sm text-stone-600 mb-4">
-            Current rate: <strong style="color:#166534;">{{ $vendor->commission_rate }}%</strong>
-        </p>
-
-        @if($pendingFromAdmin)
-            <div style="background:#fef3c7; border:1px solid #fde68a; border-radius:0.75rem; padding:1rem; margin-bottom:1rem;">
-                <p class="text-sm font-semibold text-amber-800">
-                    Admin proposed {{ $pendingFromAdmin->proposed_rate }}%
+    {{-- ── COMMISSION POINTER ── --}}
+    <a href="{{ route('vendor.commission.index') }}" class="block bg-white rounded-2xl p-6 hover:shadow-md transition" style="border:1px solid #EDE7D6;">
+        <div class="flex items-center justify-between gap-3 flex-wrap">
+            <div>
+                <h2 class="text-lg font-bold text-[#1B3B2F] mb-1">Commission Rate</h2>
+                <p class="text-sm text-stone-600">
+                    Current rate: <strong style="color:#166534;">{{ $vendor->commission_rate }}%</strong>
+                    @if($pendingFromAdmin)
+                        &middot; <span class="text-amber-700 font-semibold">Admin proposed {{ $pendingFromAdmin->proposed_rate }}% — action needed</span>
+                    @endif
                 </p>
-                @if($pendingFromAdmin->message)
-                    <p class="text-xs text-amber-700 mt-1">"{{ $pendingFromAdmin->message }}"</p>
-                @endif
-                <div class="flex gap-2 mt-3">
-                    <form method="POST" action="{{ route('vendor.commission.accept', $pendingFromAdmin) }}">
-                        @csrf
-                        <button type="submit" class="text-xs bg-green-700 text-white font-semibold px-4 py-2 rounded-lg">
-                            Accept {{ $pendingFromAdmin->proposed_rate }}%
-                        </button>
-                    </form>
-                    <form method="POST" action="{{ route('vendor.commission.reject', $pendingFromAdmin) }}">
-                        @csrf
-                        <button type="submit" class="text-xs bg-stone-100 text-stone-700 font-semibold px-4 py-2 rounded-lg">
-                            Decline
-                        </button>
-                    </form>
-                </div>
             </div>
-        @else
-            <form method="POST" action="{{ route('vendor.commission.propose') }}" class="space-y-3">
-                @csrf
-                <div>
-                    <label class="text-xs font-semibold text-stone-600">Propose a new rate (%)</label>
-                    <input type="number" name="proposed_rate" step="0.01" min="0" max="100" required
-                           class="mt-1 block w-full rounded-lg border-stone-300 text-sm" placeholder="e.g. 8.00">
-                </div>
-                <div>
-                    <label class="text-xs font-semibold text-stone-600">Message (optional)</label>
-                    <textarea name="message" rows="2" class="mt-1 block w-full rounded-lg border-stone-300 text-sm"
-                              placeholder="Why you're requesting this rate..."></textarea>
-                </div>
-                <button type="submit" class="bg-green-700 text-white text-sm font-semibold px-4 py-2 rounded-lg">
-                    Send Proposal
-                </button>
-            </form>
-        @endif
-    </div>
+            <span class="text-sm font-semibold text-[#2F6B4F]">Manage →</span>
+        </div>
+    </a>
 
 </div>
 @endsection

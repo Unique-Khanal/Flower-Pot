@@ -166,8 +166,6 @@
                 </a>
 
                 <p class="px-3 text-[10px] font-bold tracking-[0.15em] uppercase text-white/55 mt-5 mb-1">Content &amp; Support</p>
-
-                {{-- NEW: Customer Reviews --}}
                 <a href="{{ route('admin.reviews.index') }}"
                    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
                     <span class="nav-icon opacity-90">
@@ -175,7 +173,6 @@
                     </span>
                     Customer Reviews
                 </a>
-
                 <a href="{{ route('admin.contacts.index') }}"
                    class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm transition {{ request()->routeIs('admin.contacts.*') ? 'active' : '' }}">
                     <span class="nav-icon opacity-90">
@@ -276,7 +273,20 @@
             document.getElementById('sidebar-overlay').classList.toggle('hidden');
         }
 
-        function confirmAdminLogout(formId = 'admin-logout-form') {
+        function confirmAdminLogout(formId) {
+            formId = formId || 'admin-logout-form';
+            var form = document.getElementById(formId);
+            if (!form) { return; }
+
+            // Fallback: if SweetAlert didn't load, use the browser dialog
+            // so logout never becomes a dead button.
+            if (typeof Swal === 'undefined') {
+                if (window.confirm('Sign out of Admin Panel?')) {
+                    form.submit();
+                }
+                return;
+            }
+
             Swal.fire({
                 title: 'Sign out of Admin Panel? 🛠️',
                 text: 'You will need to sign in and verify with OTP again next time.',
@@ -286,15 +296,14 @@
                 cancelButtonText: 'Stay Here',
                 confirmButtonColor: '#dc2626',
                 cancelButtonColor: '#1B3B2F',
-                borderRadius: '1rem',
                 customClass: {
                     popup:         'rounded-2xl',
                     confirmButton: 'rounded-xl',
-                    cancelButton:  'rounded-xl',
+                    cancelButton:  'rounded-xl'
                 }
-            }).then((result) => {
+            }).then(function (result) {
                 if (result.isConfirmed) {
-                    document.getElementById(formId).submit();
+                    form.submit();
                 }
             });
         }
@@ -305,6 +314,13 @@
          * Call from a form's onsubmit: event.preventDefault(); adminConfirm(this, {...}); return false;
          */
         function adminConfirm(form, opts) {
+            if (typeof Swal === 'undefined') {
+                if (window.confirm((opts.title || 'Are you sure?') + '\n' + (opts.text || ''))) {
+                    form.submit();
+                }
+                return false;
+            }
+
             Swal.fire({
                 title: opts.title,
                 text: opts.text || '',
@@ -317,11 +333,11 @@
                 customClass: {
                     popup:         'rounded-2xl',
                     confirmButton: 'rounded-xl',
-                    cancelButton:  'rounded-xl',
+                    cancelButton:  'rounded-xl'
                 }
-            }).then((result) => {
+            }).then(function (result) {
                 if (result.isConfirmed) {
-                    document.getElementById ? form.submit();
+                    form.submit();
                 }
             });
             return false;
